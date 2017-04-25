@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FormatarData : MonoBehaviour {
 
-    public static string Format(int i)
+    public static string FormatToString(int i)
     {
         string s = i.ToString();
         string ano = s.Substring(0, 4);
@@ -14,7 +14,7 @@ public class FormatarData : MonoBehaviour {
         return s;
     }
 
-    public static int Format(string s)
+    public static int FormatToInt(string s)
     {
         string[] data = s.Split('/');
         s = data[2] + data[1]+data[0];
