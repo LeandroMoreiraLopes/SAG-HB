@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System.Collections.Generic;
 
 public class CtrCadastroAluno{
 
@@ -27,7 +24,6 @@ public class CtrCadastroAluno{
         try
         {
             lista = alunoDAO.PegarTodos();
-
         }
         catch (ExcecaoSAG ex)
         {
@@ -36,8 +32,8 @@ public class CtrCadastroAluno{
         return lista;
 	}
 
-	private bool Validar(Aluno aluno){        
-		if (aluno.GetMatricula() < 0) {
+	private bool Validar(Aluno aluno){
+        if (aluno.GetMatricula() < 0) {
 			throw new ExcecaoSAG("A Matrícula não dave ser negativa.") ;
 		}
 		if(aluno.GetNomeCompleto() == null || aluno.GetNomeCompleto().Trim().Equals("")){
@@ -55,7 +51,15 @@ public class CtrCadastroAluno{
 		if (aluno.GetCelular() <= 0) {
 			throw new ExcecaoSAG("O Celular deve ser preenchido com um número válido.") ;
 		}
-		if(aluno.GetUsuario() == null || aluno.GetUsuario().Trim().Equals("")){
+        if (aluno.GetTelefone().ToString().Length <= 7)
+        {
+            throw new ExcecaoSAG("O Telefone deve ser preenchido com no mínimo 8 dígitos.");
+        }
+        if (aluno.GetCelular().ToString().Length <= 8)
+        {
+            throw new ExcecaoSAG("O Celular deve ser preenchido com no mínimo 9 dígitos.");
+        }
+        if (aluno.GetUsuario() == null || aluno.GetUsuario().Trim().Equals("")){
 			throw new ExcecaoSAG("Usuario deve ser preenchido");
 		}
 		if(aluno.GetSenha() == null || aluno.GetSenha().Trim().Equals("")){

@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
+﻿using System.Collections.Generic;
 using System.Data;
-using UnityEngine;
 using MySql.Data.MySqlClient;
 
 public class AlunoDAO {
@@ -17,28 +14,18 @@ public class AlunoDAO {
         MySqlConnection db = Connection.getConnection();
 
         //transação
-        MySqlTransaction mySQLTransaction;
-        mySQLTransaction = db.BeginTransaction();
+        //MySqlTransaction mySQLTransaction;
+        //mySQLTransaction = db.BeginTransaction();
 
         try
         {
-
-            /*//comando sql
-            string sql = "SELECT id, matricula, nomecompleto, nascimento, cpf, telefone, celular, " +
-                "usuario, senha, email FROM aluno ORDER BY " + ordem;
-
-            //executando comendo sql na conexão, retornando os valores no datareader
-            MySqlCommand mySQLcmd = new MySqlCommand(sql, db);
-            MySqlDataReader rsAluno = mySQLcmd.ExecuteReader();*/
-
             MySqlCommand mySQLcmd = db.CreateCommand();
 
             //setando a procedure do banco
             mySQLcmd.CommandType = CommandType.StoredProcedure;
             mySQLcmd.CommandText = "Aluno_PegarTodos";
 
-            //ligando a transação
-            mySQLcmd.Transaction = mySQLTransaction;
+            //mySQLcmd.Transaction = mySQLTransaction;
 
             //execução sem retorno
             MySqlDataReader rsAluno = mySQLcmd.ExecuteReader();
@@ -70,9 +57,14 @@ public class AlunoDAO {
                 //sem resultados
             }
 
+            //commit da transação
+            //mySQLTransaction.Commit();
+
         }
         catch (MySqlException ex)
         {
+            //rollback caso haja erro no MySQL
+            //mySQLTransaction.Rollback();
             throw new ExcecaoSAG("Erro ao listar os alunos. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
@@ -124,11 +116,7 @@ public class AlunoDAO {
             //commit da transação
             mySQLTransaction.Commit();
 
-            //fechando a conexão
-            db.Close();
-
         } catch (MySqlException ex) {
-            db.Close();
             try
             {
                 //rollback caso haja erro no MySQL
@@ -150,6 +138,11 @@ public class AlunoDAO {
                 throw new ExcecaoSAG("Erro na inclusão do aluno. Código " + ex1.ToString());
             }
             throw ex;
+        }
+        finally
+        {
+            //fechando a conexão
+            db.Close();
         }
 
     }
@@ -264,8 +257,8 @@ public class AlunoDAO {
         }
     }
 
-public void Carregar(Aluno umAluno)
-{
+    public void Carregar(Aluno umAluno)
+    {
         MySqlConnection db = Connection.getConnection();
         MySqlTransaction mySQLTransaction;
         mySQLTransaction = db.BeginTransaction();
@@ -304,10 +297,10 @@ public void Carregar(Aluno umAluno)
                     umAluno.SetEmail(rsAluno.GetString("email"));
                 }
             }
-
             else
             {
                 //aluno não carregado
+                throw new ExcecaoSAG("Erro, Aluno não encontrado.");
             }
         }
         catch (MySqlException ex)
@@ -322,6 +315,6 @@ public void Carregar(Aluno umAluno)
         {
             db.Close();
         }
-
     }
+
 }

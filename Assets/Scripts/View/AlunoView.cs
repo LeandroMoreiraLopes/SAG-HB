@@ -39,8 +39,8 @@ public class AlunoView : MonoBehaviour {
         a.SetNomeCompleto("Doidão");
         a.SetNascimento(19810909);
         a.SetCpf("123");
-        a.SetTelefone(321);
-        a.SetCelular(9321);
+        a.SetTelefone(25958684);
+        a.SetCelular(972574545);
         a.SetUsuario("doidin");
         a.SetSenha("111");
         a.SetEmail("doidin@uhu");
