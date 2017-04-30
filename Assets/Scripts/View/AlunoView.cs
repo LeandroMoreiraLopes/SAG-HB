@@ -140,15 +140,15 @@ public class AlunoView : MonoBehaviour {
     {
         ok.gameObject.SetActive(false);
         atualiza.gameObject.SetActive(false);
-        mat.text = "matricula";
-        nome.text = "nome completo";
-        nascimento.text = "--/--/----";
-        cpf.text = "cpf";
-        telefone.text = "telefone";
-        celular.text = "celular";
-        usuario.text = "usuario";
-        senha.text = "senha";
-        email.text = "email";
+        mat.text = "";
+        nome.text = "";
+        nascimento.text = "";
+        cpf.text = "";
+        telefone.text = "";
+        celular.text = "";
+        usuario.text = "";
+        senha.text = "";
+        email.text = "";
     }
 
     public void Clique(string s)

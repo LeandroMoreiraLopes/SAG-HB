@@ -23,14 +23,6 @@ public class AlunoDAO {
         try
         {
 
-            /*//comando sql
-            string sql = "SELECT id, matricula, nomecompleto, nascimento, cpf, telefone, celular, " +
-                "usuario, senha, email FROM aluno ORDER BY " + ordem;
-
-            //executando comendo sql na conexão, retornando os valores no datareader
-            MySqlCommand mySQLcmd = new MySqlCommand(sql, db);
-            MySqlDataReader rsAluno = mySQLcmd.ExecuteReader();*/
-
             MySqlCommand mySQLcmd = db.CreateCommand();
 
             //setando a procedure do banco
@@ -96,7 +88,8 @@ public class AlunoDAO {
         MySqlTransaction mySQLTransaction;
         mySQLTransaction = db.BeginTransaction();
 
-        try {
+        try
+        {
             //comando na conexão para execução da procedure
             MySqlCommand mySQLcmd = db.CreateCommand();
 
@@ -123,12 +116,10 @@ public class AlunoDAO {
 
             //commit da transação
             mySQLTransaction.Commit();
+        }
+        catch (MySqlException ex)
+        {
 
-            //fechando a conexão
-            db.Close();
-
-        } catch (MySqlException ex) {
-            db.Close();
             try
             {
                 //rollback caso haja erro no MySQL
@@ -139,7 +130,8 @@ public class AlunoDAO {
                 throw new ExcecaoSAG("Erro na inclusão do aluno. Código " + ex1.ToString());
             }
         }
-            catch (ExcecaoSAG ex) {
+        catch (ExcecaoSAG ex)
+        {
             try
             {
                 //rollback caso haja erro na aplicação
@@ -150,6 +142,9 @@ public class AlunoDAO {
                 throw new ExcecaoSAG("Erro na inclusão do aluno. Código " + ex1.ToString());
             }
             throw ex;
+        }
+        finally {
+            db.Close();
         }
 
     }
