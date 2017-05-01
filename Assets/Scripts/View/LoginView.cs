@@ -21,9 +21,10 @@ public class LoginView : MonoBehaviour {
         Aluno umAluno = new Aluno();
         umAluno.SetUsuario(usuarioIF.text);
         umAluno.SetSenha(senhaIF.text);
-
+        
         int status = umCtrLogin.Logar(umAluno);
         yield return status;
+        Invoke("Apagar", 1f);
 
         switch(status)
         {
@@ -33,11 +34,11 @@ public class LoginView : MonoBehaviour {
 
             case 1:
                 statusLogin.text = "Login de Aluno com sucesso";
-                main.MudarGameState(2, 2);
+                main.MudarGameState(3, 1);
                 break;
             case 2:
                 statusLogin.text = "Login de Funcionario com sucesso";
-                main.MudarGameState(2, 2);
+                main.MudarGameState(2, 1);
                 break;
         }
     }
@@ -45,5 +46,12 @@ public class LoginView : MonoBehaviour {
     public void LogarBTN()
     {
         StartCoroutine(Logar());
+    }
+
+    void Apagar()
+    {
+        usuarioIF.text = "";
+        senhaIF.text = "";
+        statusLogin.text = "";
     }
 }

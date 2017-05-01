@@ -4,6 +4,6 @@ public class AlunoButton : MonoBehaviour {
 
     public void Clique()
     {
-        Camera.main.GetComponent<AlunoView>().Clique(gameObject.name);
+        gameObject.GetComponentInParent<AlunoView>().Clique(gameObject.name);
     }
 }

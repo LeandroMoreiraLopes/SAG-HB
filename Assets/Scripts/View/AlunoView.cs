@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class AlunoView : MonoBehaviour {
 
+    Main main;
+
     CtrCadastroAluno cadastroAluno = new CtrCadastroAluno();
 
     List<Aluno> alunos;
@@ -28,6 +30,7 @@ public class AlunoView : MonoBehaviour {
 
     void Start()
     {
+        main = Camera.main.gameObject.GetComponent<Main>();
         StartCoroutine(AtualizaGrid());
     }
 
@@ -54,8 +57,8 @@ public class AlunoView : MonoBehaviour {
         usuario.text = umAluno.GetUsuario();
         senha.text = umAluno.GetSenha();
         email.text = umAluno.GetEmail();
-        //rotDestino = new Vector3(0, 90, 0);
         atualiza.gameObject.SetActive(true);
+        main.MudarGameState(5, 0);
     }
 
     public void AtualizaAluno()
@@ -76,7 +79,7 @@ public class AlunoView : MonoBehaviour {
         
         StartCoroutine(AtualizaGrid());
         ApagarTudo();
-       //rotDestino = new Vector3(0, 0, 0);
+        main.MudarGameState(4, 0);
     }
     #endregion
 
@@ -85,7 +88,7 @@ public class AlunoView : MonoBehaviour {
     {
         ApagarTudo();
         ok.gameObject.SetActive(true);
-        //rotDestino = new Vector3(0, 90, 0);
+        main.MudarGameState(5, 0);
     }
 
     public void NovoAluno()
@@ -106,7 +109,7 @@ public class AlunoView : MonoBehaviour {
         
         StartCoroutine(AtualizaGrid());
         ApagarTudo();
-        //rotDestino = new Vector3(0, 0, 0);
+        main.MudarGameState(4, 0);
     }
     #endregion
 
