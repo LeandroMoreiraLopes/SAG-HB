@@ -25,6 +25,7 @@ public class AlunoView : MonoBehaviour {
 
     public int selecionado;
 
+
     void Start()
     {
         StartCoroutine(AtualizaGrid());
