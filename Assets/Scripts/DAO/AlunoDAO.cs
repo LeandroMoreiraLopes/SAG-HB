@@ -88,7 +88,8 @@ public class AlunoDAO {
         MySqlTransaction mySQLTransaction;
         mySQLTransaction = db.BeginTransaction();
 
-        try {
+        try
+        {
             //comando na conexão para execução da procedure
             MySqlCommand mySQLcmd = db.CreateCommand();
 
@@ -115,8 +116,10 @@ public class AlunoDAO {
 
             //commit da transação
             mySQLTransaction.Commit();
+        }
+        catch (MySqlException ex)
+        {
 
-        } catch (MySqlException ex) {
             try
             {
                 //rollback caso haja erro no MySQL
@@ -127,7 +130,8 @@ public class AlunoDAO {
                 throw new ExcecaoSAG("Erro na inclusão do aluno. Código " + ex1.ToString());
             }
         }
-            catch (ExcecaoSAG ex) {
+        catch (ExcecaoSAG ex)
+        {
             try
             {
                 //rollback caso haja erro na aplicação
@@ -139,9 +143,7 @@ public class AlunoDAO {
             }
             throw ex;
         }
-        finally
-        {
-            //fechando a conexão
+        finally {
             db.Close();
         }
 

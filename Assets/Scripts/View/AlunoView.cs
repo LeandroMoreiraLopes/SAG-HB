@@ -20,45 +20,23 @@ public class AlunoView : MonoBehaviour {
     [SerializeField]
     InputField mat, nome, nascimento, cpf, telefone, celular, usuario, senha, email;
 
+    [SerializeField]
+    Button ok, atualiza;
+
     public int selecionado;
 
     Vector3 rotDestino;
 
-    IEnumerator Start()
+
+    void Start()
     {
-        alunos = cadastroAluno.ListarTodos();
-        
-        yield return alunos;
-
-        aDG.SetListaDeAlunos(alunos);
-        aDG.Resize();
-
-        
-        Aluno a = new Aluno();
-        a.SetMatricula(317);
-        a.SetNomeCompleto("Doidão");
-        a.SetNascimento(19810909);
-        a.SetCpf("123");
-        a.SetTelefone(25958684);
-        a.SetCelular(972574545);
-        a.SetUsuario("doidin");
-        a.SetSenha("111");
-        a.SetEmail("doidin@uhu");
-
-        cadastroAluno.Incluir(a);
-       
-
-
+        StartCoroutine(AtualizaGrid());
     }
 
-    public void Clique(string s)
-    {
-        selecionado = Int32.Parse(s);
-    }
-
+    #region métodos para Editar aluno
     public void EditAluno()
     {
-       StartCoroutine(EditaAluno());
+        StartCoroutine(EditaAluno());
     }
 
     IEnumerator EditaAluno()
@@ -71,7 +49,7 @@ public class AlunoView : MonoBehaviour {
 
         mat.text = umAluno.GetMatricula().ToString();
         nome.text = umAluno.GetNomeCompleto();
-        nascimento.text = FormatarData.Format(umAluno.GetNascimento());
+        nascimento.text = FormatarData.FormatToString(umAluno.GetNascimento());
         cpf.text = umAluno.GetCpf();
         telefone.text = umAluno.GetTelefone().ToString();
         celular.text = umAluno.GetCelular().ToString();
@@ -79,17 +57,116 @@ public class AlunoView : MonoBehaviour {
         senha.text = umAluno.GetSenha();
         email.text = umAluno.GetEmail();
         rotDestino = new Vector3(0, 90, 0);
+        atualiza.gameObject.SetActive(true);
     }
 
-    private void Update()
+    public void AtualizaAluno()
+    {
+        Aluno umAluno = new Aluno();
+        umAluno.SetId(selecionado);
+        umAluno.SetMatricula(int.Parse(mat.text));
+        umAluno.SetNomeCompleto(nome.text);
+        umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
+        umAluno.SetCpf(cpf.text);
+        umAluno.SetTelefone(int.Parse(telefone.text));
+        umAluno.SetCelular(int.Parse(celular.text));
+        umAluno.SetUsuario(usuario.text);
+        umAluno.SetSenha(senha.text);
+        umAluno.SetEmail(email.text);
+
+        cadastroAluno.Alterar(umAluno);
+        
+        StartCoroutine(AtualizaGrid());
+        ApagarTudo();
+        rotDestino = new Vector3(0, 0, 0);
+    }
+    #endregion
+
+    #region métodos para Incluir aluno
+    public void CriaAluno()
+    {
+        ApagarTudo();
+        ok.gameObject.SetActive(true);
+        rotDestino = new Vector3(0, 90, 0);
+    }
+
+    public void NovoAluno()
+    {
+        Aluno umAluno = new Aluno();
+      
+        umAluno.SetMatricula(int.Parse(mat.text));
+        umAluno.SetNomeCompleto(nome.text);
+        umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
+        umAluno.SetCpf(cpf.text);
+        umAluno.SetTelefone(int.Parse(telefone.text));
+        umAluno.SetCelular(int.Parse(celular.text));
+        umAluno.SetUsuario(usuario.text);
+        umAluno.SetSenha(senha.text);
+        umAluno.SetEmail(email.text);
+
+        cadastroAluno.Incluir(umAluno);
+        
+        StartCoroutine(AtualizaGrid());
+        ApagarTudo();
+        rotDestino = new Vector3(0, 0, 0);
+    }
+    #endregion
+
+    #region métodos para Excluir aluno
+    public void ApagaAluno()
+    {
+        Aluno umAluno = new Aluno();
+
+        umAluno.SetId(selecionado);
+
+        cadastroAluno.Excluir(umAluno);
+
+        StartCoroutine(AtualizaGrid());
+    } 
+    #endregion
+
+    void Update()
     {
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, rotDestino, 5 * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            ApagarTudo();
+            StartCoroutine(AtualizaGrid());
             rotDestino = Vector3.zero;
         }
     }
 
+    void ApagarTudo()
+    {
+        ok.gameObject.SetActive(false);
+        atualiza.gameObject.SetActive(false);
+        mat.text = "";
+        nome.text = "";
+        nascimento.text = "";
+        cpf.text = "";
+        telefone.text = "";
+        celular.text = "";
+        usuario.text = "";
+        senha.text = "";
+        email.text = "";
+    }
 
+    public void Clique(string s)
+    {
+        selecionado = Int32.Parse(s);
+    }
+
+    IEnumerator AtualizaGrid()
+    {
+        //carrega lista de alunos
+        alunos = cadastroAluno.ListarTodos();
+
+        //aguarda downlaod
+        yield return alunos;
+
+        //passa a lista para a grid e preenche a mesma
+        aDG.SetListaDeAlunos(alunos);
+        aDG.Resize();
+    }
 }
