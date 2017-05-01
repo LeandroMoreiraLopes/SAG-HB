@@ -22,6 +22,11 @@ public class DAOFactory {
         return new AlunoDAO();
     }
 
+    public LoginDAO getLoginDAO()
+    {
+        return new LoginDAO();
+    }
+
     /*public ProfessorDAO getProfessorDAO()
     {
         return new ProfessorDAO();

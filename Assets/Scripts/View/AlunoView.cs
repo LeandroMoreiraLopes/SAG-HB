@@ -25,8 +25,6 @@ public class AlunoView : MonoBehaviour {
 
     public int selecionado;
 
-    Vector3 rotDestino;
-
     void Start()
     {
         StartCoroutine(AtualizaGrid());
@@ -55,7 +53,7 @@ public class AlunoView : MonoBehaviour {
         usuario.text = umAluno.GetUsuario();
         senha.text = umAluno.GetSenha();
         email.text = umAluno.GetEmail();
-        rotDestino = new Vector3(0, 90, 0);
+        //rotDestino = new Vector3(0, 90, 0);
         atualiza.gameObject.SetActive(true);
     }
 
@@ -77,7 +75,7 @@ public class AlunoView : MonoBehaviour {
         
         StartCoroutine(AtualizaGrid());
         ApagarTudo();
-        rotDestino = new Vector3(0, 0, 0);
+       //rotDestino = new Vector3(0, 0, 0);
     }
     #endregion
 
@@ -86,7 +84,7 @@ public class AlunoView : MonoBehaviour {
     {
         ApagarTudo();
         ok.gameObject.SetActive(true);
-        rotDestino = new Vector3(0, 90, 0);
+        //rotDestino = new Vector3(0, 90, 0);
     }
 
     public void NovoAluno()
@@ -107,7 +105,7 @@ public class AlunoView : MonoBehaviour {
         
         StartCoroutine(AtualizaGrid());
         ApagarTudo();
-        rotDestino = new Vector3(0, 0, 0);
+        //rotDestino = new Vector3(0, 0, 0);
     }
     #endregion
 
@@ -123,18 +121,6 @@ public class AlunoView : MonoBehaviour {
         StartCoroutine(AtualizaGrid());
     } 
     #endregion
-
-    void Update()
-    {
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, rotDestino, 5 * Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ApagarTudo();
-            StartCoroutine(AtualizaGrid());
-            rotDestino = Vector3.zero;
-        }
-    }
 
     void ApagarTudo()
     {
