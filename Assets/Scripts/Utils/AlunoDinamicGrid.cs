@@ -20,6 +20,14 @@ public class AlunoDinamicGrid : MonoBehaviour {
 
         grid.cellSize = new Vector2(parent.rect.width, 30);
 
+        for (int i = transform.GetChildCount() - 1; i > 0; i--)
+        {
+            if (transform.GetChild(i).name != "Grid - Parent")
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
+
         for (int i = 0; i < lista.Count; i++)
         {
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;

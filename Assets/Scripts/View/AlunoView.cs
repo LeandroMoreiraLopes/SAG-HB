@@ -23,7 +23,7 @@ public class AlunoView : MonoBehaviour {
     InputField mat, nome, nascimento, cpf, telefone, celular, usuario, senha, email;
 
     [SerializeField]
-    Button ok, atualiza;
+    Button criar, atualiza, voltar;
 
     public int selecionado;
 
@@ -33,6 +33,61 @@ public class AlunoView : MonoBehaviour {
         main = Camera.main.gameObject.GetComponent<Main>();
         StartCoroutine(AtualizaGrid());
     }
+
+    #region métodos para Mostrar aluno
+    public void MostrarAluno()
+    {
+        StartCoroutine(MostraAluno());
+    }
+
+    IEnumerator MostraAluno()
+    {
+        Aluno umAluno = new Aluno();
+        umAluno.SetId(selecionado);
+        cadastroAluno.Carregar(umAluno);
+
+        yield return umAluno;
+
+        mat.text = umAluno.GetMatricula().ToString();
+        nome.text = umAluno.GetNomeCompleto();
+        nascimento.text = FormatarData.FormatToString(umAluno.GetNascimento());
+        cpf.text = umAluno.GetCpf();
+        telefone.text = umAluno.GetTelefone().ToString();
+        celular.text = umAluno.GetCelular().ToString();
+        usuario.text = umAluno.GetUsuario();
+        senha.text = umAluno.GetSenha();
+        email.text = umAluno.GetEmail();
+        
+        mat.interactable = false;
+        nome.interactable = false;
+        nascimento.interactable = false;
+        cpf.interactable = false;
+        telefone.interactable = false;
+        celular.interactable = false;
+        usuario.interactable = false;
+        senha.interactable = false;
+        email.interactable = false;
+
+        voltar.gameObject.SetActive(true);
+        main.MudarGameState(5, 0);
+    }
+
+    public void VoltaManterAluno()
+    {
+        mat.interactable = true;
+        nome.interactable = true;
+        nascimento.interactable = true;
+        cpf.interactable = true;
+        telefone.interactable = true;
+        celular.interactable = true;
+        usuario.interactable = true;
+        senha.interactable = true;
+        email.interactable = true;
+
+        ApagarTudo();
+        main.MudarGameState(4, 0);
+    }
+    #endregion
 
     #region métodos para Editar aluno
     public void EditAluno()
@@ -87,7 +142,7 @@ public class AlunoView : MonoBehaviour {
     public void CriaAluno()
     {
         ApagarTudo();
-        ok.gameObject.SetActive(true);
+        criar.gameObject.SetActive(true);
         main.MudarGameState(5, 0);
     }
 
@@ -128,7 +183,7 @@ public class AlunoView : MonoBehaviour {
 
     void ApagarTudo()
     {
-        ok.gameObject.SetActive(false);
+        criar.gameObject.SetActive(false);
         atualiza.gameObject.SetActive(false);
         mat.text = "";
         nome.text = "";

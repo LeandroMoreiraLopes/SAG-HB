@@ -15,4 +15,9 @@ public class MenuFuncView : MonoBehaviour {
     {
         main.MudarGameState(4, 0);
     }
+
+    public void VoltarMenuFunc()
+    {
+        main.MudarGameState(2, 0);
+    }
 }
