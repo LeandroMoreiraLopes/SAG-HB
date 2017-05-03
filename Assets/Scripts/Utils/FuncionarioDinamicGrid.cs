@@ -4,17 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class AlunoDinamicGrid : MonoBehaviour {
+public class FuncionarioDinamicGrid : MonoBehaviour
+{
     [SerializeField]
     GameObject gridFilho;
-    int numeroDeAlunos;
+    int numeroDeFuncionarioss;
 
     public static int selecionado;
 
-    List<Aluno> lista;
+    List<Funcionario> lista;
 
     // Use this for initialization
-	public void Resize () {
+    public void Resize()
+    {
         RectTransform parent = gameObject.GetComponent<RectTransform>();
         GridLayoutGroup grid = gameObject.GetComponent<GridLayoutGroup>();
 
@@ -36,10 +38,10 @@ public class AlunoDinamicGrid : MonoBehaviour {
             temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lista[i].GetNomeCompleto().ToString();
             temp.name = lista[i].GetId().ToString();
         }
-        
-	}
 
-    public void SetListaDeAlunos(List<Aluno> l)
+    }
+
+    public void SetListaDeFuncionarios(List<Funcionario> l)
     {
         lista = l;
     }

@@ -11,13 +11,13 @@ public class MenuFuncView : MonoBehaviour {
         main = Camera.main.gameObject.GetComponent<Main>();
     }
 
-    public void ManterAluno()
+    public void IrParaManterAluno()
     {
-        main.MudarGameState(4, 0);
+        main.MudarGameState(3, 0);
     }
 
-    public void VoltarMenuFunc()
+    public void IrParaManterFuncionario()
     {
-        main.MudarGameState(2, 0);
+        main.MudarGameState(5, 0);
     }
 }

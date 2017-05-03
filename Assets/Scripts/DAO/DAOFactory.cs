@@ -27,12 +27,12 @@ public class DAOFactory {
         return new LoginDAO();
     }
 
-    /*public ProfessorDAO getProfessorDAO()
+    public FuncionarioDAO getFuncionarioDAO()
     {
-        return new ProfessorDAO();
+        return new FuncionarioDAO();
     }
 
-    public TurmaDAO getTurmaDAO()
+    /*public TurmaDAO getTurmaDAO()
     {
         return new TurmaDAO();
     }

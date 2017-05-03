@@ -10,11 +10,13 @@ public class Main : MonoBehaviour {
     Transform[] camDestino;
     int indice;
    
-    enum GameState {intro, login, menuPrincipalFuncionario, menuPrincipalAluno, menuAluno, menuPainelDoAluno, menuFuncionario, menuMateria, menuTema, menuAvaliacao, menuPerguntas};
+    enum GameState {intro, login, menuPrincipalFuncionario, menuManterAluno, menuDadosDoAluno, menuManterFuncionario, menuDadosDoFuncionario,
+        menuManterMateria, menuDadosDaMateria, menuManterTema, menuDadosDoTema, menuManterAvaliacao, menuDadosDaAvaliacao, menuManterPerguntas,
+        menuDadosDaPergunta, menuRelatoriosDoFuncionario, menuPrincipalAluno, menuAvaliacaoAluno, menuRelatoriosDoAluno};
     GameState myGameState = GameState.intro;
 
     [SerializeField]
-    GameObject[] canvas, panels;
+    GameObject[] panels;
 
    	// Use this for initialization
 	void Start () {
@@ -31,14 +33,20 @@ public class Main : MonoBehaviour {
 
     }
 
-    public void Sair()
+    public void FecharApplicacao()
     {
         Application.Quit();
     }
 
-    public void Logout()
+    public void Sair()
     {
         MudarGameState(1, 0);
+    }
+
+    //função para mudar de tela
+    public void MudarGameState(int gsIndex, int time)
+    {
+        StartCoroutine(MudarGameState((GameState)gsIndex, time));
     }
 
     IEnumerator MudarGameState(GameState gs, int delay)
@@ -51,29 +59,30 @@ public class Main : MonoBehaviour {
                 panels[0].SetActive(true);
                 break;
             case GameState.login:
-                indice = 0;
+                indice = 1;
                 panels[0].SetActive(false);
                 panels[1].SetActive(true);
                 break;
             case GameState.menuPrincipalFuncionario:
-                indice = 1;
-                break;
-            case GameState.menuPrincipalAluno:
-                indice = 4;
-                break;
-            case GameState.menuAluno:
                 indice = 2;
                 break;
-            case GameState.menuPainelDoAluno:
+            case GameState.menuManterAluno:
                 indice = 3;
+                break;
+            case GameState.menuDadosDoAluno:
+                indice = 4;
+                break;
+            case GameState.menuManterFuncionario:
+                indice = 5;
+                break;
+            case GameState.menuDadosDoFuncionario:
+                indice = 6;
+                break;
+            case GameState.menuPrincipalAluno:
+                indice = 16;
                 break;
         }
 
         myGameState = gs;
-    }
-
-    public void MudarGameState(int gsIndex, int time)
-    {
-        StartCoroutine(MudarGameState((GameState)gsIndex, time));
     }
 }
