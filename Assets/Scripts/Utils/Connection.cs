@@ -5,8 +5,8 @@ public class Connection {
 
     string host = "127.0.0.1";
     string database = "sag-hb";
-    string user = "aluno";
-    string password = "12345";
+    string user = "root";
+    string password = "admin";
     
     bool pooling = true;
     
