@@ -145,6 +145,7 @@ public class TemaDAO {
             mySQLcmd.CommandText = "Tema_Alterar";
 
             //preenchendo os parametros da procedure
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", tema.GetId());
             mySQLcmd.Parameters.AddWithValue("LOC_NOME", tema.GetNome());
             mySQLcmd.Parameters.AddWithValue("LOC_DESCRICAO", tema.GetDescricao());
             mySQLcmd.Parameters.AddWithValue("LOC_SERIE", tema.GetSerie());

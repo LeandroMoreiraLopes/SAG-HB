@@ -62,7 +62,8 @@ public class TemaView : MonoBehaviour {
         nome.text = umTema.GetNome();
         descricao.text = umTema.GetDescricao();
         serie.text = umTema.GetSerie();
-        //materia.text = umaMateria.GetNome();
+        StartCoroutine(AtualizaDropDown());
+        materia.value = EncontrarMateriaNaDropDownTrazendoValue(umaMateria.GetNome());
 
         nome.interactable = false;
         descricao.interactable = false;
@@ -100,7 +101,7 @@ public class TemaView : MonoBehaviour {
         descricao.text = umTema.GetDescricao();
         serie.text = umTema.GetSerie();
         StartCoroutine(AtualizaDropDown());
-        materia.value = umaMateria.GetId() - 2; //banco com materia no id = 2
+        materia.value = EncontrarMateriaNaDropDownTrazendoValue(umaMateria.GetNome());
 
         atualiza.gameObject.SetActive(true);
         voltar.gameObject.SetActive(true);
@@ -115,7 +116,7 @@ public class TemaView : MonoBehaviour {
         umTema.SetNome(nome.text);
         umTema.SetDescricao(descricao.text);
         umTema.SetSerie(serie.text);
-        umTema.SetMatId(materia.value + 2); //banco com materia no id = 2
+        umTema.SetMatId(EncontrarMateriaNaDropDownTrazendoId(materia.options[materia.value].text)); //banco com materia no id = 2
 
         cadastroTema.Alterar(umTema);
 
@@ -141,7 +142,7 @@ public class TemaView : MonoBehaviour {
         umTema.SetNome(nome.text);
         umTema.SetDescricao(descricao.text);
         umTema.SetSerie(serie.text);
-        umTema.SetMatId(materia.value + 2); //banco com materia no id = 2
+        umTema.SetMatId(EncontrarMateriaNaDropDownTrazendoId(materia.options[materia.value].text)); //banco com materia no id = 2
 
         cadastroTema.Incluir(umTema);
 
@@ -241,5 +242,34 @@ public class TemaView : MonoBehaviour {
     public void VoltarParaMenuFunc()
     {
         main.MudarGameState(2, 0);
+    }
+    int EncontrarMateriaNaDropDownTrazendoId(string s)
+    {
+        int mat_id = 0;
+
+        List<Materia> listaDeMaterias = new List<Materia>();
+        listaDeMaterias = cadastroMateria.ListarTodos();
+
+        for (int i = 0; i < listaDeMaterias.Count; i++)
+        {
+            if (listaDeMaterias[i].GetNome() == s)
+                mat_id = listaDeMaterias[i].GetId();
+        }
+        return mat_id;
+    }
+
+    int EncontrarMateriaNaDropDownTrazendoValue(string s)
+    {
+        int mat_id = 0;
+
+        List<Materia> listaDeMaterias = new List<Materia>();
+        listaDeMaterias = cadastroMateria.ListarTodos();
+
+        for (int i = 0; i < listaDeMaterias.Count; i++)
+        {
+            if (listaDeMaterias[i].GetNome() == s)
+                mat_id = i;
+        }
+        return mat_id;
     }
 }
