@@ -34,7 +34,7 @@ public class LoginView : MonoBehaviour {
 
             case 1:
                 statusLogin.text = "Login de Aluno com sucesso";
-                main.MudarGameState(3, 1);
+                main.MudarGameState(16, 1);
                 break;
             case 2:
                 statusLogin.text = "Login de Funcionario com sucesso";
