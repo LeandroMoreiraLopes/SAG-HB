@@ -78,6 +78,12 @@ public class Main : MonoBehaviour {
             case GameState.menuDadosDoFuncionario:
                 indice = 6;
                 break;
+            case GameState.menuManterMateria:
+                indice = 7;
+                break;
+            case GameState.menuDadosDaMateria:
+                indice = 8;
+                break;
             case GameState.menuPrincipalAluno:
                 indice = 16;
                 break;

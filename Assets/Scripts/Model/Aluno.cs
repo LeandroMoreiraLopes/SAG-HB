@@ -4,11 +4,6 @@ using System.Collections;
 public class Aluno : Pessoa {
 
 	int matricula;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	public int GetMatricula()
 	{

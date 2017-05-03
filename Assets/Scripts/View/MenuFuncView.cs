@@ -20,4 +20,9 @@ public class MenuFuncView : MonoBehaviour {
     {
         main.MudarGameState(5, 0);
     }
+
+    public void IrParaManterMateria()
+    {
+        main.MudarGameState(7, 0);
+    }
 }

@@ -10,12 +10,12 @@ public class DAOFactory {
     /*public CursoDAO getCursoDAO()
     {
         return new CursoDAO();
-    }
-
-    public DisciplinaDAO getDisciplinaDAO()
-    {
-        return new DisciplinaDAO();
     }*/
+
+    public MateriaDAO getMateriaDAO()
+    {
+        return new MateriaDAO();
+    }
 
     public AlunoDAO getAlunoDAO()
     {

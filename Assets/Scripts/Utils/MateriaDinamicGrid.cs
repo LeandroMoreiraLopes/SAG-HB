@@ -2,15 +2,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FuncionarioDinamicGrid : MonoBehaviour
+public class MateriaDinamicGrid : MonoBehaviour
 {
     [SerializeField]
     GameObject gridFilho;
-    int numeroDeFuncionarioss;
+    int numeroDeMaterias;
 
     public static int selecionado;
 
-    List<Funcionario> lista;
+    List<Materia> lista;
 
     // Use this for initialization
     public void Resize()
@@ -32,14 +32,13 @@ public class FuncionarioDinamicGrid : MonoBehaviour
         {
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
             temp.transform.SetParent(gameObject.transform);
-            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetMatricula().ToString();
-            temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lista[i].GetNomeCompleto().ToString();
+            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetNome().ToString();
             temp.name = lista[i].GetId().ToString();
         }
 
     }
 
-    public void SetListaDeFuncionarios(List<Funcionario> l)
+    public void SetListaDeMaterias(List<Materia> l)
     {
         lista = l;
     }
