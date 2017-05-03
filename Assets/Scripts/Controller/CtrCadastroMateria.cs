@@ -43,7 +43,7 @@ public class CtrCadastroMateria
         }
         if (materia.GetDescricao() == null || materia.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("CPF deve ser preenchido");
+            throw new ExcecaoSAG("Descricao deve ser preenchida");
         }
         return true;
     }

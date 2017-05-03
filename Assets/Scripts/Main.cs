@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Main : MonoBehaviour {
 
@@ -11,8 +9,8 @@ public class Main : MonoBehaviour {
     int indice;
    
     enum GameState {intro, login, menuPrincipalFuncionario, menuManterAluno, menuDadosDoAluno, menuManterFuncionario, menuDadosDoFuncionario,
-        menuManterMateria, menuDadosDaMateria, menuManterTema, menuDadosDoTema, menuManterAvaliacao, menuDadosDaAvaliacao, menuManterPerguntas,
-        menuDadosDaPergunta, menuRelatoriosDoFuncionario, menuPrincipalAluno, menuAvaliacaoAluno, menuRelatoriosDoAluno};
+        menuManterMateria, menuDadosDaMateria, menuManterTema, menuDadosDoTema, menuManterPergunta, menuDadosDaPergunta, menuManterAvaliacao,
+        menuDadosDaAvaliacao, menuRelatoriosDoFuncionario, menuPrincipalAluno, menuAvaliacaoAluno, menuSimuladoAluno, menuRelatoriosDoAluno};
     GameState myGameState = GameState.intro;
 
     [SerializeField]
@@ -84,8 +82,38 @@ public class Main : MonoBehaviour {
             case GameState.menuDadosDaMateria:
                 indice = 8;
                 break;
+            case GameState.menuManterTema:
+                indice = 9;
+                break;
+            case GameState.menuDadosDoTema:
+                indice = 10;
+                break;
+            case GameState.menuManterPergunta:
+                indice = 11;
+                break;
+            case GameState.menuDadosDaPergunta:
+                indice = 12;
+                break;
+            case GameState.menuManterAvaliacao:
+                indice = 13;
+                break;
+            case GameState.menuDadosDaAvaliacao:
+                indice = 14;
+                break;
+            case GameState.menuRelatoriosDoFuncionario:
+                indice = 15;
+                break;
             case GameState.menuPrincipalAluno:
                 indice = 16;
+                break;
+            case GameState.menuAvaliacaoAluno:
+                indice = 17;
+                break;
+            case GameState.menuSimuladoAluno:
+                indice = 18;
+                break;
+            case GameState.menuRelatoriosDoAluno:
+                indice = 19;
                 break;
         }
 

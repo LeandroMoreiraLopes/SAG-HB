@@ -7,10 +7,10 @@ public class DAOFactory {
     // Aqui entram as implementa��es dos m�todos abstratos 
     // especificados em DAOFactory.
 
-    /*public CursoDAO getCursoDAO()
+    public TemaDAO getTemaDAO()
     {
-        return new CursoDAO();
-    }*/
+        return new TemaDAO();
+    }
 
     public MateriaDAO getMateriaDAO()
     {
