@@ -142,7 +142,7 @@ public class TemaView : MonoBehaviour {
         umTema.SetNome(nome.text);
         umTema.SetDescricao(descricao.text);
         umTema.SetSerie(serie.text);
-        umTema.SetMatId(EncontrarMateriaNaDropDownTrazendoId(materia.options[materia.value].text)); //banco com materia no id = 2
+        umTema.SetMatId(EncontrarMateriaNaDropDownTrazendoId(materia.options[materia.value].text));
 
         cadastroTema.Incluir(umTema);
 

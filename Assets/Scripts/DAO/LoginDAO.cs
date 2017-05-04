@@ -33,4 +33,41 @@ public class LoginDAO {
         }
 
     }
+
+    public int GetFuncionarioId(Funcionario umFuncionario)
+    {
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+            mySQLcmd.CommandType = CommandType.Text;
+            mySQLcmd.CommandText = string.Format("Select * from funcionario where usuario = '{0}' and senha = '{1}';", 
+                                                    umFuncionario.GetUsuario(), umFuncionario.GetSenha());
+            
+            //execução sem retorno
+            MySqlDataReader rsFuncionario =  mySQLcmd.ExecuteReader();
+
+            if (rsFuncionario.HasRows)
+            {
+                while (rsFuncionario.Read())
+                {
+                    return rsFuncionario.GetInt32("id");
+                }
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao logar um usuário. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        return 0;
+    }
 }

@@ -49,4 +49,18 @@ public class CtrLogin {
         }
         return statusLogin;
     }
+
+    public int GetFuncionarioId(Funcionario funcionario)
+    {
+        int idFuncionarioLogado;
+        try
+        {
+            idFuncionarioLogado = loginDAO.GetFuncionarioId(funcionario);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return idFuncionarioLogado;
+    }
 }

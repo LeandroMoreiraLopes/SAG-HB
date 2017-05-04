@@ -38,6 +38,10 @@ public class LoginView : MonoBehaviour {
                 break;
             case 2:
                 statusLogin.text = "Login de Funcionario com sucesso";
+                Funcionario umFuncionario = new Funcionario();
+                umFuncionario.SetUsuario(usuarioIF.text);
+                umFuncionario.SetSenha(senhaIF.text);
+                PlayerPrefs.SetInt("IdUltimoFuncionarioLogado", umCtrLogin.GetFuncionarioId(umFuncionario));
                 main.MudarGameState(2, 1);
                 break;
         }

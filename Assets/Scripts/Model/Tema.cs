@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Tema {
+﻿public class Tema {
 
     int id, matId;
     string nome, descricao, serie;
