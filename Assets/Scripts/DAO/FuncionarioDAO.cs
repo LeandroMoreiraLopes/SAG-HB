@@ -39,12 +39,12 @@ public class FuncionarioDAO {
                     //criando um aluno para cada linha
                     umFuncionario = new Funcionario();
                     umFuncionario.SetId(rsFuncionario.GetInt32("id"));
-                    umFuncionario.SetMatricula(rsFuncionario.GetInt32("matricula"));
+                    umFuncionario.SetMatricula(rsFuncionario.GetInt64("matricula"));
                     umFuncionario.SetNomeCompleto(rsFuncionario.GetString("nomecompleto"));
                     umFuncionario.SetNascimento(rsFuncionario.GetInt32("nascimento"));
                     umFuncionario.SetCpf(rsFuncionario.GetString("cpf"));
-                    umFuncionario.SetTelefone(rsFuncionario.GetInt32("telefone"));
-                    umFuncionario.SetCelular(rsFuncionario.GetInt32("celular"));
+                    umFuncionario.SetTelefone(rsFuncionario.GetInt64("telefone"));
+                    umFuncionario.SetCelular(rsFuncionario.GetInt64("celular"));
                     umFuncionario.SetUsuario(rsFuncionario.GetString("usuario"));
                     umFuncionario.SetSenha(rsFuncionario.GetString("senha"));
                     umFuncionario.SetEmail(rsFuncionario.GetString("email"));
@@ -289,12 +289,12 @@ public class FuncionarioDAO {
                 while (rsFuncionario.Read())
                 {
                     //criando um aluno para cada linha
-                    umFuncionario.SetMatricula(rsFuncionario.GetInt32("matricula"));
+                    umFuncionario.SetMatricula(rsFuncionario.GetInt64("matricula"));
                     umFuncionario.SetNomeCompleto(rsFuncionario.GetString("nomecompleto"));
                     umFuncionario.SetNascimento(rsFuncionario.GetInt32("nascimento"));
                     umFuncionario.SetCpf(rsFuncionario.GetString("cpf"));
-                    umFuncionario.SetTelefone(rsFuncionario.GetInt32("telefone"));
-                    umFuncionario.SetCelular(rsFuncionario.GetInt32("celular"));
+                    umFuncionario.SetTelefone(rsFuncionario.GetInt64("telefone"));
+                    umFuncionario.SetCelular(rsFuncionario.GetInt64("celular"));
                     umFuncionario.SetUsuario(rsFuncionario.GetString("usuario"));
                     umFuncionario.SetSenha(rsFuncionario.GetString("senha"));
                     umFuncionario.SetEmail(rsFuncionario.GetString("email"));

@@ -144,6 +144,7 @@ public class MateriaDAO {
             mySQLcmd.CommandText = "Materia_Alterar";
 
             //preenchendo os parametros da procedure
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", materia.GetId());
             mySQLcmd.Parameters.AddWithValue("LOC_NOME", materia.GetNome());
             mySQLcmd.Parameters.AddWithValue("LOC_DESCRICAO", materia.GetDescricao());
  

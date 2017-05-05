@@ -3,14 +3,14 @@ using System.Collections;
 
 public class Aluno : Pessoa {
 
-	int matricula;
+	long matricula;
 	
-	public int GetMatricula()
+	public long GetMatricula()
 	{
 		return matricula;
 	}
 
-	public void SetMatricula(int m)
+	public void SetMatricula(long m)
 	{
 		matricula = m;
 	}

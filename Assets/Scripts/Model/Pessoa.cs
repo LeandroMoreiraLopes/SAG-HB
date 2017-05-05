@@ -8,7 +8,7 @@ public abstract class Pessoa {
 	string nomeCompleto;
 	int nascimento;
 	string cpf;
-	int telefone, celular;
+    long telefone, celular;
 	string usuario, senha, email;
 
 
@@ -52,22 +52,22 @@ public abstract class Pessoa {
 		cpf = c;
 	}
 
-	public int GetTelefone()
+	public long GetTelefone()
 	{
 		return telefone;
 	}
 
-	public void SetTelefone(int t)
+	public void SetTelefone(long t)
 	{
 		telefone = t;
 	}
 
-	public int GetCelular()
+	public long GetCelular()
 	{
 		return celular;
 	}
 
-	public void SetCelular(int c)
+	public void SetCelular(long c)
 	{
 		celular = c;
 	}

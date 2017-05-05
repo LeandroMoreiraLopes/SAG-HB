@@ -35,12 +35,12 @@ public class AlunoDAO {
                     //criando um aluno para cada linha
                     umAluno = new Aluno();
                     umAluno.SetId(rsAluno.GetInt32("id"));
-                    umAluno.SetMatricula(rsAluno.GetInt32("matricula"));
+                    umAluno.SetMatricula(rsAluno.GetInt64("matricula"));
                     umAluno.SetNomeCompleto(rsAluno.GetString("nomecompleto"));
                     umAluno.SetNascimento(rsAluno.GetInt32("nascimento"));
                     umAluno.SetCpf(rsAluno.GetString("cpf"));
-                    umAluno.SetTelefone(rsAluno.GetInt32("telefone"));
-                    umAluno.SetCelular(rsAluno.GetInt32("celular"));
+                    umAluno.SetTelefone(rsAluno.GetInt64("telefone"));
+                    umAluno.SetCelular(rsAluno.GetInt64("celular"));
                     umAluno.SetUsuario(rsAluno.GetString("usuario"));
                     umAluno.SetSenha(rsAluno.GetString("senha"));
                     umAluno.SetEmail(rsAluno.GetString("email"));
@@ -102,12 +102,12 @@ public class AlunoDAO {
                     //criando um aluno para cada linha
                     umAluno = new Aluno();
                     umAluno.SetId(rsAluno.GetInt32("id"));
-                    umAluno.SetMatricula(rsAluno.GetInt32("matricula"));
+                    umAluno.SetMatricula(rsAluno.GetInt64("matricula"));
                     umAluno.SetNomeCompleto(rsAluno.GetString("nomecompleto"));
                     umAluno.SetNascimento(rsAluno.GetInt32("nascimento"));
                     umAluno.SetCpf(rsAluno.GetString("cpf"));
-                    umAluno.SetTelefone(rsAluno.GetInt32("telefone"));
-                    umAluno.SetCelular(rsAluno.GetInt32("celular"));
+                    umAluno.SetTelefone(rsAluno.GetInt64("telefone"));
+                    umAluno.SetCelular(rsAluno.GetInt64("celular"));
                     umAluno.SetUsuario(rsAluno.GetString("usuario"));
                     umAluno.SetSenha(rsAluno.GetString("senha"));
                     umAluno.SetEmail(rsAluno.GetString("email"));
@@ -347,12 +347,12 @@ public class AlunoDAO {
                 while (rsAluno.Read())
                 {
                     //criando um aluno para cada linha
-                    umAluno.SetMatricula(rsAluno.GetInt32("matricula"));
+                    umAluno.SetMatricula(rsAluno.GetInt64("matricula"));
                     umAluno.SetNomeCompleto(rsAluno.GetString("nomecompleto"));
                     umAluno.SetNascimento(rsAluno.GetInt32("nascimento"));
                     umAluno.SetCpf(rsAluno.GetString("cpf"));
-                    umAluno.SetTelefone(rsAluno.GetInt32("telefone"));
-                    umAluno.SetCelular(rsAluno.GetInt32("celular"));
+                    umAluno.SetTelefone(rsAluno.GetInt64("telefone"));
+                    umAluno.SetCelular(rsAluno.GetInt64("celular"));
                     umAluno.SetUsuario(rsAluno.GetString("usuario"));
                     umAluno.SetSenha(rsAluno.GetString("senha"));
                     umAluno.SetEmail(rsAluno.GetString("email"));

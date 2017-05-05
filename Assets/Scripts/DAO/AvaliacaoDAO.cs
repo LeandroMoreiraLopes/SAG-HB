@@ -87,7 +87,7 @@ public class AvaliacaoDAO {
 
             //setando a procedure do banco
             mySQLcmd.CommandType = CommandType.StoredProcedure;
-            mySQLcmd.CommandText = "Avaliacao_PegarTodosCompleto";
+            mySQLcmd.CommandText = "Avaliacao_PegarTodos";
 
             //execução sem retorno
             MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
@@ -237,6 +237,7 @@ public class AvaliacaoDAO {
             mySQLcmd.CommandText = "Avaliacao_Alterar";
 
             //preenchendo os parametros da procedure
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", avaliacao.GetId());
             mySQLcmd.Parameters.AddWithValue("LOC_DESCRICAO", avaliacao.GetDescricao());
             mySQLcmd.Parameters.AddWithValue("LOC_DATAINICIO", avaliacao.GetDataInicio());
             mySQLcmd.Parameters.AddWithValue("LOC_DATAFIM", avaliacao.GetDataFim());
@@ -431,7 +432,7 @@ public class AvaliacaoDAO {
 
                 //setando a procedure do banco
                 mySQLcmd.CommandType = CommandType.StoredProcedure;
-                mySQLcmd.CommandText = "Avaliacao_Aluno_Inserir";
+                mySQLcmd.CommandText = "AvaliacaoDoAluno_Inserir";
 
                 //preenchendo os parametros da procedure
                 mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);
@@ -497,7 +498,7 @@ public class AvaliacaoDAO {
 
                 //setando a procedure do banco
                 mySQLcmd.CommandType = CommandType.StoredProcedure;
-                mySQLcmd.CommandText = "Tema_Avaliacao_Inserir";
+                mySQLcmd.CommandText = "TemasAvaliacao_Inserir";
 
                 //preenchendo os parametros da procedure
                 mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);
@@ -567,7 +568,7 @@ public class AvaliacaoDAO {
 
             //setando a procedure do banco
             mySQLcmd.CommandType = CommandType.StoredProcedure;
-            mySQLcmd.CommandText = "Avaliacao_Aluno_Alterar";
+            mySQLcmd.CommandText = "AvaliacaoDoAluno_Alterar";
 
             //preenchendo os parametros da procedure
             mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);
@@ -636,7 +637,7 @@ public class AvaliacaoDAO {
 
             //setando a procedure do banco
             mySQLcmd.CommandType = CommandType.StoredProcedure;
-            mySQLcmd.CommandText = "Tema_Avaliacao_Alterar";
+            mySQLcmd.CommandText = "TemasAvaliacao_Alterar";
 
             //preenchendo os parametros da procedure
             mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);

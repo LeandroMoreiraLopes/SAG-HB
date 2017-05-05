@@ -104,12 +104,12 @@ public class AlunoView : MonoBehaviour {
     {
         Aluno umAluno = new Aluno();
         umAluno.SetId(selecionado);
-        umAluno.SetMatricula(int.Parse(mat.text));
+        umAluno.SetMatricula(long.Parse(mat.text));
         umAluno.SetNomeCompleto(nome.text);
         umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umAluno.SetCpf(cpf.text);
-        umAluno.SetTelefone(int.Parse(telefone.text));
-        umAluno.SetCelular(int.Parse(celular.text));
+        umAluno.SetTelefone(long.Parse(telefone.text));
+        umAluno.SetCelular(long.Parse(celular.text));
         umAluno.SetUsuario(usuario.text);
         umAluno.SetSenha(senha.text);
         umAluno.SetEmail(email.text);
@@ -134,12 +134,12 @@ public class AlunoView : MonoBehaviour {
     {
         Aluno umAluno = new Aluno();
       
-        umAluno.SetMatricula(int.Parse(mat.text));
+        umAluno.SetMatricula(long.Parse(mat.text));
         umAluno.SetNomeCompleto(nome.text);
         umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umAluno.SetCpf(cpf.text);
-        umAluno.SetTelefone(int.Parse(telefone.text));
-        umAluno.SetCelular(int.Parse(celular.text));
+        umAluno.SetTelefone(long.Parse(telefone.text));
+        umAluno.SetCelular(long.Parse(celular.text));
         umAluno.SetUsuario(usuario.text);
         umAluno.SetSenha(senha.text);
         umAluno.SetEmail(email.text);

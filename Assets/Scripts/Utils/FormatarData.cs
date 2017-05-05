@@ -6,12 +6,21 @@ public class FormatarData : MonoBehaviour {
 
     public static string FormatToString(int i)
     {
-        string s = i.ToString();
-        string ano = s.Substring(0, 4);
-        string mes = s.Substring(4, 2);
-        string dia = s.Substring(6, 2);
-        s = dia + "/" + mes + "/" + ano;
-        return s;
+        try
+        {
+            string s = i.ToString();
+            string ano = s.Substring(0, 4);
+            string mes = s.Substring(4, 2);
+            string dia = s.Substring(6, 2);
+            s = dia + "/" + mes + "/" + ano;
+
+            return s;
+        }
+        catch{
+            return "0";
+        }
+        
+        
     }
 
     public static int FormatToInt(string s)

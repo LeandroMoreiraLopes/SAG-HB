@@ -105,12 +105,12 @@ public class FuncionarioView : MonoBehaviour
     {
         Funcionario umFuncionario = new Funcionario();
         umFuncionario.SetId(selecionado);
-        umFuncionario.SetMatricula(int.Parse(mat.text));
+        umFuncionario.SetMatricula(long.Parse(mat.text));
         umFuncionario.SetNomeCompleto(nome.text);
         umFuncionario.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umFuncionario.SetCpf(cpf.text);
-        umFuncionario.SetTelefone(int.Parse(telefone.text));
-        umFuncionario.SetCelular(int.Parse(celular.text));
+        umFuncionario.SetTelefone(long.Parse(telefone.text));
+        umFuncionario.SetCelular(long.Parse(celular.text));
         umFuncionario.SetUsuario(usuario.text);
         umFuncionario.SetSenha(senha.text);
         umFuncionario.SetEmail(email.text);
@@ -135,12 +135,12 @@ public class FuncionarioView : MonoBehaviour
     {
         Funcionario umFuncionario = new Funcionario();
 
-        umFuncionario.SetMatricula(int.Parse(mat.text));
+        umFuncionario.SetMatricula(long.Parse(mat.text));
         umFuncionario.SetNomeCompleto(nome.text);
         umFuncionario.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umFuncionario.SetCpf(cpf.text);
-        umFuncionario.SetTelefone(int.Parse(telefone.text));
-        umFuncionario.SetCelular(int.Parse(celular.text));
+        umFuncionario.SetTelefone(long.Parse(telefone.text));
+        umFuncionario.SetCelular(long.Parse(celular.text));
         umFuncionario.SetUsuario(usuario.text);
         umFuncionario.SetSenha(senha.text);
         umFuncionario.SetEmail(email.text);
