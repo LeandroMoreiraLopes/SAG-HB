@@ -23,6 +23,12 @@ public class AvaliacaoView : MonoBehaviour {
     AvaliacaoDinamicGrid aDG;
 
     [SerializeField]
+    AtualizaGridDosTemas agT;
+
+    [SerializeField]
+    AtualizaGridDosAlunos agA;
+
+    [SerializeField]
     InputField descricao, dataInicio, dataFim, autor, pesquisar;
 
     [SerializeField]
@@ -69,9 +75,17 @@ public class AvaliacaoView : MonoBehaviour {
         temasDaAvaliacao = cadastroTema.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
         yield return temasDaAvaliacao;
 
+        agT.AtualizaGrid(temasDaMateria, temasDaAvaliacao);
+
+        List<Aluno> todosOsAlunos = new List<Aluno>();
+        todosOsAlunos = cadastroAluno.ListarTodos();
+        yield return todosOsAlunos;
+
         List<Aluno> alunos = new List<Aluno>();
         alunos = cadastroAluno.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
         yield return alunos;
+
+        agA.AtualizaGrid(todosOsAlunos, alunos);
 
         //Populando os campos
         descricao.text = umaAvaliacao.GetDescricao();
@@ -95,7 +109,7 @@ public class AvaliacaoView : MonoBehaviour {
         main.MudarGameState(14, 0);
     }
     #endregion
-
+    /*
     #region métodos para Editar pergunta
     public void EditaPergunta()
     {
@@ -224,7 +238,7 @@ public class AvaliacaoView : MonoBehaviour {
     }
 
     #endregion
-
+    */
     void ApagarTudo()
     {
         criar.gameObject.SetActive(false);
