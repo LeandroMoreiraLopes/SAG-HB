@@ -63,4 +63,18 @@ public class CtrLogin {
         }
         return idFuncionarioLogado;
     }
+
+    public int GetAlunoId(Aluno aluno)
+    {
+        int idAlunoLogado;
+        try
+        {
+            idAlunoLogado = loginDAO.GetAlunoId(aluno);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return idAlunoLogado;
+    }
 }

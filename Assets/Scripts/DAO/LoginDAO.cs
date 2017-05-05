@@ -58,7 +58,44 @@ public class LoginDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao logar um usuário. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao carregar um usuário. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        return 0;
+    }
+
+    public int GetAlunoId(Aluno umAluno)
+    {
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+            mySQLcmd.CommandType = CommandType.Text;
+            mySQLcmd.CommandText = string.Format("Select * from aluno where usuario = '{0}' and senha = '{1}';",
+                                                    umAluno.GetUsuario(), umAluno.GetSenha());
+
+            //execução sem retorno
+            MySqlDataReader rsAluno = mySQLcmd.ExecuteReader();
+
+            if (rsAluno.HasRows)
+            {
+                while (rsAluno.Read())
+                {
+                    return rsAluno.GetInt32("id");
+                }
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao carregar um usuário. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {

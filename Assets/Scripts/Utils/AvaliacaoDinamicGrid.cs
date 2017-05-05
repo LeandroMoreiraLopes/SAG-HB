@@ -2,17 +2,19 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AlunoDinamicGrid : MonoBehaviour {
+public class AvaliacaoDinamicGrid : MonoBehaviour
+{
     [SerializeField]
     GameObject gridFilho;
     int numeroDeAlunos;
 
     public static int selecionado;
 
-    List<Aluno> lista;
+    List<Avaliacao> lista;
 
     // Use this for initialization
-	public void Resize () {
+    public void Resize()
+    {
         RectTransform parent = gameObject.GetComponent<RectTransform>();
         GridLayoutGroup grid = gameObject.GetComponent<GridLayoutGroup>();
 
@@ -30,14 +32,18 @@ public class AlunoDinamicGrid : MonoBehaviour {
         {
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
             temp.transform.SetParent(gameObject.transform);
-            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetMatricula().ToString();
-            temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lista[i].GetNomeCompleto().ToString();
+            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao().ToString();
+            temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataInicio());
+            if (lista[i].GetSimulado())
+                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Sim";
+            else
+                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Não";
             temp.name = lista[i].GetId().ToString();
         }
-        
-	}
 
-    public void SetListaDeAlunos(List<Aluno> l)
+    }
+
+    public void SetListaDeAvaliacoes(List<Avaliacao> l)
     {
         lista = l;
     }

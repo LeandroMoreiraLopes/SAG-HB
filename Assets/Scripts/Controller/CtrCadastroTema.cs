@@ -33,6 +33,34 @@ public class CtrCadastroTema {
         return lista;
     }
 
+    public List<Tema> ListarTodosPorMateria(int materia_id)
+    {
+        List<Tema> lista = new List<Tema>();
+        try
+        {
+            lista = temaDAO.PegarTemasPorMateria(materia_id);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
+    public List<Tema> ListarTodosPorAvaliacao(int avaliacao_id)
+    {
+        List<Tema> lista = new List<Tema>();
+        try
+        {
+            lista = temaDAO.PegarTemasPorAvaliacao(avaliacao_id);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
     private bool Validar(Tema tema)
     {
         if (tema.GetNome() == null || tema.GetNome().Trim().Equals(""))

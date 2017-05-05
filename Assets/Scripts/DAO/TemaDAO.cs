@@ -62,6 +62,126 @@ public class TemaDAO {
         return temas;
     }
 
+    public List<Tema> PegarTemasPorMateria(int mat_id)
+    {
+        List<Tema> temas = new List<Tema>();
+        Tema umTema;
+        DAOFactory daoFactory = new DAOFactory();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_Temas_Da_Materia";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_MATERIA_ID", mat_id);
+
+            //execução sem retorno
+            MySqlDataReader rsTema = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsTema.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsTema.Read())
+                {
+                    //criando um aluno para cada linha
+                    umTema = new Tema();
+                    umTema.SetId(rsTema.GetInt32("id"));
+                    umTema.SetNome(rsTema.GetString("nome"));
+                    umTema.SetDescricao(rsTema.GetString("descricao"));
+                    umTema.SetSerie(rsTema.GetString("serie"));
+                    umTema.SetMatId(rsTema.GetInt32("materia_id"));
+
+                    temas.Add(umTema);
+                }
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar os temas. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return temas;
+    }
+
+    public List<Tema> PegarTemasPorAvaliacao(int avaliacao_id)
+    {
+        List<Tema> temas = new List<Tema>();
+        Tema umTema;
+        DAOFactory daoFactory = new DAOFactory();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_Temas_Da_Avaliacao";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);
+
+            //execução sem retorno
+            MySqlDataReader rsTema = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsTema.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsTema.Read())
+                {
+                    //criando um aluno para cada linha
+                    umTema = new Tema();
+                    umTema.SetId(rsTema.GetInt32("id"));
+                    umTema.SetNome(rsTema.GetString("nome"));
+                    umTema.SetDescricao(rsTema.GetString("descricao"));
+                    umTema.SetSerie(rsTema.GetString("serie"));
+                    umTema.SetMatId(rsTema.GetInt32("materia_id"));
+
+                    temas.Add(umTema);
+                }
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar os temas. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return temas;
+    }
+
     public void Incluir(Tema tema)
     {
         //conexão

@@ -39,7 +39,7 @@ public class PerguntaDAO {
                     umaPergunta.SetErrada2(rsPergunta.GetString("errada2"));
                     umaPergunta.SetErrada3(rsPergunta.GetString("errada3"));
                     umaPergunta.SetDificuldade(rsPergunta.GetInt32("dificuldade"));
-                    umaPergunta.SetSimulado(rsPergunta.GetBoolean("simulado"));
+                    //umaPergunta.SetSimulado(rsPergunta.GetBoolean("simulado"));
                     umaPergunta.SetFuncId(rsPergunta.GetInt32("funcionario_id"));
                     umaPergunta.SetTemaId(rsPergunta.GetInt32("tema_id"));
 
@@ -92,7 +92,7 @@ public class PerguntaDAO {
             mySQLcmd.Parameters.AddWithValue("LOC_ERRADA2", pergunta.GetErrada2());
             mySQLcmd.Parameters.AddWithValue("LOC_ERRADA3", pergunta.GetErrada3());
             mySQLcmd.Parameters.AddWithValue("LOC_DIFICULDADE", pergunta.GetDificuldade());
-            mySQLcmd.Parameters.AddWithValue("LOC_SIMULADO", pergunta.GetSimulado());
+            //mySQLcmd.Parameters.AddWithValue("LOC_SIMULADO", pergunta.GetSimulado());
             mySQLcmd.Parameters.AddWithValue("LOC_FUNCIONARIO_ID", pergunta.GetFuncId());
             mySQLcmd.Parameters.AddWithValue("LOC_TEMA_ID", pergunta.GetTemaId());
 
@@ -162,7 +162,7 @@ public class PerguntaDAO {
             mySQLcmd.Parameters.AddWithValue("LOC_ERRADA2", pergunta.GetErrada2());
             mySQLcmd.Parameters.AddWithValue("LOC_ERRADA3", pergunta.GetErrada3());
             mySQLcmd.Parameters.AddWithValue("LOC_DIFICULDADE", pergunta.GetDificuldade());
-            mySQLcmd.Parameters.AddWithValue("LOC_SIMULADO", pergunta.GetSimulado());
+            //mySQLcmd.Parameters.AddWithValue("LOC_SIMULADO", pergunta.GetSimulado());
             mySQLcmd.Parameters.AddWithValue("LOC_FUNCIONARIO_ID", pergunta.GetFuncId());
             mySQLcmd.Parameters.AddWithValue("LOC_TEMA_ID", pergunta.GetTemaId());
 
@@ -281,7 +281,7 @@ public class PerguntaDAO {
                     umaPergunta.SetErrada2(rsPergunta.GetString("errada2"));
                     umaPergunta.SetErrada3(rsPergunta.GetString("errada3"));
                     umaPergunta.SetDificuldade(rsPergunta.GetInt32("dificuldade"));
-                    umaPergunta.SetSimulado(rsPergunta.GetBoolean("simulado"));
+                    //umaPergunta.SetSimulado(rsPergunta.GetBoolean("simulado"));
                     umaPergunta.SetFuncId(rsPergunta.GetInt32("funcionario_id"));
                     umaPergunta.SetTemaId(rsPergunta.GetInt32("tema_id"));
                 }

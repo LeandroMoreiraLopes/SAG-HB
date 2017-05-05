@@ -32,7 +32,21 @@ public class CtrCadastroAluno{
         return lista;
 	}
 
-	private bool Validar(Aluno aluno){
+    public List<Aluno> ListarTodosPorAvaliacao(int materia_id)
+    {
+        List<Aluno> lista = new List<Aluno>();
+        try
+        {
+            lista = alunoDAO.PegarAlunosPorAvaliacao(materia_id);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
+    private bool Validar(Aluno aluno){
         if (aluno.GetMatricula() < 0) {
 			throw new ExcecaoSAG("A Matrícula não dave ser negativa.") ;
 		}

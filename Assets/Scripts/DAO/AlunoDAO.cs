@@ -13,10 +13,6 @@ public class AlunoDAO {
         //Conexão
         MySqlConnection db = Connection.getConnection();
 
-        //transação
-        //MySqlTransaction mySQLTransaction;
-        //mySQLTransaction = db.BeginTransaction();
-
         try
         {
             MySqlCommand mySQLcmd = db.CreateCommand();
@@ -56,10 +52,6 @@ public class AlunoDAO {
             {
                 //sem resultados
             }
-
-            //commit da transação
-            //mySQLTransaction.Commit();
-
         }
         catch (MySqlException ex)
         {
@@ -78,7 +70,74 @@ public class AlunoDAO {
         //retorna a lista de alunos
         return alunos;
     }
- 
+
+    public List<Aluno> PegarAlunosPorAvaliacao(int avaliacao_id)
+    {
+        List<Aluno> alunos = new List<Aluno>();
+        Aluno umAluno;
+        DAOFactory daoFactory = new DAOFactory();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_Alunos_Da_Avaliacao";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacao_id);
+
+            //execução sem retorno
+            MySqlDataReader rsAluno = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAluno.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAluno.Read())
+                {
+                    //criando um aluno para cada linha
+                    umAluno = new Aluno();
+                    umAluno.SetId(rsAluno.GetInt32("id"));
+                    umAluno.SetMatricula(rsAluno.GetInt32("matricula"));
+                    umAluno.SetNomeCompleto(rsAluno.GetString("nomecompleto"));
+                    umAluno.SetNascimento(rsAluno.GetInt32("nascimento"));
+                    umAluno.SetCpf(rsAluno.GetString("cpf"));
+                    umAluno.SetTelefone(rsAluno.GetInt32("telefone"));
+                    umAluno.SetCelular(rsAluno.GetInt32("celular"));
+                    umAluno.SetUsuario(rsAluno.GetString("usuario"));
+                    umAluno.SetSenha(rsAluno.GetString("senha"));
+                    umAluno.SetEmail(rsAluno.GetString("email"));
+
+                    alunos.Add(umAluno);
+                }
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            //rollback caso haja erro no MySQL
+            //mySQLTransaction.Rollback();
+            throw new ExcecaoSAG("Erro ao listar os alunos. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return alunos;
+    }
+
     public void Incluir(Aluno aluno)
     {
         //conexão

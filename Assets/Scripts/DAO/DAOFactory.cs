@@ -37,11 +37,11 @@ public class DAOFactory {
         return new PerguntaDAO();
     }
 
-    /*public AvaliacaoDAO getAvaliacaoDAO()
+    public AvaliacaoDAO getAvaliacaoDAO()
     {
         return new AvaliacaoDAO();
     }
-
+    /*
     public SalaDAO getSalaDAO()
     {
         return new SalaDAO();
