@@ -8,6 +8,8 @@ public class AtualizaGridDosTemas : MonoBehaviour {
     [SerializeField]
     GameObject gridTotal, gridSelecionados, gridFilho;
 
+    int selecionadoDaEsquerda, selecionadoDaDireita;
+
     public void AtualizaGrid(List<Tema> listaTema1, List<Tema> listaTema2)
     {
         RectTransform parent = gridTotal.GetComponent<RectTransform>();
@@ -23,25 +25,102 @@ public class AtualizaGridDosTemas : MonoBehaviour {
             }
         }
 
-        for (int j = 0; j < listaTema2.Count; j++)
+        for (int j = gridSelecionados.transform.GetChildCount() - 1; j > 0; j--)
         {
-            listaTema1 = SelecionarTemaDaGrid.RemoverTemaSelecionado(listaTema2[j].GetId(), listaTema1);
+            if (gridSelecionados.transform.GetChild(j).name != "Grid - Parent")
+            {
+                Destroy(gridSelecionados.transform.GetChild(j).gameObject);
+            }
         }
 
-        for (int i = 0; i < listaTema1.Count; i++)
+        for (int k = 0; k < listaTema2.Count; k++)
+        {
+            listaTema1 = RemoverTemaSelecionado(listaTema2[k].GetId(), listaTema1);
+        }
+
+        for (int l = 0; l < listaTema1.Count; l++)
         {
             GameObject temp = Instantiate(gridFilho, gridTotal.transform.position, gridTotal.transform.rotation) as GameObject;
             temp.transform.SetParent(gridTotal.transform);
-            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = listaTema1[i].GetDescricao();
-            temp.name = listaTema1[i].GetId().ToString();
+            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = listaTema1[l].GetNome();
+            temp.name = listaTema1[l].GetId().ToString();
         }
 
-        for (int j = 0; j < listaTema2.Count; j++)
+        for (int m = 0; m < listaTema2.Count; m++)
         {
             GameObject temp = Instantiate(gridFilho, gridSelecionados.transform.position, gridSelecionados.transform.rotation) as GameObject;
             temp.transform.SetParent(gridSelecionados.transform);
-            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = listaTema2[j].GetDescricao();
-            temp.name = listaTema2[j].GetId().ToString();
+            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = listaTema2[m].GetNome();
+            temp.name = listaTema2[m].GetId().ToString();
+        }
+    }
+
+    public List<int> GetIDsDosTemasSelecionados()
+    {
+        List<int> ids = new List<int>();
+        for (int n = gridSelecionados.transform.GetChildCount() - 1; n > 0; n--)
+        {
+            int i = int.Parse(gridSelecionados.transform.GetChild(n).gameObject.name);
+            ids.Add(i);
+        }
+        return ids;
+    }
+
+    List<Tema> RemoverTemaSelecionado(int id, List<Tema> lista)
+    {
+        List<Tema> l = lista;
+        for (int i = lista.Count - 1; i >= 0; i--)
+        {
+            if (id == l[i].GetId())
+                l.Remove(l[i]);
+        }
+
+        return l;
+    }
+
+    public void AtualizaTemaDaEsquerda(string s)
+    {
+        selecionadoDaEsquerda = int.Parse(s);
+        selecionadoDaDireita = 0;
+    }
+
+    public void AtualizaTemaDaDireita(string s)
+    {
+        selecionadoDaDireita = int.Parse(s);
+        selecionadoDaEsquerda = 0;
+    }
+
+    public void AdicionaTemaSelecionado()
+    {
+        if (selecionadoDaEsquerda != 0)
+        {
+            for (int j = gridTotal.transform.GetChildCount() - 1; j > 0; j--)
+            {
+                if (gridTotal.transform.GetChild(j).name == selecionadoDaEsquerda.ToString())
+                {
+                    gridTotal.transform.GetChild(j).gameObject.transform.parent = gridSelecionados.transform;
+                    selecionadoDaDireita = selecionadoDaEsquerda;
+                    selecionadoDaEsquerda = 0;
+                    return;
+                }
+            }
+        }
+    }
+
+    public void RemoveTemaSelecionado()
+    {
+        if (selecionadoDaDireita != 0)
+        {
+            for (int j = gridSelecionados.transform.GetChildCount() - 1; j > 0; j--)
+            {
+                if (gridSelecionados.transform.GetChild(j).name == selecionadoDaDireita.ToString())
+                {
+                    gridSelecionados.transform.GetChild(j).gameObject.transform.parent = gridTotal.transform;
+                    selecionadoDaEsquerda = selecionadoDaDireita;
+                    selecionadoDaDireita = 0;
+                    return;
+                }
+            }
         }
     }
 }

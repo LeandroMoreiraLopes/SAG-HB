@@ -329,10 +329,9 @@ public class AvaliacaoDAO {
         }
     }
 
-    public void Carregar(Avaliacao avaliacao)
+    public void Carregar(Avaliacao umaAvaliacao)
     {
         List<Avaliacao> avaliacoes = new List<Avaliacao>();
-        Avaliacao umaAvaliacao;
         Materia umaMateria;
         Funcionario umFuncionario;
         List<Aluno> alunos = new List<Aluno>();
@@ -357,7 +356,7 @@ public class AvaliacaoDAO {
             mySQLcmd.CommandType = CommandType.StoredProcedure;
             mySQLcmd.CommandText = "Avaliacao_Carregar";
 
-            mySQLcmd.Parameters.AddWithValue("LOC_ID", avaliacao.GetId());
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", umaAvaliacao.GetId());
 
             //ligando a transação
             mySQLcmd.Transaction = mySQLTransaction;
@@ -368,22 +367,25 @@ public class AvaliacaoDAO {
             //se há linhas
             if (rsAvaliacao.HasRows)
             {
-                while (rsAvaliacao.Read())
+                if (rsAvaliacao.Read())
                 {
-                    umaAvaliacao = new Avaliacao();
-                    umaAvaliacao.SetId(rsAvaliacao.GetInt32("id"));
                     umaAvaliacao.SetDescricao(rsAvaliacao.GetString("descricao"));
                     umaAvaliacao.SetDataInicio(rsAvaliacao.GetInt32("datainicio"));
                     umaAvaliacao.SetDataFim(rsAvaliacao.GetInt32("datafim"));
                     umaAvaliacao.SetSimulado(rsAvaliacao.GetBoolean("simulado"));
 
+                    int materia_id = rsAvaliacao.GetInt32("materia_id");
+                    int funcionario_id = rsAvaliacao.GetInt32("funcionario_id");
+
+                    db.Close();
+
                     umaMateria = new Materia();
-                    umaMateria.SetId(rsAvaliacao.GetInt32("materia_id"));
+                    umaMateria.SetId(materia_id);
                     matDAO.Carregar(umaMateria);
                     umaAvaliacao.SetMateria(umaMateria);
 
                     umFuncionario = new Funcionario();
-                    umFuncionario.SetId(rsAvaliacao.GetInt32("funcionario_id"));
+                    umFuncionario.SetId(funcionario_id);
                     funcDAO.Carregar(umFuncionario);
                     umaAvaliacao.SetFuncionarioAutor(umFuncionario);
 
