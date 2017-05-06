@@ -92,7 +92,7 @@ public class AtualizaGridDosTemas : MonoBehaviour {
 
     public void AdicionaTemaSelecionado()
     {
-        if (selecionadoDaEsquerda != 0)
+        if ((selecionadoDaEsquerda != 0) && (gridSelecionados.transform.childCount < 5))
         {
             for (int j = gridTotal.transform.GetChildCount() - 1; j > 0; j--)
             {

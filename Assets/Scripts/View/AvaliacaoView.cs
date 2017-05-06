@@ -193,9 +193,10 @@ public class AvaliacaoView : MonoBehaviour {
             cadastroTema.Carregar(umTema);
             listaDeTemasSelecionados.Add(umTema);
         }
+        umaAvaliacao.SetTemas(listaDeTemasSelecionados);
 
         List<int> idsDosAlunos = new List<int>();
-        idsDosTemas = agA.GetIDsDosAlunosSelecionados();
+        idsDosAlunos = agA.GetIDsDosAlunosSelecionados();
         List<Aluno> listaDeAlunosSelecionados = new List<Aluno>();
         for (int i = 0; i < idsDosAlunos.Count; i++)
         {
@@ -204,7 +205,7 @@ public class AvaliacaoView : MonoBehaviour {
             cadastroAluno.Carregar(umAluno);
             listaDeAlunosSelecionados.Add(umAluno);
         }
-
+        umaAvaliacao.SetAlunos(listaDeAlunosSelecionados);
 
         cadastroAvaliacao.Alterar(umaAvaliacao);
 
