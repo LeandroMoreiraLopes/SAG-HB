@@ -40,11 +40,11 @@ public class CtrCadastroAvaliacao {
         {
             throw new ExcecaoSAG("Descricao deve ser preenchido");
         }
-        if (avaliacao.GetTemas() == null)
+        if (avaliacao.GetTemas() == null || avaliacao.GetTemas().Count <= 0)
         {
             throw new ExcecaoSAG("Temas devem ser preenchidos");
         }
-        if (avaliacao.GetAlunos() == null)
+        if (avaliacao.GetAlunos() == null || avaliacao.GetAlunos().Count <=0)
         {
             throw new ExcecaoSAG("Alunos devem ser preenchidos");
         }

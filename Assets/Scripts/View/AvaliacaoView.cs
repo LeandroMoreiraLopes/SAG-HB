@@ -126,42 +126,44 @@ public class AvaliacaoView : MonoBehaviour {
 
         yield return umaAvaliacao;
 
-        materiaDD.value = EncontrarMateriaNaDropDownTrazendoValue(umaAvaliacao.GetMateria().GetNome());
+        if (FormatarData.AntesDaDataInicial(umaAvaliacao.GetDataInicio()))
+        {
 
-        List<Tema> temasDaMateria = new List<Tema>();
-        temasDaMateria = cadastroTema.ListarTodosPorMateria(umaAvaliacao.GetMateria().GetId());
-        yield return temasDaMateria;
+            materiaDD.value = EncontrarMateriaNaDropDownTrazendoValue(umaAvaliacao.GetMateria().GetNome());
 
-        List<Tema> temasDaAvaliacao = new List<Tema>();
-        temasDaAvaliacao = cadastroTema.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
-        yield return temasDaAvaliacao;
+            List<Tema> temasDaMateria = new List<Tema>();
+            temasDaMateria = cadastroTema.ListarTodosPorMateria(umaAvaliacao.GetMateria().GetId());
+            yield return temasDaMateria;
 
-        List<Aluno> todosOsAlunos = new List<Aluno>();
-        todosOsAlunos = cadastroAluno.ListarTodos();
-        yield return todosOsAlunos;
+            List<Tema> temasDaAvaliacao = new List<Tema>();
+            temasDaAvaliacao = cadastroTema.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
+            yield return temasDaAvaliacao;
 
-        List<Aluno> alunos = new List<Aluno>();
-        alunos = cadastroAluno.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
-        yield return alunos;
+            List<Aluno> todosOsAlunos = new List<Aluno>();
+            todosOsAlunos = cadastroAluno.ListarTodos();
+            yield return todosOsAlunos;
 
-        
+            List<Aluno> alunos = new List<Aluno>();
+            alunos = cadastroAluno.ListarTodosPorAvaliacao(umaAvaliacao.GetId());
+            yield return alunos;
 
-        //Populando os campos
-        descricao.text = umaAvaliacao.GetDescricao();
-        dataInicio.text = FormatarData.FormatToString(umaAvaliacao.GetDataInicio());
-        dataFim.text = FormatarData.FormatToString(umaAvaliacao.GetDataFim());
-        autor.text = umaAvaliacao.GetFuncionarioAutor().GetNomeCompleto();
-        simulado.isOn = umaAvaliacao.GetSimulado();
+            //Populando os campos
+            descricao.text = umaAvaliacao.GetDescricao();
+            dataInicio.text = FormatarData.FormatToString(umaAvaliacao.GetDataInicio());
+            dataFim.text = FormatarData.FormatToString(umaAvaliacao.GetDataFim());
+            autor.text = umaAvaliacao.GetFuncionarioAutor().GetNomeCompleto();
+            simulado.isOn = umaAvaliacao.GetSimulado();
 
-        StartCoroutine(AtualizaDropDown());
-        
-        agT.AtualizaGrid(temasDaMateria, temasDaAvaliacao);
+            StartCoroutine(AtualizaDropDown());
 
-        agA.AtualizaGrid(todosOsAlunos, alunos);
+            agT.AtualizaGrid(temasDaMateria, temasDaAvaliacao);
 
-        atualiza.gameObject.SetActive(true);
+            agA.AtualizaGrid(todosOsAlunos, alunos);
 
-        main.MudarGameState(14, 0);
+            atualiza.gameObject.SetActive(true);
+
+            main.MudarGameState(14, 0);
+        }
     }
 
     public void AtualizaAvaliacaoNoBanco()
@@ -176,7 +178,7 @@ public class AvaliacaoView : MonoBehaviour {
         Materia umaMateria = new Materia();
         umaMateria.SetId(EncontrarMateriaNaDropDownTrazendoId(materiaDD.options[materiaDD.value].text));
         cadastroMateria.Carregar(umaMateria);
-        umaAvaliacao.SetMateria(umaMateria); //banco com materia no id = 2
+        umaAvaliacao.SetMateria(umaMateria);
 
         Funcionario umFuncionario = new Funcionario();
         umFuncionario.SetId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
@@ -220,7 +222,34 @@ public class AvaliacaoView : MonoBehaviour {
         ApagarTudo();
         criar.gameObject.SetActive(true);
         main.MudarGameState(14, 0);
+        StartCoroutine(PreencheCamposParaNovaAvaliacao());
+
+    }
+
+    IEnumerator PreencheCamposParaNovaAvaliacao()
+    {
+
         StartCoroutine(AtualizaDropDown());
+
+        List<Aluno> todosOsAlunos = new List<Aluno>();
+        todosOsAlunos = cadastroAluno.ListarTodos();
+        yield return todosOsAlunos;
+
+        List<Tema> temasDaMateria = new List<Tema>();
+        temasDaMateria = cadastroTema.ListarTodosPorMateria(EncontrarMateriaNaDropDownTrazendoId(materiaDD.options[0].text.ToString()));
+        yield return temasDaMateria;
+
+        Funcionario umFuncionario = new Funcionario();
+        umFuncionario.SetId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
+        cadastroFuncionario.Carregar(umFuncionario);
+        autor.text = umFuncionario.GetNomeCompleto(); 
+        
+        agT.AtualizaGrid(temasDaMateria, new List<Tema>());
+        agA.AtualizaGrid(todosOsAlunos, new List<Aluno>());
+
+        criar.gameObject.SetActive(true);
+
+        main.MudarGameState(14, 0);
     }
 
     public void CriarAvaliacaoNoBanco()
@@ -251,9 +280,10 @@ public class AvaliacaoView : MonoBehaviour {
             cadastroTema.Carregar(umTema);
             listaDeTemasSelecionados.Add(umTema);
         }
+        umaAvaliacao.SetTemas(listaDeTemasSelecionados);
 
         List<int> idsDosAlunos = new List<int>();
-        idsDosTemas = agA.GetIDsDosAlunosSelecionados();
+        idsDosAlunos = agA.GetIDsDosAlunosSelecionados();
         List<Aluno> listaDeAlunosSelecionados = new List<Aluno>();
         for (int i = 0; i < idsDosAlunos.Count; i++)
         {
@@ -262,7 +292,7 @@ public class AvaliacaoView : MonoBehaviour {
             cadastroAluno.Carregar(umAluno);
             listaDeAlunosSelecionados.Add(umAluno);
         }
-
+        umaAvaliacao.SetAlunos(listaDeAlunosSelecionados);
 
         cadastroAvaliacao.Incluir(umaAvaliacao);
 
