@@ -26,8 +26,13 @@ public class FormatarData : MonoBehaviour {
     public static int FormatToInt(string s)
     {
         string[] data = s.Split('/');
-        s = data[2] + data[1] + data[0];
-        return int.Parse(s);
+        if (data.Length != 2)
+        {
+            s = data[2] + data[1] + data[0];
+            return int.Parse(s);
+        }
+        else
+            return 0;
     }
 
     public static bool AntesDaDataInicial(int i)
@@ -42,12 +47,58 @@ public class FormatarData : MonoBehaviour {
         if (dh[0].Length == 1) dh[0] = "0" + dh[0];
 
 
-        dataHoje = dh[2] + dh[1] + dh[0];
+        dataHoje = dh[2] + dh[0] + dh[1];
 
         int dataHj = int.Parse(dataHoje);
 
         if (dataHj < i)
             b = true;        
+
+        return b;
+    }
+
+    public static bool AntesOuIgualDaDataInicial(int i)
+    {
+        bool b = false;
+
+        DateTime hoje = DateTime.Now;
+        string dataHoje = hoje.ToShortDateString();
+        string[] dh = dataHoje.Split('/');
+
+        if (dh[1].Length == 1) dh[1] = "0" + dh[1];
+        if (dh[0].Length == 1) dh[0] = "0" + dh[0];
+
+
+        dataHoje = dh[2] + dh[0] + dh[1];
+
+        int dataHj = int.Parse(dataHoje);
+
+        if (dataHj <= i)
+            b = true;
+
+        return b;
+    }
+
+
+
+    public static bool DepoisDaDataFinal(int i)
+    {
+        bool b = false;
+
+        DateTime hoje = DateTime.Now;
+        string dataHoje = hoje.ToShortDateString();
+        string[] dh = dataHoje.Split('/');
+
+        if (dh[1].Length == 1) dh[1] = "0" + dh[1];
+        if (dh[0].Length == 1) dh[0] = "0" + dh[0];
+
+
+        dataHoje = dh[2] + dh[0] + dh[1];
+
+        int dataHj = int.Parse(dataHoje);
+
+        if (dataHj > i)
+            b = true;
 
         return b;
     }

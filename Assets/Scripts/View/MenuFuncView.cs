@@ -40,4 +40,9 @@ public class MenuFuncView : MonoBehaviour {
     {
         main.MudarGameState(13, 0);
     }
+
+    public void IrParaRelatoriosDoFuncionario()
+    {
+        main.MudarGameState(17, 0);
+    }
 }

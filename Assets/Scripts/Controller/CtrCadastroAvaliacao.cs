@@ -34,11 +34,39 @@ public class CtrCadastroAvaliacao {
         return lista;
     }
 
+    public List<Avaliacao> ListarTodosPorAluno(int alunoId)
+    {
+        List<Avaliacao> lista = new List<Avaliacao>();
+        try
+        {
+            lista = avaliacaoDAO.PegarTodosPorAluno(alunoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
+    public List<Avaliacao> ListarSimuladosPorAluno(int alunoId)
+    {
+        List<Avaliacao> lista = new List<Avaliacao>();
+        try
+        {
+            lista = avaliacaoDAO.PegarSimuladosPorAluno(alunoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
     private bool Validar(Avaliacao avaliacao)
     {
         if (avaliacao.GetDescricao() == null || avaliacao.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Descricao deve ser preenchido");
+            throw new ExcecaoSAG("Descricao deve ser preenchida");
         }
         if (avaliacao.GetTemas() == null || avaliacao.GetTemas().Count <= 0)
         {
@@ -50,19 +78,19 @@ public class CtrCadastroAvaliacao {
         }
         if (avaliacao.GetMateria() == null)
         {
-            throw new ExcecaoSAG("Materia deve ser preenchido");
+            throw new ExcecaoSAG("Materia deve ser preenchida");
         }
         if (avaliacao.GetFuncionarioAutor() == null)
         {
-            throw new ExcecaoSAG("FuncionarioAutor deve ser preenchido");
+            throw new ExcecaoSAG("Funcionario Autor deve ser preenchido");
         }
         if (avaliacao.GetDataInicio() <= 0)
         {
-            throw new ExcecaoSAG("Data de Inicio deve ser preenchida");
+            throw new ExcecaoSAG("Data de Inicio deve ser preenchida e tem que ser após a data de hoje");
         }
-        if (avaliacao.GetDataFim() <= 0)
+        if (avaliacao.GetDataFim() <= 0 && avaliacao.GetDataFim() < avaliacao.GetDataInicio())
         {
-            throw new ExcecaoSAG("Data de Término deve ser preenchida");
+            throw new ExcecaoSAG("Data de Término deve ser preenchida e tem que ser maior ou igual a data de início");
         }
         
         return true;
@@ -72,7 +100,7 @@ public class CtrCadastroAvaliacao {
     {
         try
         {
-            if (Validar(avaliacao))
+            if (Validar(avaliacao) && FormatarData.AntesOuIgualDaDataInicial(avaliacao.GetDataInicio()))
             {
                 avaliacaoDAO.Incluir(avaliacao);
             }
@@ -88,7 +116,7 @@ public class CtrCadastroAvaliacao {
     {
         try
         {
-            if (Validar(avaliacao))
+            if (Validar(avaliacao) && FormatarData.AntesDaDataInicial(avaliacao.GetDataInicio()))
             {
                 avaliacaoDAO.Alterar(avaliacao);
             }
@@ -105,7 +133,8 @@ public class CtrCadastroAvaliacao {
     {
         try
         {
-            avaliacaoDAO.Excluir(avaliacao);
+            if (FormatarData.AntesDaDataInicial(avaliacao.GetDataInicio()))
+                avaliacaoDAO.Excluir(avaliacao);
         }
         catch (ExcecaoSAG ex)
         {

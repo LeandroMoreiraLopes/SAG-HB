@@ -2,8 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvaliacaoDinamicGrid : MonoBehaviour
+public class SimuladoDisponivelDinamicGrid : MonoBehaviour
 {
+
     [SerializeField]
     GameObject gridFilho;
     int numeroDeAlunos;
@@ -32,34 +33,28 @@ public class AvaliacaoDinamicGrid : MonoBehaviour
         {
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
             temp.transform.SetParent(gameObject.transform);
-            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao().ToString();
+            temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao();
             temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataInicio());
-            if (lista[i].GetSimulado())
-                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Sim";
-            else
+            temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = lista[i].GetMateria().GetNome();
+            if (FormatarData.AntesDaDataInicial(lista[i].GetDataInicio()))
             {
-                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Não";
-                if (FormatarData.AntesDaDataInicial(lista[i].GetDataInicio()))
-                {
-                    temp.GetComponent<Image>().color = Color.yellow;
-                    temp.GetComponent<Button>().interactable = false;
-                }
-
-                //criar condicao para ficar verde se tiver sido realizado
-
-                else if (FormatarData.DepoisDaDataFinal(lista[i].GetDataFim()))
-                {
-                    temp.GetComponent<Image>().color = Color.red;
-                    temp.GetComponent<Button>().interactable = false;
-                }
+                temp.GetComponent<Image>().color = Color.yellow;
+                temp.GetComponent<Button>().interactable = false;
             }
-                
+
+            //criar condicao para ficar verde se tiver sido realizado
+
+            else if (FormatarData.DepoisDaDataFinal(lista[i].GetDataFim()))
+            {
+                temp.GetComponent<Image>().color = Color.red;
+                temp.GetComponent<Button>().interactable = false;
+            }
             temp.name = lista[i].GetId().ToString();
         }
 
     }
 
-    public void SetListaDeAvaliacoes(List<Avaliacao> l)
+    public void SetListaDeSimulados(List<Avaliacao> l)
     {
         lista = l;
     }

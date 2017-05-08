@@ -146,6 +146,180 @@ public class AvaliacaoDAO {
         return avaliacoes;
     }
 
+    public List<Avaliacao> PegarTodosPorAluno(int alunoId)
+    {
+        List<Avaliacao> avaliacoes = new List<Avaliacao>();
+        Avaliacao umaAvaliacao;
+        Materia umaMateria;
+        Funcionario umFuncionario;
+        List<Aluno> alunos = new List<Aluno>();
+        List<Tema> temas = new List<Tema>();
+
+        DAOFactory daoFactory = new DAOFactory();
+        MateriaDAO matDAO = daoFactory.getMateriaDAO();
+        FuncionarioDAO funcDAO = daoFactory.getFuncionarioDAO();
+        AlunoDAO alunoDAO = daoFactory.getAlunoDAO();
+        TemaDAO temaDAO = daoFactory.getTemaDAO();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Avaliacao_PegarTodos_Avaliacao";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", alunoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umaAvaliacao = new Avaliacao();
+                    umaAvaliacao.SetId(rsAvaliacao.GetInt32("id"));
+                    umaAvaliacao.SetDescricao(rsAvaliacao.GetString("descricao"));
+                    umaAvaliacao.SetDataInicio(rsAvaliacao.GetInt32("datainicio"));
+                    umaAvaliacao.SetDataFim(rsAvaliacao.GetInt32("datafim"));
+                    umaAvaliacao.SetSimulado(rsAvaliacao.GetBoolean("simulado"));
+
+                    umaMateria = new Materia();
+                    umaMateria.SetId(rsAvaliacao.GetInt32("materia_id"));
+                    umaAvaliacao.SetMateria(umaMateria);
+
+                    umFuncionario = new Funcionario();
+                    umFuncionario.SetId(rsAvaliacao.GetInt32("funcionario_id"));
+                    umaAvaliacao.SetFuncionarioAutor(umFuncionario);
+
+                    avaliacoes.Add(umaAvaliacao);
+                }
+                db.Close();
+                for (int i = 0; i < avaliacoes.Count; i++)
+                {
+                    matDAO.Carregar(avaliacoes[i].GetMateria());
+                    funcDAO.Carregar(avaliacoes[i].GetFuncionarioAutor());
+                    alunos = alunoDAO.PegarAlunosPorAvaliacao(avaliacoes[i].GetId());
+                    avaliacoes[i].SetAlunos(alunos);
+                    temas = temaDAO.PegarTemasPorAvaliacao(avaliacoes[i].GetId());
+                    avaliacoes[i].SetTemas(temas);
+                }
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return avaliacoes;
+    }
+
+    public List<Avaliacao> PegarSimuladosPorAluno(int alunoId)
+    {
+        List<Avaliacao> avaliacoes = new List<Avaliacao>();
+        Avaliacao umaAvaliacao;
+        Materia umaMateria;
+        Funcionario umFuncionario;
+        List<Aluno> alunos = new List<Aluno>();
+        List<Tema> temas = new List<Tema>();
+
+        DAOFactory daoFactory = new DAOFactory();
+        MateriaDAO matDAO = daoFactory.getMateriaDAO();
+        FuncionarioDAO funcDAO = daoFactory.getFuncionarioDAO();
+        AlunoDAO alunoDAO = daoFactory.getAlunoDAO();
+        TemaDAO temaDAO = daoFactory.getTemaDAO();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Avaliacao_PegarTodos_Simulado";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_ID", alunoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umaAvaliacao = new Avaliacao();
+                    umaAvaliacao.SetId(rsAvaliacao.GetInt32("id"));
+                    umaAvaliacao.SetDescricao(rsAvaliacao.GetString("descricao"));
+                    umaAvaliacao.SetDataInicio(rsAvaliacao.GetInt32("datainicio"));
+                    umaAvaliacao.SetDataFim(rsAvaliacao.GetInt32("datafim"));
+                    umaAvaliacao.SetSimulado(rsAvaliacao.GetBoolean("simulado"));
+
+                    umaMateria = new Materia();
+                    umaMateria.SetId(rsAvaliacao.GetInt32("materia_id"));
+                    umaAvaliacao.SetMateria(umaMateria);
+
+                    umFuncionario = new Funcionario();
+                    umFuncionario.SetId(rsAvaliacao.GetInt32("funcionario_id"));
+                    umaAvaliacao.SetFuncionarioAutor(umFuncionario);
+
+                    avaliacoes.Add(umaAvaliacao);
+                }
+                db.Close();
+                for (int i = 0; i < avaliacoes.Count; i++)
+                {
+                    matDAO.Carregar(avaliacoes[i].GetMateria());
+                    funcDAO.Carregar(avaliacoes[i].GetFuncionarioAutor());
+                    alunos = alunoDAO.PegarAlunosPorAvaliacao(avaliacoes[i].GetId());
+                    avaliacoes[i].SetAlunos(alunos);
+                    temas = temaDAO.PegarTemasPorAvaliacao(avaliacoes[i].GetId());
+                    avaliacoes[i].SetTemas(temas);
+                }
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return avaliacoes;
+    }
+
     public void Incluir(Avaliacao avaliacao)
     {
         //conexão
@@ -175,10 +349,17 @@ public class AvaliacaoDAO {
             //ligando a transação
             mySQLcmd.Transaction = mySQLTransaction;
 
+            int lastIndex = 0;
             //execução sem retorno
-            mySQLcmd.ExecuteNonQuery();
-
-            avaliacao.SetId((int)mySQLcmd.LastInsertedId);
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+            //lastIndex = mySQLcmd.ExecuteNonQuery();
+            while (rsAvaliacao.Read())
+            {
+               lastIndex = rsAvaliacao.GetInt32(0);
+            }
+            
+            avaliacao.SetId(lastIndex);
+            rsAvaliacao.Close();
             
             //commit da transação
             mySQLTransaction.Commit();
@@ -459,7 +640,7 @@ public class AvaliacaoDAO {
                 }
                 catch (MySqlException ex1)
                 {
-                    throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                    throw new ExcecaoSAG("Erro na inclusão da avaliação. Código " + ex1.ToString());
                 }
             }
             catch (ExcecaoSAG ex)
@@ -471,7 +652,7 @@ public class AvaliacaoDAO {
                 }
                 catch (MySqlException ex1)
                 {
-                    throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                    throw new ExcecaoSAG("Erro na inclusão da avaliação. Código " + ex1.ToString());
                 }
                 throw ex;
             }
@@ -525,7 +706,7 @@ public class AvaliacaoDAO {
                 }
                 catch (MySqlException ex1)
                 {
-                    throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                    throw new ExcecaoSAG("Erro na inclusão da avaliação. Código " + ex1.ToString());
                 }
             }
             catch (ExcecaoSAG ex)
@@ -537,7 +718,7 @@ public class AvaliacaoDAO {
                 }
                 catch (MySqlException ex1)
                 {
-                    throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                    throw new ExcecaoSAG("Erro na inclusão da avaliação. Código " + ex1.ToString());
                 }
                 throw ex;
             }
@@ -595,7 +776,7 @@ public class AvaliacaoDAO {
             }
             catch (MySqlException ex1)
             {
-                throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                throw new ExcecaoSAG("Erro na alteração da avaliação. Código " + ex1.ToString());
             }
         }
         catch (ExcecaoSAG ex)
@@ -607,7 +788,7 @@ public class AvaliacaoDAO {
             }
             catch (MySqlException ex1)
             {
-                throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                throw new ExcecaoSAG("Erro na alteração da avaliação. Código " + ex1.ToString());
             }
             throw ex;
         }
@@ -664,7 +845,7 @@ public class AvaliacaoDAO {
             }
             catch (MySqlException ex1)
             {
-                throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                throw new ExcecaoSAG("Erro na alteração da avaliação. Código " + ex1.ToString());
             }
         }
         catch (ExcecaoSAG ex)
@@ -676,7 +857,7 @@ public class AvaliacaoDAO {
             }
             catch (MySqlException ex1)
             {
-                throw new ExcecaoSAG("Erro na inclusão da pergunta. Código " + ex1.ToString());
+                throw new ExcecaoSAG("Erro na alteração da avaliação. Código " + ex1.ToString());
             }
             throw ex;
         }
