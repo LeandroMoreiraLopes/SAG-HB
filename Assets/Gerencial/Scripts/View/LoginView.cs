@@ -29,15 +29,18 @@ public class LoginView : MonoBehaviour {
         switch(status)
         {
             case 0:
+                statusLogin.color = Color.red;
                 statusLogin.text = "Usuário não encontrado";
                 break;
 
             case 1:
+                statusLogin.color = Color.green;
                 statusLogin.text = "Login de Aluno com sucesso";
                 PlayerPrefs.SetInt("IdUltimoAlunoLogado", umCtrLogin.GetAlunoId(umAluno));
                 main.MudarGameState(18, 1);
                 break;
             case 2:
+                statusLogin.color = Color.blue;
                 statusLogin.text = "Login de Funcionario com sucesso";
                 Funcionario umFuncionario = new Funcionario();
                 umFuncionario.SetUsuario(usuarioIF.text);

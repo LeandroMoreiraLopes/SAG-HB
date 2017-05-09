@@ -169,12 +169,14 @@ public class FuncionarioView : MonoBehaviour
         cadastroFuncionario.Excluir(umFuncionario);
         excluirPopUp.SetActive(false);
         StartCoroutine(AtualizaGrid());
+        selecionado = 0;
 
     }
 
     public void NaoTemCertezaPopUp()
     {
         excluirPopUp.SetActive(false);
+        selecionado = 0;
     }
 
     #endregion
@@ -193,6 +195,7 @@ public class FuncionarioView : MonoBehaviour
         usuario.text = "";
         senha.text = "";
         email.text = "";
+        selecionado = 0;
     }
 
     IEnumerator AtualizaGrid()

@@ -168,12 +168,14 @@ public class TemaView : MonoBehaviour {
         cadastroTema.Excluir(umTema);
         excluirPopUp.SetActive(false);
         StartCoroutine(AtualizaGrid());
+        selecionado = 0;
 
     }
 
     public void NaoTemCertezaPopUp()
     {
         excluirPopUp.SetActive(false);
+        selecionado = 0;
     }
 
     #endregion
@@ -187,6 +189,7 @@ public class TemaView : MonoBehaviour {
         descricao.text = "";
         serie.text = "";
         materia.options = new List<Dropdown.OptionData>();
+        selecionado = 0;
     }
 
     public void AtualizaTemaSelecionado(string s)
@@ -272,4 +275,5 @@ public class TemaView : MonoBehaviour {
         }
         return mat_id;
     }
+
 }

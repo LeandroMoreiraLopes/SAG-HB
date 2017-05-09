@@ -75,10 +75,10 @@ public class CameraController : MonoBehaviour {
                 transform.position = new Vector3(10, transform.position.y, transform.position.z);
 
             if (transform.position.z < -10)
-                transform.position = new Vector3(transform.position.x, transform.position.y, -20);
+                transform.position = new Vector3(transform.position.x, transform.position.y, -10);
 
             else if (transform.position.z > 5)
-                transform.position = new Vector3(transform.position.x, transform.position.y, 10);
+                transform.position = new Vector3(transform.position.x, transform.position.y, 5);
         }
 
 		if (Input.GetMouseButtonDown(1))

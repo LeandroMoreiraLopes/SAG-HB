@@ -168,12 +168,14 @@ public class AlunoView : MonoBehaviour {
         cadastroAluno.Excluir(umAluno);
         excluirPopUp.SetActive(false);
         StartCoroutine(AtualizaGrid());
+        selecionado = 0;
 
     }
     
     public void NaoTemCertezaPopUp()
     {
         excluirPopUp.SetActive(false);
+        selecionado = 0;
     }
 
     #endregion
@@ -192,6 +194,7 @@ public class AlunoView : MonoBehaviour {
         usuario.text = "";
         senha.text = "";
         email.text = "";
+        selecionado = 0;
     }
 
     public void AtualizaAlunoSelecionado(string s)

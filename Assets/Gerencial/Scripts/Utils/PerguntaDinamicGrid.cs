@@ -33,6 +33,7 @@ public class PerguntaDinamicGrid : MonoBehaviour {
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
             temp.transform.SetParent(gameObject.transform);
             temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao().ToString();
+            temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lista[i].GetDificuldade().ToString();
             temp.name = lista[i].GetId().ToString();
         }
 

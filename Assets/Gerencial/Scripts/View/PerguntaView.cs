@@ -10,6 +10,7 @@ public class PerguntaView : MonoBehaviour {
 
     CtrCadastroPergunta cadastroPergunta = new CtrCadastroPergunta();
     CtrCadastroTema cadastroTema = new CtrCadastroTema();
+    CtrCadastroMateria cadastroMateria = new CtrCadastroMateria();
     CtrCadastroFuncionario cadastroFuncionario = new CtrCadastroFuncionario();
 
     List<Pergunta> perguntas;
@@ -18,13 +19,10 @@ public class PerguntaView : MonoBehaviour {
     PerguntaDinamicGrid pDG;
 
     [SerializeField]
-    InputField descricao, correta, errada1, errada2, errada3, dificuldade, autor;
+    InputField descricao, correta, errada1, errada2, errada3, dificuldade, autor, materia;
 
     [SerializeField]
     Dropdown tema;
-
-    [SerializeField]
-    Toggle simulado;
 
     [SerializeField]
     Button criar, atualiza, voltar;
@@ -77,10 +75,10 @@ public class PerguntaView : MonoBehaviour {
         errada2.text = umaPergunta.GetErrada2();
         errada3.text = umaPergunta.GetErrada3();
         dificuldade.text = umaPergunta.GetDificuldade().ToString();
-        simulado.isOn = umaPergunta.GetSimulado(); //ver como fazer uma marcação
-
+               
         StartCoroutine(AtualizaDropDown());
         tema.value = EncontrarTemaNaDropDownTrazendoValue(umTema.GetNome());
+        AtualizarMateriaDeAcordoComOTema();
 
         autor.text = umFuncionario.GetNomeCompleto();
 
@@ -90,7 +88,6 @@ public class PerguntaView : MonoBehaviour {
         errada2.interactable = false;
         errada3.interactable = false;
         dificuldade.interactable = false;
-        simulado.interactable = false;
         tema.interactable = false;
         autor.interactable = false;
 
@@ -135,10 +132,10 @@ public class PerguntaView : MonoBehaviour {
         errada2.text = umaPergunta.GetErrada2();
         errada3.text = umaPergunta.GetErrada3();
         dificuldade.text = umaPergunta.GetDificuldade().ToString();
-        simulado.isOn = umaPergunta.GetSimulado(); //ver como fazer uma marcação
-
+        
         StartCoroutine(AtualizaDropDown());
         tema.value = EncontrarTemaNaDropDownTrazendoValue(umTema.GetNome());
+        AtualizarMateriaDeAcordoComOTema();
 
         autor.text = umFuncionario.GetNomeCompleto();
 
@@ -158,7 +155,6 @@ public class PerguntaView : MonoBehaviour {
         umaPergunta.SetErrada2(errada2.text);
         umaPergunta.SetErrada3(errada3.text);
         umaPergunta.SetDificuldade(Int32.Parse(dificuldade.text));
-        umaPergunta.SetSimulado(simulado.isOn);
         umaPergunta.SetTemaId(EncontrarTemaNaDropDownTrazendoId(tema.options[tema.value].text)); //banco com materia no id = 2
 
         umaPergunta.SetFuncId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
@@ -177,7 +173,14 @@ public class PerguntaView : MonoBehaviour {
         criar.gameObject.SetActive(true);
         voltar.gameObject.SetActive(true);
         main.MudarGameState(12, 0);
+
+        Funcionario umFuncionario = new Funcionario();
+        umFuncionario.SetId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
+        cadastroFuncionario.Carregar(umFuncionario);
+        autor.text = umFuncionario.GetNomeCompleto();
+
         StartCoroutine(AtualizaDropDown());
+        
     }
 
     public void CriarPerguntaNoBanco()
@@ -189,7 +192,6 @@ public class PerguntaView : MonoBehaviour {
         umaPergunta.SetErrada2(errada2.text);
         umaPergunta.SetErrada3(errada3.text);
         umaPergunta.SetDificuldade(Int32.Parse(dificuldade.text));
-        umaPergunta.SetSimulado(simulado.isOn);
         umaPergunta.SetTemaId(EncontrarTemaNaDropDownTrazendoId(tema.options[tema.value].text)); //banco com materia no id = 2
 
         umaPergunta.SetFuncId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
@@ -218,12 +220,14 @@ public class PerguntaView : MonoBehaviour {
         cadastroPergunta.Excluir(umaPergunta);
         excluirPopUp.SetActive(false);
         StartCoroutine(AtualizaGrid());
+        selecionado = 0;
 
     }
 
     public void NaoTemCertezaPopUp()
     {
         excluirPopUp.SetActive(false);
+        selecionado = 0;
     }
 
     #endregion
@@ -239,9 +243,10 @@ public class PerguntaView : MonoBehaviour {
         errada2.text = "";
         errada3.text = "";
         dificuldade.text = "";
-        simulado.isOn = false;
+        materia.text = "";
         tema.options = new List<Dropdown.OptionData>();
         autor.text = "";
+        selecionado = 0;
     }
 
     public void AtualizaPerguntaSelecionada(string s)
@@ -280,7 +285,7 @@ public class PerguntaView : MonoBehaviour {
         }
         tema.captionText = tema.captionText;
 
-
+        AtualizarMateriaDeAcordoComOTema();
     }
 
     public void VoltaManterPergunta()
@@ -291,7 +296,6 @@ public class PerguntaView : MonoBehaviour {
         errada2.interactable = true;
         errada3.interactable = true;
         dificuldade.interactable = true;
-        simulado.interactable = true;
         tema.interactable = true;
 
         ApagarTudo();
@@ -305,7 +309,7 @@ public class PerguntaView : MonoBehaviour {
 
     int EncontrarTemaNaDropDownTrazendoId(string s)
     {
-        int mat_id = 0;
+        int tema_id = 0;
 
         List<Tema> listaDeTemas = new List<Tema>();
         listaDeTemas = cadastroTema.ListarTodos();
@@ -313,14 +317,14 @@ public class PerguntaView : MonoBehaviour {
         for (int i = 0; i < listaDeTemas.Count; i++)
         {
             if (listaDeTemas[i].GetNome() == s)
-                mat_id = listaDeTemas[i].GetId();
+                tema_id = listaDeTemas[i].GetId();
         }
-        return mat_id;
+        return tema_id;
     }
 
     int EncontrarTemaNaDropDownTrazendoValue(string s)
     {
-        int mat_id = 0;
+        int tema_id = 0;
 
         List<Tema> listaDeTemas = new List<Tema>();
         listaDeTemas = cadastroTema.ListarTodos();
@@ -328,8 +332,20 @@ public class PerguntaView : MonoBehaviour {
         for (int i = 0; i < listaDeTemas.Count; i++)
         {
             if (listaDeTemas[i].GetNome() == s)
-                mat_id = i;
+                tema_id = i;
         }
-        return mat_id;
+        return tema_id;
+    }
+
+    public void AtualizarMateriaDeAcordoComOTema()
+    {
+        Tema umTema = new Tema();
+        umTema.SetId(EncontrarTemaNaDropDownTrazendoId(tema.options[tema.value].text));
+        cadastroTema.Carregar(umTema);
+
+        Materia umaMateria = new Materia();
+        umaMateria.SetId(umTema.GetMatId());
+        cadastroMateria.Carregar(umaMateria);
+        materia.text = umaMateria.GetNome();
     }
 }

@@ -133,12 +133,14 @@ public class MateriaView : MonoBehaviour {
         cadastroMateria.Excluir(umaMateria);
         excluirPopUp.SetActive(false);
         StartCoroutine(AtualizaGrid());
+        selecionado = 0;
 
     }
 
     public void NaoTemCertezaPopUp()
     {
         excluirPopUp.SetActive(false);
+        selecionado = 0;
     }
 
     #endregion
@@ -150,6 +152,7 @@ public class MateriaView : MonoBehaviour {
         voltar.gameObject.SetActive(false);
         nome.text = "";
         descricao.text = "";
+        selecionado = 0;
     }
 
     public void AtualizaMateriaSelecionado(string s)

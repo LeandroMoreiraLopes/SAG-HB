@@ -2,8 +2,7 @@
 
     int id, dificuldade, funcId, temaId;
     string descricao, correta, errada1, errada2, errada3;
-    bool simulado;
-
+    
     public int GetId()
     {
         return id;
@@ -72,16 +71,6 @@
     public void SetDificuldade(int i)
     {
         dificuldade = i;
-    }
-
-    public bool GetSimulado()
-    {
-        return simulado;
-    }
-
-    public void SetSimulado(bool b)
-    {
-        simulado = b;
     }
 
     public int GetFuncId()

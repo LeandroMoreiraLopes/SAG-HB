@@ -34,11 +34,12 @@ public class AvaliacaoDinamicGrid : MonoBehaviour
             temp.transform.SetParent(gameObject.transform);
             temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao().ToString();
             temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataInicio());
+            temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataFim());
             if (lista[i].GetSimulado())
-                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Sim";
+                temp.transform.GetChild(3).gameObject.GetComponent<Text>().text = "Sim";
             else
             {
-                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Não";
+                temp.transform.GetChild(3).gameObject.GetComponent<Text>().text = "Não";
                 if (FormatarData.AntesDaDataInicial(lista[i].GetDataInicio()))
                 {
                     temp.GetComponent<Image>().color = Color.yellow;
