@@ -43,7 +43,6 @@ public class AvaliacaoDinamicGrid : MonoBehaviour
                 if (FormatarData.AntesDaDataInicial(lista[i].GetDataInicio()))
                 {
                     temp.GetComponent<Image>().color = Color.yellow;
-                    temp.GetComponent<Button>().interactable = false;
                 }
 
                 //criar condicao para ficar verde se tiver sido realizado

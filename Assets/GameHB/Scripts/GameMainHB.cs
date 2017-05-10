@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMainHB : MonoBehaviour {
+
+    [SerializeField]
+    CameraController controladorDaCamera;
 
     int id_aluno, id_avaliacao;
 
@@ -15,6 +19,13 @@ public class GameMainHB : MonoBehaviour {
     Avaliacao avaliacao = new Avaliacao();
     List<Tema> temas = new List<Tema>();
     List<Pergunta>[] perguntas = new List<Pergunta>[4];
+
+    [SerializeField]
+    Text boasVindasTXT;
+
+    int hora, minuto, segundo;
+
+    bool gameOver;
 
     // Use this for initialization
     void Start () {
@@ -32,12 +43,50 @@ public class GameMainHB : MonoBehaviour {
         {
             perguntas[i] = cadastroPergunta.ListarTodosPorTema(temas[i].GetId());
         }
+
+        BoasVindas();
         
 
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	void BoasVindas()
+    {
+        string s = "Bem vindo {0},\n\nVocê irá fazer sua avaliação {1} da matéria {2}, com os temas:\n{3}\n Boa sorte e boa avaliação!";
+        string temasTXT = "";
+        for (int i = 0; i < temas.Count; i++)
+        {
+            if (i == temas.Count - 1)
+            temasTXT += temas[i].GetNome() + ".\n";
+
+            else temasTXT += temas[i].GetNome() + ",\n";
+        }
+        s = string.Format(s, aluno.GetNomeCompleto(), avaliacao.GetDescricao(), avaliacao.GetMateria().GetNome(), temasTXT);
+        boasVindasTXT.text = s;
+    }
+
+    public void InicarJogo()
+    {
+        controladorDaCamera.SetPosicionamento(1);
+    }
+
+    IEnumerator contadorDeTempo()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            segundo++;
+            if (segundo == 60)
+            {
+                minuto++;
+                segundo = 0;
+                if (minuto == 60)
+                {
+                    hora++;
+                    minuto = 0;
+                }
+            }
+            if (gameOver)
+                break;
+        }
+    }
 }
