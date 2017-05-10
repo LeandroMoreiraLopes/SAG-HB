@@ -245,9 +245,9 @@ public class PerguntaView : MonoBehaviour {
         errada3.text = "";
         dificuldade.text = "";
         materia.text = "";
-        tema.options = new List<Dropdown.OptionData>();
         autor.text = "";
         selecionado = 0;
+        tema.value = 0;
     }
 
     public void AtualizaPerguntaSelecionada(string s)

@@ -188,7 +188,7 @@ public class TemaView : MonoBehaviour {
         nome.text = "";
         descricao.text = "";
         serie.text = "";
-        materia.options = new List<Dropdown.OptionData>();
+        materia.value = 0;
         selecionado = 0;
     }
 
