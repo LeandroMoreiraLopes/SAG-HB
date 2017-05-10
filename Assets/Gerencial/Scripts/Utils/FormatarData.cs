@@ -26,8 +26,11 @@ public class FormatarData : MonoBehaviour {
     public static int FormatToInt(string s)
     {
         string[] data = s.Split('/');
-        if (data.Length != 2)
+        if (data.Length == 3)
         {
+            if (data[1].Length == 1) data[1] = "0" + data[1];
+            if (data[0].Length == 1) data[0] = "0" + data[0];
+
             s = data[2] + data[1] + data[0];
             return int.Parse(s);
         }

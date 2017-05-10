@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,8 +18,8 @@ public class LoginView : MonoBehaviour {
     IEnumerator Logar()
     {
         Aluno umAluno = new Aluno();
-        umAluno.SetUsuario(usuarioIF.text);
-        umAluno.SetSenha(senhaIF.text);
+        umAluno.SetUsuario(usuarioIF.text.ToLower());
+        umAluno.SetSenha(senhaIF.text.ToLower());
         
         int status = umCtrLogin.Logar(umAluno);
         yield return status;
@@ -43,8 +42,8 @@ public class LoginView : MonoBehaviour {
                 statusLogin.color = Color.blue;
                 statusLogin.text = "Login de Funcionario com sucesso";
                 Funcionario umFuncionario = new Funcionario();
-                umFuncionario.SetUsuario(usuarioIF.text);
-                umFuncionario.SetSenha(senhaIF.text);
+                umFuncionario.SetUsuario(usuarioIF.text.ToLower());
+                umFuncionario.SetSenha(senhaIF.text.ToLower());
                 PlayerPrefs.SetInt("IdUltimoFuncionarioLogado", umCtrLogin.GetFuncionarioId(umFuncionario));
                 main.MudarGameState(2, 1);
                 break;

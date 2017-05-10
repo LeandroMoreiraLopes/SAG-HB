@@ -39,11 +39,11 @@ public class CtrCadastroMateria
     {
         if (materia.GetNome() == null || materia.GetNome().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Nome completo deve ser preenchido");
+            throw new ExcecaoSAG("Nome da Matéria deve ser preenchido");
         }
         if (materia.GetDescricao() == null || materia.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Descricao deve ser preenchida");
+            throw new ExcecaoSAG("Descrição deve ser preenchida");
         }
         return true;
     }
@@ -96,6 +96,10 @@ public class CtrCadastroMateria
 
     public void Carregar(Materia materia)
     {
+        if (materia.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar uma matéria.");
+        }
         try
         {
             materiaDAO.Carregar(materia);

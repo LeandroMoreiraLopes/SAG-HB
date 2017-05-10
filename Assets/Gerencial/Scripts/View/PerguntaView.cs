@@ -154,7 +154,7 @@ public class PerguntaView : MonoBehaviour {
         umaPergunta.SetErrada1(errada1.text);
         umaPergunta.SetErrada2(errada2.text);
         umaPergunta.SetErrada3(errada3.text);
-        umaPergunta.SetDificuldade(Int32.Parse(dificuldade.text));
+        umaPergunta.SetDificuldade(Int32.Parse(string.IsNullOrEmpty(dificuldade.text) ? "0" : dificuldade.text));
         umaPergunta.SetTemaId(EncontrarTemaNaDropDownTrazendoId(tema.options[tema.value].text)); //banco com materia no id = 2
 
         umaPergunta.SetFuncId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));
@@ -185,13 +185,14 @@ public class PerguntaView : MonoBehaviour {
 
     public void CriarPerguntaNoBanco()
     {
+        
         Pergunta umaPergunta = new Pergunta();
         umaPergunta.SetDescricao(descricao.text);
         umaPergunta.SetCorreta(correta.text);
         umaPergunta.SetErrada1(errada1.text);
         umaPergunta.SetErrada2(errada2.text);
         umaPergunta.SetErrada3(errada3.text);
-        umaPergunta.SetDificuldade(Int32.Parse(dificuldade.text));
+        umaPergunta.SetDificuldade(Int32.Parse(string.IsNullOrEmpty(dificuldade.text) ? "0" : dificuldade.text));
         umaPergunta.SetTemaId(EncontrarTemaNaDropDownTrazendoId(tema.options[tema.value].text)); //banco com materia no id = 2
 
         umaPergunta.SetFuncId(PlayerPrefs.GetInt("IdUltimoFuncionarioLogado"));

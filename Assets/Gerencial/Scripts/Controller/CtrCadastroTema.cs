@@ -65,11 +65,11 @@ public class CtrCadastroTema {
     {
         if (tema.GetNome() == null || tema.GetNome().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Nome completo deve ser preenchido");
+            throw new ExcecaoSAG("Nome do tema deve ser preenchido");
         }
         if (tema.GetDescricao() == null || tema.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Descricao deve ser preenchido");
+            throw new ExcecaoSAG("Descrição deve ser preenchido");
         }
         if (tema.GetSerie() == null || tema.GetSerie().Trim().Equals(""))
         {
@@ -130,6 +130,10 @@ public class CtrCadastroTema {
 
     public void Carregar(Tema tema)
     {
+        if (tema.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar um tema.");
+        }
         try
         {
             temaDAO.Carregar(tema);

@@ -105,14 +105,14 @@ public class FuncionarioView : MonoBehaviour
     {
         Funcionario umFuncionario = new Funcionario();
         umFuncionario.SetId(selecionado);
-        umFuncionario.SetMatricula(long.Parse(mat.text));
+        umFuncionario.SetMatricula(long.Parse(string.IsNullOrEmpty(mat.text) ? "0" : mat.text));
         umFuncionario.SetNomeCompleto(nome.text);
         umFuncionario.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umFuncionario.SetCpf(cpf.text);
-        umFuncionario.SetTelefone(long.Parse(telefone.text));
-        umFuncionario.SetCelular(long.Parse(celular.text));
-        umFuncionario.SetUsuario(usuario.text);
-        umFuncionario.SetSenha(senha.text);
+        umFuncionario.SetTelefone(long.Parse(string.IsNullOrEmpty(telefone.text) ? "0" : telefone.text));
+        umFuncionario.SetCelular(long.Parse(string.IsNullOrEmpty(celular.text) ? "0" : celular.text));
+        umFuncionario.SetUsuario(usuario.text.ToLower());
+        umFuncionario.SetSenha(senha.text.ToLower());
         umFuncionario.SetEmail(email.text);
 
         cadastroFuncionario.Alterar(umFuncionario);
@@ -134,15 +134,14 @@ public class FuncionarioView : MonoBehaviour
     public void CriarFuncionarioNoBanco()
     {
         Funcionario umFuncionario = new Funcionario();
-
-        umFuncionario.SetMatricula(long.Parse(mat.text));
+        umFuncionario.SetMatricula(long.Parse(string.IsNullOrEmpty(mat.text) ? "0" : mat.text));
         umFuncionario.SetNomeCompleto(nome.text);
         umFuncionario.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umFuncionario.SetCpf(cpf.text);
-        umFuncionario.SetTelefone(long.Parse(telefone.text));
-        umFuncionario.SetCelular(long.Parse(celular.text));
-        umFuncionario.SetUsuario(usuario.text);
-        umFuncionario.SetSenha(senha.text);
+        umFuncionario.SetTelefone(long.Parse(string.IsNullOrEmpty(telefone.text) ? "0" : telefone.text));
+        umFuncionario.SetCelular(long.Parse(string.IsNullOrEmpty(celular.text) ? "0" : celular.text));
+        umFuncionario.SetUsuario(usuario.text.ToLower());
+        umFuncionario.SetSenha(senha.text.ToLower());
         umFuncionario.SetEmail(email.text);
 
         cadastroFuncionario.Incluir(umFuncionario);

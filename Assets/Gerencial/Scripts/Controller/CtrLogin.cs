@@ -38,10 +38,13 @@ public class CtrLogin {
 
     public int Logar(Aluno pessoa)
     {
-        int statusLogin;
+        int statusLogin = 0;
         try
         {
-            statusLogin = loginDAO.Login(pessoa);
+            if (Validar(pessoa))
+            {
+                statusLogin = loginDAO.Login(pessoa);
+            }
         }
         catch (ExcecaoSAG ex)
         {
