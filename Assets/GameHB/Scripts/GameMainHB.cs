@@ -25,10 +25,14 @@ public class GameMainHB : MonoBehaviour {
 
     int hora, minuto, segundo;
 
-    bool gameOver;
+    TimeController timeController;
+    BattleController battleController;
 
     // Use this for initialization
     void Start () {
+        timeController = GetComponent<TimeController>();
+        battleController = GetComponent<BattleController>();
+
         id_aluno = PlayerPrefs.GetInt("IdUltimoAlunoLogado");
         id_avaliacao = PlayerPrefs.GetInt("IdAvaliacaoVigente");
 
@@ -45,7 +49,7 @@ public class GameMainHB : MonoBehaviour {
         }
 
         BoasVindas();
-        
+
 
     }
 	
@@ -67,26 +71,6 @@ public class GameMainHB : MonoBehaviour {
     public void InicarJogo()
     {
         controladorDaCamera.SetPosicionamento(1);
-    }
-
-    IEnumerator contadorDeTempo()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f);
-            segundo++;
-            if (segundo == 60)
-            {
-                minuto++;
-                segundo = 0;
-                if (minuto == 60)
-                {
-                    hora++;
-                    minuto = 0;
-                }
-            }
-            if (gameOver)
-                break;
-        }
+        battleController.CriarBatalhas(temas);
     }
 }
