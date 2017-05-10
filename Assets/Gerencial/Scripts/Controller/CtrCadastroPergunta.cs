@@ -52,7 +52,7 @@ public class CtrCadastroPergunta {
     {
         if (pergunta.GetDescricao() == null || pergunta.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Descricao deve ser preenchido");
+            throw new ExcecaoSAG("Descrição deve ser preenchido");
         }
         if (pergunta.GetCorreta() == null || pergunta.GetCorreta().Trim().Equals(""))
         {
@@ -70,13 +70,13 @@ public class CtrCadastroPergunta {
         {
             throw new ExcecaoSAG("Resposta errada 3 deve ser preenchido");
         }
-        if (pergunta.GetDificuldade() < 0 || pergunta.GetDificuldade() > 3)
+        if (pergunta.GetDificuldade() <= 0 || pergunta.GetDificuldade() > 3)
         {
             throw new ExcecaoSAG("Dificuldade deve ser preenchida entre 1 e 3");
         }
         if (pergunta.GetFuncId() <= 0)
         {
-            throw new ExcecaoSAG("Funcionário deve ser preenchid0");
+            throw new ExcecaoSAG("Funcionário deve ser preenchido");
         }
         if (pergunta.GetTemaId() <= 0)
         {
@@ -133,6 +133,10 @@ public class CtrCadastroPergunta {
 
     public void Carregar(Pergunta pergunta)
     {
+        if (pergunta.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar uma pergunta.");
+        }
         try
         {
             perguntaDAO.Carregar(pergunta);

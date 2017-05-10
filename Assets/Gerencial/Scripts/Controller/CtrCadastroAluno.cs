@@ -47,8 +47,8 @@ public class CtrCadastroAluno{
     }
 
     private bool Validar(Aluno aluno){
-        if (aluno.GetMatricula() < 0) {
-			throw new ExcecaoSAG("A Matrícula não dave ser negativa.") ;
+        if (aluno.GetMatricula() <= 0) {
+			throw new ExcecaoSAG("A Matrícula dave ser válida.") ;
 		}
 		if(aluno.GetNomeCompleto() == null || aluno.GetNomeCompleto().Trim().Equals("")){
 			throw new ExcecaoSAG("Nome completo deve ser preenchido");
@@ -77,7 +77,7 @@ public class CtrCadastroAluno{
 			throw new ExcecaoSAG("Usuario deve ser preenchido");
 		}
 		if(aluno.GetSenha() == null || aluno.GetSenha().Trim().Equals("")){
-			throw new ExcecaoSAG("Senha deve ser preenchido");
+			throw new ExcecaoSAG("Senha deve ser preenchida");
 		} 
 		if(aluno.GetEmail() == null || aluno.GetEmail().Trim().Equals("")){
 			throw new ExcecaoSAG("Email deve ser preenchido");
@@ -129,7 +129,12 @@ public class CtrCadastroAluno{
 	}
 
 	public void Carregar(Aluno aluno){
-		try
+        if (aluno.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar um aluno.");
+        }
+
+        try
         {
 			alunoDAO.Carregar(aluno);
 		}

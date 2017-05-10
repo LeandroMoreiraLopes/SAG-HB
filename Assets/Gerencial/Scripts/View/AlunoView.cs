@@ -104,14 +104,14 @@ public class AlunoView : MonoBehaviour {
     {
         Aluno umAluno = new Aluno();
         umAluno.SetId(selecionado);
-        umAluno.SetMatricula(long.Parse(mat.text));
+        umAluno.SetMatricula(long.Parse(string.IsNullOrEmpty(mat.text) ? "0" : mat.text));
         umAluno.SetNomeCompleto(nome.text);
         umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umAluno.SetCpf(cpf.text);
-        umAluno.SetTelefone(long.Parse(telefone.text));
-        umAluno.SetCelular(long.Parse(celular.text));
-        umAluno.SetUsuario(usuario.text);
-        umAluno.SetSenha(senha.text);
+        umAluno.SetTelefone(long.Parse(string.IsNullOrEmpty(telefone.text) ? "0" : telefone.text));
+        umAluno.SetCelular(long.Parse(string.IsNullOrEmpty(celular.text) ? "0" : celular.text));
+        umAluno.SetUsuario(usuario.text.ToLower());
+        umAluno.SetSenha(senha.text.ToLower());
         umAluno.SetEmail(email.text);
 
         cadastroAluno.Alterar(umAluno);
@@ -132,16 +132,15 @@ public class AlunoView : MonoBehaviour {
 
     public void CriarAlunoNoBanco()
     {
-        Aluno umAluno = new Aluno();
-      
-        umAluno.SetMatricula(long.Parse(mat.text));
+        Aluno umAluno = new Aluno();        
+        umAluno.SetMatricula(long.Parse(string.IsNullOrEmpty(mat.text) ? "0" : mat.text));
         umAluno.SetNomeCompleto(nome.text);
         umAluno.SetNascimento(FormatarData.FormatToInt(nascimento.text));
         umAluno.SetCpf(cpf.text);
-        umAluno.SetTelefone(long.Parse(telefone.text));
-        umAluno.SetCelular(long.Parse(celular.text));
-        umAluno.SetUsuario(usuario.text);
-        umAluno.SetSenha(senha.text);
+        umAluno.SetTelefone(long.Parse(string.IsNullOrEmpty(telefone.text) ? "0" : telefone.text));
+        umAluno.SetCelular(long.Parse(string.IsNullOrEmpty(celular.text) ? "0" : celular.text));
+        umAluno.SetUsuario(usuario.text.ToLower());
+        umAluno.SetSenha(senha.text.ToLower());
         umAluno.SetEmail(email.text);
 
         cadastroAluno.Incluir(umAluno);

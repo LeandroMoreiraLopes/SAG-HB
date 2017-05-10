@@ -42,7 +42,7 @@ public class LoginDAO {
         {
             MySqlCommand mySQLcmd = db.CreateCommand();
             mySQLcmd.CommandType = CommandType.Text;
-            mySQLcmd.CommandText = string.Format("Select * from funcionario where usuario = '{0}' and senha = MD5('{1}');", 
+            mySQLcmd.CommandText = string.Format("Select * from funcionario where usuario = '{0}' and senha = MD5('{1}') and ativo;", 
                                                     umFuncionario.GetUsuario(), umFuncionario.GetSenha());
             
             //execução sem retorno
@@ -79,7 +79,7 @@ public class LoginDAO {
         {
             MySqlCommand mySQLcmd = db.CreateCommand();
             mySQLcmd.CommandType = CommandType.Text;
-            mySQLcmd.CommandText = string.Format("Select * from aluno where usuario = '{0}' and senha = MD5('{1}');",
+            mySQLcmd.CommandText = string.Format("Select * from aluno where usuario = '{0}' and senha = MD5('{1}') and ativo;",
                                                     umAluno.GetUsuario(), umAluno.GetSenha());
 
             //execução sem retorno

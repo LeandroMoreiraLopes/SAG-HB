@@ -66,29 +66,29 @@ public class CtrCadastroAvaliacao {
     {
         if (avaliacao.GetDescricao() == null || avaliacao.GetDescricao().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Descricao deve ser preenchida");
+            throw new ExcecaoSAG("Descrição deve ser preenchida");
         }
         if (avaliacao.GetTemas() == null || avaliacao.GetTemas().Count <= 0)
         {
-            throw new ExcecaoSAG("Temas devem ser preenchidos");
+            throw new ExcecaoSAG("A avaliação deve ter pelo menos 1 tema");
         }
         if (avaliacao.GetAlunos() == null || avaliacao.GetAlunos().Count <=0)
         {
-            throw new ExcecaoSAG("Alunos devem ser preenchidos");
+            throw new ExcecaoSAG("A avaliação deve ter pelo menos 1 aluno");
         }
         if (avaliacao.GetMateria() == null)
         {
-            throw new ExcecaoSAG("Materia deve ser preenchida");
+            throw new ExcecaoSAG("Matéria deve ser preenchida");
         }
         if (avaliacao.GetFuncionarioAutor() == null)
         {
             throw new ExcecaoSAG("Funcionario Autor deve ser preenchido");
         }
-        if (avaliacao.GetDataInicio() <= 0)
+        if ((avaliacao.GetDataInicio() <= 0) || !(FormatarData.AntesOuIgualDaDataInicial(avaliacao.GetDataInicio())))
         {
             throw new ExcecaoSAG("Data de Inicio deve ser preenchida e tem que ser após a data de hoje");
         }
-        if (avaliacao.GetDataFim() <= 0 && avaliacao.GetDataFim() < avaliacao.GetDataInicio())
+        if ((avaliacao.GetDataFim() <= 0) || (avaliacao.GetDataFim() < avaliacao.GetDataInicio()))
         {
             throw new ExcecaoSAG("Data de Término deve ser preenchida e tem que ser maior ou igual a data de início");
         }
@@ -145,6 +145,11 @@ public class CtrCadastroAvaliacao {
 
     public void Carregar(Avaliacao avaliacao)
     {
+        if (avaliacao.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar uma avaliação.");
+        }
+
         try
         {
             avaliacaoDAO.Carregar(avaliacao);

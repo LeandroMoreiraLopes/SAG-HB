@@ -37,9 +37,9 @@ public class CtrCadastroFuncionario
 
     private bool Validar(Funcionario funcionario)
     {
-        if (funcionario.GetMatricula() < 0)
+        if (funcionario.GetMatricula() <= 0)
         {
-            throw new ExcecaoSAG("A Matrícula não dave ser negativa.");
+            throw new ExcecaoSAG("A Matrícula dave ser válida.");
         }
         if (funcionario.GetNomeCompleto() == null || funcionario.GetNomeCompleto().Trim().Equals(""))
         {
@@ -75,7 +75,7 @@ public class CtrCadastroFuncionario
         }
         if (funcionario.GetSenha() == null || funcionario.GetSenha().Trim().Equals(""))
         {
-            throw new ExcecaoSAG("Senha deve ser preenchido");
+            throw new ExcecaoSAG("Senha deve ser preenchida");
         }
         if (funcionario.GetEmail() == null || funcionario.GetEmail().Trim().Equals(""))
         {
@@ -132,6 +132,11 @@ public class CtrCadastroFuncionario
 
     public void Carregar(Funcionario funcionario)
     {
+        if (funcionario.GetId() <= 0)
+        {
+            throw new ExcecaoSAG("Obrigatório selecionar um funcionário.");
+        }
+
         try
         {
             funcionarioDAO.Carregar(funcionario);
