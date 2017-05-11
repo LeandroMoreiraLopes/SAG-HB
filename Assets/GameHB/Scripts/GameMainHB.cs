@@ -18,7 +18,7 @@ public class GameMainHB : MonoBehaviour {
     Aluno aluno = new Aluno();
     Avaliacao avaliacao = new Avaliacao();
     List<Tema> temas = new List<Tema>();
-    List<Pergunta>[] perguntas = new List<Pergunta>[4];
+    List<List<Pergunta>> perguntas = new List<List<Pergunta>>();
 
     [SerializeField]
     Text boasVindasTXT;
@@ -26,12 +26,12 @@ public class GameMainHB : MonoBehaviour {
     int hora, minuto, segundo;
 
     TimeController timeController;
-    BattleController battleController;
+    AllBattlesController battleController;
 
     // Use this for initialization
     void Start () {
         timeController = GetComponent<TimeController>();
-        battleController = GetComponent<BattleController>();
+        battleController = GetComponent<AllBattlesController>();
 
         id_aluno = PlayerPrefs.GetInt("IdUltimoAlunoLogado");
         id_avaliacao = PlayerPrefs.GetInt("IdAvaliacaoVigente");
@@ -45,7 +45,7 @@ public class GameMainHB : MonoBehaviour {
         temas = cadastroTema.ListarTodosPorAvaliacao(id_avaliacao);
         for (int i = 0; i < temas.Count; i++)
         {
-            perguntas[i] = cadastroPergunta.ListarTodosPorTema(temas[i].GetId());
+            perguntas.Add(cadastroPergunta.ListarTodosPorTema(temas[i].GetId()));
         }
 
         BoasVindas();
@@ -71,6 +71,6 @@ public class GameMainHB : MonoBehaviour {
     public void InicarJogo()
     {
         controladorDaCamera.SetPosicionamento(1);
-        battleController.CriarBatalhas(temas);
+        battleController.CriarBatalhas(temas, perguntas);
     }
 }
