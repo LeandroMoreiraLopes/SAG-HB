@@ -34,7 +34,6 @@ public class SimuladoDisponivelDinamicGrid : MonoBehaviour
             GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
             temp.transform.SetParent(gameObject.transform);
             temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao();
-            temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataInicio());
             temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = lista[i].GetMateria().GetNome();
             if (FormatarData.AntesDaDataInicial(lista[i].GetDataInicio()))
             {

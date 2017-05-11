@@ -28,11 +28,11 @@ public class SingleBattleController : MonoBehaviour {
             for (int i = 0; i < perguntas.Count; i++)
             {
                 perguntasNaoFeitas.Add(perguntas[i]);
-            }// perguntas;
+            }
             perguntasFeitas.Clear();
         }
 
-        int sorteio = Random.Range(0, perguntasNaoFeitas.Count -1);
+        int sorteio = Random.Range(0, perguntasNaoFeitas.Count);
 
         perguntasFeitas.Add(perguntasNaoFeitas[sorteio]);
         perguntasNaoFeitas.Remove(perguntasNaoFeitas[sorteio]);

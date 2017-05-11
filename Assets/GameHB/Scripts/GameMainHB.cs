@@ -28,11 +28,6 @@ public class GameMainHB : MonoBehaviour {
     TimeController timeController;
     AllBattlesController battleController;
 
-    [SerializeField]
-    SingleBattleController singleBattle;
-
-    Pergunta pergunta;
-
     // Use this for initialization
     void Start () {
         timeController = GetComponent<TimeController>();
@@ -58,15 +53,6 @@ public class GameMainHB : MonoBehaviour {
 
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            pergunta = singleBattle.PegaPerguntaNaoFeita();
-
-        }
-    }
-
     void BoasVindas()
     {
         string s = "Bem vindo {0},\n\nVocê irá fazer sua avaliação {1} da matéria {2}, com os temas:\n{3}\n Boa sorte e boa avaliação!";
@@ -86,5 +72,14 @@ public class GameMainHB : MonoBehaviour {
     {
         controladorDaCamera.SetPosicionamento(1);
         battleController.CriarBatalhas(temas, perguntas);
+        timeController.IniciarContagem();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            battleController.ChamandoPerguntaDasBatalhasAtivas();
+        }
     }
 }

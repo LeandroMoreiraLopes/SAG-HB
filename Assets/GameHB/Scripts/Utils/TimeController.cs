@@ -16,6 +16,7 @@ public class TimeController : MonoBehaviour {
     {
         while (true)
         {
+            Debug.Log("Contando");
             yield return new WaitForSeconds(1f);
             segundos++;
             if (segundos == 60)

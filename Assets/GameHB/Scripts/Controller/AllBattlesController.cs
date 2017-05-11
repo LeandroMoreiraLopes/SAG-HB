@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AllBattlesController : MonoBehaviour {
 
@@ -17,6 +18,27 @@ public class AllBattlesController : MonoBehaviour {
 
     List<Tema> temasInstanciados = new List<Tema>();
     List<List<Pergunta>> perguntasInstanciadas = new List<List<Pergunta>>();
+
+    [SerializeField]
+    Image[] backgroundDasPerguntas;
+
+    [SerializeField]
+    GameObject painelDePerguntas;
+
+    List<SingleBattleController> temasAtivados = new List<SingleBattleController>();
+
+    [SerializeField]
+    List<Sprite> relogioEmSegundos;
+
+    [SerializeField]
+    Image relogio;
+
+    [SerializeField]
+    AudioSource acabouOTempoSND, respostaCorretaSND, respostaErradaSND;
+
+    public int corretas, total;
+
+    bool respondendo;
 
     public void CriarBatalhas(List<Tema> temas, List<List<Pergunta>> perguntas)
     {
@@ -68,6 +90,83 @@ public class AllBattlesController : MonoBehaviour {
         batalhas[index].GetComponent<SingleBattleController>().SetTema(temasInstanciados[0]);
         temasInstanciados.Remove(temasInstanciados[0]);
         batalhas[index].GetComponent<SingleBattleController>().SetPerguntas(perguntasInstanciadas[0]);
+        temasAtivados.Add(batalhas[index].GetComponent<SingleBattleController>());
         perguntasInstanciadas.Remove(perguntasInstanciadas[0]);
+    }
+
+    //chama a pergunta das batalhas ativas
+    public void ChamandoPerguntaDasBatalhasAtivas()
+    {
+        int temaSorteado = Random.Range(0, temasAtivados.Count - 1);
+        Pergunta pergunta = temasAtivados[temaSorteado].PegaPerguntaNaoFeita();
+        
+        painelDePerguntas.SetActive(true);
+        //texto da pergunta
+        painelDePerguntas.transform.GetChild(0).GetComponentInChildren<Text>().text = pergunta.GetDescricao();
+        //referencia para sorteio das perguntas 1 - 4
+        List<int> posicoes = new List<int>(); for (int i = 1; i < 5; i++) { posicoes.Add(i); }
+
+        //randomizando resposta certa
+        int sorteio = posicoes[Random.Range(0, posicoes.Count)];
+        posicoes.Remove(sorteio);
+        painelDePerguntas.transform.GetChild(sorteio).GetComponentInChildren<Text>().text = pergunta.GetCorreta();
+        painelDePerguntas.transform.GetChild(sorteio).name = "right";
+
+        //randomizando as respostas erradas
+        sorteio = posicoes[Random.Range(0, posicoes.Count)];
+        posicoes.Remove(sorteio);
+        painelDePerguntas.transform.GetChild(sorteio).GetComponentInChildren<Text>().text = pergunta.GetErrada1();
+        painelDePerguntas.transform.GetChild(sorteio).name = "wrong";
+        sorteio = posicoes[Random.Range(0, posicoes.Count)];
+        posicoes.Remove(sorteio);
+        painelDePerguntas.transform.GetChild(sorteio).GetComponentInChildren<Text>().text = pergunta.GetErrada2();
+        painelDePerguntas.transform.GetChild(sorteio).name = "wrong";
+        sorteio = posicoes[Random.Range(0, posicoes.Count)];
+        posicoes.Remove(sorteio);
+        painelDePerguntas.transform.GetChild(sorteio).GetComponentInChildren<Text>().text = pergunta.GetErrada3();
+        painelDePerguntas.transform.GetChild(sorteio).name = "wrong";
+
+        respondendo = true;
+
+        StartCoroutine(ContagemDoRelogio());
+    }
+
+    void DesativarPerguntas()
+    {
+        painelDePerguntas.SetActive(false);
+    }
+
+    IEnumerator ContagemDoRelogio()
+    {
+        relogio.sprite = relogioEmSegundos[30];
+        for (int i = 29; i >= 0; i--)
+        {
+            if (!respondendo)
+                yield break;
+
+            yield return new WaitForSeconds(1);
+            relogio.sprite = relogioEmSegundos[i];
+
+        }
+        total++;
+        DesativarPerguntas();
+        acabouOTempoSND.Play();
+        respondendo = false;
+    }
+
+    public void Respondendo(string s)
+    {
+        respondendo = false;
+        if (s == "right")
+        {
+            corretas++;
+            respostaCorretaSND.Play();
+        }
+        else
+            respostaErradaSND.Play();
+
+        total++;
+        //StopCoroutine(ContagemDoRelogio()); //nao funciona
+        DesativarPerguntas();
     }
 }
