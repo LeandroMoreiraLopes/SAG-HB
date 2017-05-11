@@ -28,6 +28,11 @@ public class GameMainHB : MonoBehaviour {
     TimeController timeController;
     AllBattlesController battleController;
 
+    [SerializeField]
+    SingleBattleController singleBattle;
+
+    Pergunta pergunta;
+
     // Use this for initialization
     void Start () {
         timeController = GetComponent<TimeController>();
@@ -52,8 +57,17 @@ public class GameMainHB : MonoBehaviour {
 
 
     }
-	
-	void BoasVindas()
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            pergunta = singleBattle.PegaPerguntaNaoFeita();
+
+        }
+    }
+
+    void BoasVindas()
     {
         string s = "Bem vindo {0},\n\nVocê irá fazer sua avaliação {1} da matéria {2}, com os temas:\n{3}\n Boa sorte e boa avaliação!";
         string temasTXT = "";
