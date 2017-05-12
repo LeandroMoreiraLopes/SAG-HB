@@ -13,16 +13,16 @@ public class MenuJogadorView : MonoBehaviour {
 
     public void IrParaAvaliacoesDisponiveis()
     {
-        main.MudarGameState(19, 0);
+        main.MudarGameState(20, 0);
     }
 
     public void IrParaSimuladosDisponiveis()
     {
-        main.MudarGameState(20, 0);
+        main.MudarGameState(21, 0);
     }
 
     public void IrParaRelatoriosDoAluno()
     {
-        main.MudarGameState(21, 0);
+        main.MudarGameState(22, 0);
     }
 }

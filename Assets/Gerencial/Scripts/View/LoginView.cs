@@ -36,7 +36,7 @@ public class LoginView : MonoBehaviour {
                 statusLogin.color = Color.green;
                 statusLogin.text = "Login de Aluno com sucesso";
                 PlayerPrefs.SetInt("IdUltimoAlunoLogado", umCtrLogin.GetAlunoId(umAluno));
-                main.MudarGameState(18, 1);
+                main.MudarGameState(19, 1);
                 break;
             case 2:
                 statusLogin.color = Color.blue;
