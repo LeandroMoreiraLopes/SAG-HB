@@ -30,6 +30,11 @@ public class RelatorioFuncionarioView : MonoBehaviour {
         StartCoroutine(AtualizaGridAvaliacao());
     }
 
+    public void Consultar()
+    {
+        main.MudarGameState(18, 0);
+    }
+
     //refazer
     /*
     #region métodos para Consultar avaliacoes
