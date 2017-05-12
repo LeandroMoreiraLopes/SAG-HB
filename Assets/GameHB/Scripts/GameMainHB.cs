@@ -29,7 +29,7 @@ public class GameMainHB : MonoBehaviour {
     AllBattlesController battleController;
 
     // Use this for initialization
-    void Start () {
+    IEnumerator Start () {
         timeController = GetComponent<TimeController>();
         battleController = GetComponent<AllBattlesController>();
 
@@ -43,10 +43,14 @@ public class GameMainHB : MonoBehaviour {
         cadastroAvaliacao.Carregar(avaliacao);
 
         temas = cadastroTema.ListarTodosPorAvaliacao(id_avaliacao);
+        yield return temas;
+
         for (int i = 0; i < temas.Count; i++)
         {
             perguntas.Add(cadastroPergunta.ListarTodosPorTema(temas[i].GetId()));
         }
+
+        battleController.SetTemas(temas);
 
         BoasVindas();
 

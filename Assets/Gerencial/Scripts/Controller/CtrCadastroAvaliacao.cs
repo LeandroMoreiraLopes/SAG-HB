@@ -34,6 +34,20 @@ public class CtrCadastroAvaliacao {
         return lista;
     }
 
+    public List<Avaliacao> ListarTodosCompleto()
+    {
+        List<Avaliacao> lista = new List<Avaliacao>();
+        try
+        {
+            lista = avaliacaoDAO.PegarTodosCompleto();
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
     public List<Avaliacao> ListarTodosPorAluno(int alunoId)
     {
         List<Avaliacao> lista = new List<Avaliacao>();

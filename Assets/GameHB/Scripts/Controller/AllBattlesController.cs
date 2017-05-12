@@ -16,11 +16,16 @@ public class AllBattlesController : MonoBehaviour {
     [SerializeField]
     List<int> tempoParaBatalhas;
 
+    //guardar os temas da avaliacao em sequencia
+    List<Tema> temas = new List<Tema>();
+    //PerguntaAtiva
+    Pergunta perguntaAtiva = new Pergunta();
+
     List<Tema> temasInstanciados = new List<Tema>();
     List<List<Pergunta>> perguntasInstanciadas = new List<List<Pergunta>>();
 
     [SerializeField]
-    Image[] backgroundDasPerguntas;
+    Image[] backgroundDasPerguntas, backgroundDasRespostas;
 
     [SerializeField]
     GameObject painelDePerguntas;
@@ -36,27 +41,37 @@ public class AllBattlesController : MonoBehaviour {
     [SerializeField]
     AudioSource acabouOTempoSND, respostaCorretaSND, respostaErradaSND;
 
-    public int corretas, total;
+    public int tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas, corretas, tema1Total,
+        tema2Total, tema3Total, tema4Total, total;
 
     bool respondendo;
 
+    TimeController timeController;
+
+    void Start()
+    {
+        timeController = GetComponent<TimeController>();
+    }
+
     public void CriarBatalhas(List<Tema> temas, List<List<Pergunta>> perguntas)
     {
-        List<Tema> TemasNaoInstanciados = temas;
+        List<Tema> temasNaoInstanciados = new List<Tema>();
+        for (int i = 0; i < temas.Count; i++) temasNaoInstanciados.Add(temas[i]);
+
         List<List<Pergunta>> perguntasNaoInstanciadas = perguntas;
 
         //populando o vetor de indices de todas as batalhas
         for (int i = 0; i < batalhas.Count; i++) numBatalha.Add(i);
         
         //testando se o tema usa palavra-chave
-        for (int i = TemasNaoInstanciados.Count - 1; i >= 0; i--)
+        for (int i = temasNaoInstanciados.Count - 1; i >= 0; i--)
         {
             for (int j = 0; j < conteudo.Length; j++)
             {
-                if (TemasNaoInstanciados[i].GetNome().Trim().ToLower().Contains(conteudo[j]))
+                if (temasNaoInstanciados[i].GetNome().Trim().ToLower().Contains(conteudo[j]))
                 {
-                    temasInstanciados.Add(TemasNaoInstanciados[i]);
-                    TemasNaoInstanciados.Remove(TemasNaoInstanciados[i]);
+                    temasInstanciados.Add(temasNaoInstanciados[i]);
+                    temasNaoInstanciados.Remove(temasNaoInstanciados[i]);
                     perguntasInstanciadas.Add(perguntasNaoInstanciadas[i]);
                     perguntasNaoInstanciadas.Remove(perguntasNaoInstanciadas[i]);
                     StartCoroutine(AtivarBatalha(j,tempoParaBatalhas[0],j));
@@ -68,10 +83,10 @@ public class AllBattlesController : MonoBehaviour {
         }
 
         //caso nao use palavra-chave, randomiza
-        for (int i = TemasNaoInstanciados.Count - 1; i >= 0; i--)
+        for (int i = temasNaoInstanciados.Count - 1; i >= 0; i--)
         {
-            temasInstanciados.Add(TemasNaoInstanciados[i]);
-            TemasNaoInstanciados.Remove(TemasNaoInstanciados[i]);
+            temasInstanciados.Add(temasNaoInstanciados[i]);
+            temasNaoInstanciados.Remove(temasNaoInstanciados[i]);
             perguntasInstanciadas.Add(perguntasNaoInstanciadas[i]);
             perguntasNaoInstanciadas.Remove(perguntasNaoInstanciadas[i]);
             int sorteio = numBatalha[Random.Range(0, numBatalha.Count - 1)];
@@ -97,7 +112,7 @@ public class AllBattlesController : MonoBehaviour {
     //chama a pergunta das batalhas ativas
     public void ChamandoPerguntaDasBatalhasAtivas()
     {
-        int temaSorteado = Random.Range(0, temasAtivados.Count - 1);
+        int temaSorteado = Random.Range(0, temasAtivados.Count);
         Pergunta pergunta = temasAtivados[temaSorteado].PegaPerguntaNaoFeita();
         
         painelDePerguntas.SetActive(true);
@@ -126,6 +141,8 @@ public class AllBattlesController : MonoBehaviour {
         painelDePerguntas.transform.GetChild(sorteio).GetComponentInChildren<Text>().text = pergunta.GetErrada3();
         painelDePerguntas.transform.GetChild(sorteio).name = "wrong";
 
+        perguntaAtiva = pergunta;
+
         respondendo = true;
 
         StartCoroutine(ContagemDoRelogio());
@@ -133,6 +150,7 @@ public class AllBattlesController : MonoBehaviour {
 
     void DesativarPerguntas()
     {
+        timeController.Respondido();
         painelDePerguntas.SetActive(false);
     }
 
@@ -148,7 +166,25 @@ public class AllBattlesController : MonoBehaviour {
             relogio.sprite = relogioEmSegundos[i];
 
         }
+
         total++;
+        if (temas[0]!= null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+        {
+            tema1Total++;
+        }
+        else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+        {
+            tema2Total++;
+        }
+        else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+        {
+            tema3Total++;
+        }
+        else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+        {
+            tema4Total++;
+        }
+
         DesativarPerguntas();
         acabouOTempoSND.Play();
         respondendo = false;
@@ -161,12 +197,57 @@ public class AllBattlesController : MonoBehaviour {
         {
             corretas++;
             respostaCorretaSND.Play();
+
+            if (temas[0] != null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+            {
+                tema1Corretas++;
+                tema1Total++;
+            }
+            else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+            {
+                tema2Corretas++;
+                tema2Total++;
+            }
+            else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+            {
+                tema3Corretas++;
+                tema3Total++;
+            }
+            else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+            {
+                tema4Corretas++;
+                tema4Total++;
+            }
+
         }
         else
+        {
             respostaErradaSND.Play();
+            if (temas[0] != null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+            {
+                tema1Total++;
+            }
+            else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+            {
+                tema2Total++;
+            }
+            else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+            {
+                tema3Total++;
+            }
+            else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+            {
+                tema4Total++;
+            }
+        }
 
         total++;
         //StopCoroutine(ContagemDoRelogio()); //nao funciona
         DesativarPerguntas();
+    }
+
+    public void SetTemas(List<Tema> l)
+    {
+        temas = l;
     }
 }

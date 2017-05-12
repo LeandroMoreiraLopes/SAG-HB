@@ -10,8 +10,8 @@ public class Main : MonoBehaviour {
    
     enum GameState {intro, login, menuPrincipalFuncionario, menuManterAluno, menuDadosDoAluno, menuManterFuncionario, menuDadosDoFuncionario,
         menuManterMateria, menuDadosDaMateria, menuManterTema, menuDadosDoTema, menuManterPergunta, menuDadosDaPergunta, menuManterAvaliacao,
-        menuDadosDaAvaliacao1, menuDadosDaAvaliacao2, menuDadosDaAvaliacao3, menuRelatoriosDoFuncionario, menuPrincipalAluno, menuAvaliacaoAluno,
-        menuSimuladoAluno, menuRelatoriosDoAluno};
+        menuDadosDaAvaliacao1, menuDadosDaAvaliacao2, menuDadosDaAvaliacao3, menuRelatoriosDoFuncionario, menuRelatoriosDoFuncionarioDados,
+        menuPrincipalAluno, menuAvaliacaoAluno, menuSimuladoAluno, menuRelatoriosDoAluno, menuRelatoriosDoAlunoDados};
     GameState myGameState = GameState.intro;
 
     [SerializeField]
@@ -110,17 +110,23 @@ public class Main : MonoBehaviour {
             case GameState.menuRelatoriosDoFuncionario:
                 indice = 17;
                 break;
-            case GameState.menuPrincipalAluno:
+            case GameState.menuRelatoriosDoFuncionarioDados:
                 indice = 18;
                 break;
-            case GameState.menuAvaliacaoAluno:
+            case GameState.menuPrincipalAluno:
                 indice = 19;
                 break;
-            case GameState.menuSimuladoAluno:
+            case GameState.menuAvaliacaoAluno:
                 indice = 20;
                 break;
-            case GameState.menuRelatoriosDoAluno:
+            case GameState.menuSimuladoAluno:
                 indice = 21;
+                break;
+            case GameState.menuRelatoriosDoAluno:
+                indice = 22;
+                break;
+            case GameState.menuRelatoriosDoAlunoDados:
+                indice = 23;
                 break;
         }
 
