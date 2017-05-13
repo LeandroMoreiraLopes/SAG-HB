@@ -4,14 +4,43 @@ using UnityEngine;
 
 public class SingleBattleController : MonoBehaviour {
 
+    AllBattlesController battleController;
+
     Tema tema = new Tema();
     List<Pergunta> perguntas = new List<Pergunta>();
     List<Pergunta> perguntasNaoFeitas = new List<Pergunta>();
     List<Pergunta> perguntasFeitas = new List<Pergunta>();
 
+    int hp = 100;
+    bool ativa;
+
+    private void Start()
+    {
+        battleController = GameObject.FindGameObjectWithTag("Controlador").GetComponent<AllBattlesController>();
+    }
+
+    IEnumerator AtivaEPerdandoHP()
+    {
+        while (ativa)
+        {
+            yield return new WaitForSeconds(5);
+            hp -= 5;
+            if (hp <= 0)
+            {
+                ativa = false;
+                battleController.RemocaoDeTema(tema.GetId());
+            }
+        }
+    }
+
     public void SetTema(Tema t)
     {
         tema = t;
+    }
+
+    public int GetTemaId()
+    {
+        return tema.GetId();
     }
 
     public void SetPerguntas(List<Pergunta> listaDePerguntas)
@@ -38,5 +67,14 @@ public class SingleBattleController : MonoBehaviour {
         perguntasNaoFeitas.Remove(perguntasNaoFeitas[sorteio]);
 
         return perguntasFeitas[perguntasFeitas.Count - 1];
+    }
+
+    public void GanhaHP(int pontos)
+    {
+        if (hp > 0)
+        hp += pontos;
+
+        if (hp > 100)
+            hp = 100;
     }
 }

@@ -50,7 +50,7 @@ public class AvaliacaoDisponivelView : MonoBehaviour {
     public void VoltarParaMenuJogador()
     {
         selecionado = 0;
-        main.MudarGameState(18, 0);
+        main.MudarGameState(19, 0);
     }
 
     public void IniciarAvaliacao()

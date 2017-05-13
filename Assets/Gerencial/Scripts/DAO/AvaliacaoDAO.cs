@@ -867,4 +867,59 @@ public class AvaliacaoDAO {
         }
     }
 
+    public void SalvarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao, int tema1certo, int tema2certo,
+        int tema3certo, int tema4certo, int tema1total, int tema2total, int tema3total, int tema4total)
+    {
+        //conexão
+        MySqlConnection db = Connection.getConnection();
+
+        //transação
+        MySqlTransaction mySQLTransaction;
+        mySQLTransaction = db.BeginTransaction();
+
+        try
+        {
+            //comando na conexão para execução da procedure
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "AvaliacaoDoAluno_Preenche_Dados";
+
+            //preenchendo os parametros da procedure
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", id_avaliacao);
+            mySQLcmd.Parameters.AddWithValue("LOC_ALUNO_ID", id_aluno);
+            mySQLcmd.Parameters.AddWithValue("LOC_DATA_REALIZACAO", dataRealiacao);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA1_TOTALACERTOS", tema1certo);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA1_TOTALPERGUNTAS", tema1total);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA2_TOTALACERTOS", tema2certo);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA2_TOTALPERGUNTAS", tema2total);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA3_TOTALACERTOS", tema3certo);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA3_TOTALPERGUNTAS", tema3total);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA4_TOTALACERTOS", tema4certo);
+            mySQLcmd.Parameters.AddWithValue("LOC_TEMA4_TOTALPERGUNTAS", tema4total);
+
+            //ligando a transação
+            mySQLcmd.Transaction = mySQLTransaction;
+
+            //execução sem retorno
+            mySQLcmd.ExecuteNonQuery();
+
+            //commit da transação
+            mySQLTransaction.Commit();
+        }
+        catch (MySqlException ex)
+        {
+            mySQLTransaction.Rollback();
+            throw new ExcecaoSAG("Erro na gravação dos dados da avaliação. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            mySQLTransaction.Rollback();
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+    }
 }

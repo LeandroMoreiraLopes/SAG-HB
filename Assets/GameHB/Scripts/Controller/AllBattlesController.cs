@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AllBattlesController : MonoBehaviour {
 
+    GameMainHB main;
+
     [SerializeField]
     string[] conteudo;
 
@@ -41,16 +43,19 @@ public class AllBattlesController : MonoBehaviour {
     [SerializeField]
     AudioSource acabouOTempoSND, respostaCorretaSND, respostaErradaSND;
 
-    public int tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas, corretas, tema1Total,
-        tema2Total, tema3Total, tema4Total, total;
+    int tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas, tema1Total,
+        tema2Total, tema3Total, tema4Total;
 
     bool respondendo;
 
     TimeController timeController;
 
+    List<int> temasEmExecucao = new List<int>();
+
     void Start()
     {
         timeController = GetComponent<TimeController>();
+        main = GetComponent<GameMainHB>();
     }
 
     public void CriarBatalhas(List<Tema> temas, List<List<Pergunta>> perguntas)
@@ -62,7 +67,7 @@ public class AllBattlesController : MonoBehaviour {
 
         //populando o vetor de indices de todas as batalhas
         for (int i = 0; i < batalhas.Count; i++) numBatalha.Add(i);
-        
+
         //testando se o tema usa palavra-chave
         for (int i = temasNaoInstanciados.Count - 1; i >= 0; i--)
         {
@@ -74,7 +79,7 @@ public class AllBattlesController : MonoBehaviour {
                     temasNaoInstanciados.Remove(temasNaoInstanciados[i]);
                     perguntasInstanciadas.Add(perguntasNaoInstanciadas[i]);
                     perguntasNaoInstanciadas.Remove(perguntasNaoInstanciadas[i]);
-                    StartCoroutine(AtivarBatalha(j,tempoParaBatalhas[0],j));
+                    StartCoroutine(AtivarBatalha(j, tempoParaBatalhas[0], j));
                     numBatalha.Remove(j);
                     tempoParaBatalhas.Remove(tempoParaBatalhas[0]);
                     break;
@@ -107,6 +112,8 @@ public class AllBattlesController : MonoBehaviour {
         batalhas[index].GetComponent<SingleBattleController>().SetPerguntas(perguntasInstanciadas[0]);
         temasAtivados.Add(batalhas[index].GetComponent<SingleBattleController>());
         perguntasInstanciadas.Remove(perguntasInstanciadas[0]);
+        //lista para controlar o numero de batalhas ativas, caso 0, gameover
+        temasEmExecucao.Add(batalhas[index].GetComponent<SingleBattleController>().GetTemaId());
     }
 
     //chama a pergunta das batalhas ativas
@@ -114,7 +121,7 @@ public class AllBattlesController : MonoBehaviour {
     {
         int temaSorteado = Random.Range(0, temasAtivados.Count);
         Pergunta pergunta = temasAtivados[temaSorteado].PegaPerguntaNaoFeita();
-        
+
         painelDePerguntas.SetActive(true);
         //texto da pergunta
         painelDePerguntas.transform.GetChild(0).GetComponentInChildren<Text>().text = pergunta.GetDescricao();
@@ -167,20 +174,20 @@ public class AllBattlesController : MonoBehaviour {
 
         }
 
-        total++;
-        if (temas[0]!= null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+        //definindo qual tema nao foi respondido
+        if (temas.Count >= 1 && perguntaAtiva.GetTemaId() == temas[0].GetId())
         {
             tema1Total++;
         }
-        else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+        else if (temas.Count >= 2 && perguntaAtiva.GetTemaId() == temas[1].GetId())
         {
             tema2Total++;
         }
-        else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+        else if (temas.Count >= 3 && perguntaAtiva.GetTemaId() == temas[2].GetId())
         {
             tema3Total++;
         }
-        else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+        else if (temas.Count >= 4 && perguntaAtiva.GetTemaId() == temas[3].GetId())
         {
             tema4Total++;
         }
@@ -195,25 +202,33 @@ public class AllBattlesController : MonoBehaviour {
         respondendo = false;
         if (s == "right")
         {
-            corretas++;
             respostaCorretaSND.Play();
 
-            if (temas[0] != null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+            for (int i = 0; i < temasAtivados.Count; i++)
+            {
+                if (temasAtivados[i].GetTemaId() == perguntaAtiva.GetTemaId())
+                {
+                    temasAtivados[i].GanhaHP(20);
+                }
+            }
+
+            //definindo qual tema foi acertado
+            if (temas.Count >= 1 && perguntaAtiva.GetTemaId() == temas[0].GetId())
             {
                 tema1Corretas++;
                 tema1Total++;
             }
-            else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+            else if (temas.Count >= 2 && perguntaAtiva.GetTemaId() == temas[1].GetId())
             {
                 tema2Corretas++;
                 tema2Total++;
             }
-            else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+            else if (temas.Count >= 3 && perguntaAtiva.GetTemaId() == temas[2].GetId())
             {
                 tema3Corretas++;
                 tema3Total++;
             }
-            else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+            else if (temas.Count == 4 && perguntaAtiva.GetTemaId() == temas[3].GetId())
             {
                 tema4Corretas++;
                 tema4Total++;
@@ -222,26 +237,26 @@ public class AllBattlesController : MonoBehaviour {
         }
         else
         {
+            //definindo qual tema foi errado
             respostaErradaSND.Play();
-            if (temas[0] != null && perguntaAtiva.GetTemaId() == temas[0].GetId())
+            if (temas.Count >= 1 && perguntaAtiva.GetTemaId() == temas[0].GetId())
             {
                 tema1Total++;
             }
-            else if (temas[1] != null && perguntaAtiva.GetTemaId() == temas[1].GetId())
+            else if (temas.Count >= 2 && perguntaAtiva.GetTemaId() == temas[1].GetId())
             {
                 tema2Total++;
             }
-            else if (temas[2] != null && perguntaAtiva.GetTemaId() == temas[2].GetId())
+            else if (temas.Count >= 3 && perguntaAtiva.GetTemaId() == temas[2].GetId())
             {
                 tema3Total++;
             }
-            else if (temas[3] != null && perguntaAtiva.GetTemaId() == temas[3].GetId())
+            else if (temas.Count >= 4 && perguntaAtiva.GetTemaId() == temas[3].GetId())
             {
                 tema4Total++;
             }
         }
 
-        total++;
         //StopCoroutine(ContagemDoRelogio()); //nao funciona
         DesativarPerguntas();
     }
@@ -249,5 +264,30 @@ public class AllBattlesController : MonoBehaviour {
     public void SetTemas(List<Tema> l)
     {
         temas = l;
+    }
+
+    public void RemocaoDeTema(int i)
+    {
+        temasEmExecucao.Remove(i);
+        if (temasEmExecucao.Count == 0)
+        {
+            FinalizarJogo();
+        }
+    }
+
+    public void FinalizarJogo()
+    {
+        timeController.SetGameOver(true);
+        main.FinalizarJogo(tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas,
+            tema1Total, tema2Total, tema3Total, tema4Total);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.Q))
+        {
+            main.FinalizarJogo(tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas,
+                tema1Total, tema2Total, tema3Total, tema4Total);
+        }
     }
 }

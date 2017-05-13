@@ -43,6 +43,13 @@ public class TimeController : MonoBehaviour {
                 }
             }
 
+            //30 min tempo maximo da avaliacao
+            if (minutos == 30)
+            {
+                gameOver = true;
+                battlesControl.FinalizarJogo();
+            }
+
 
             if (!respondendo)
             {

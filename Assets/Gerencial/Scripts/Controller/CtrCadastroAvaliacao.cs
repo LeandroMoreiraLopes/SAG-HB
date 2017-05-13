@@ -173,5 +173,20 @@ public class CtrCadastroAvaliacao {
             throw new ExcecaoSAG(ex.getMsg());
         }
     }
+
+    public void GuardarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao, int tema1certo, int tema2certo, 
+        int tema3certo, int tema4certo, int tema1total, int tema2total, int tema3total, int tema4total)
+    {
+        try
+        {
+            avaliacaoDAO.SalvarResultadoAvaliacao(id_aluno, id_avaliacao, dataRealiacao, tema1certo, tema2certo,
+        tema3certo, tema4certo, tema1total, tema2total, tema3total, tema4total);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+    }
+    
 }
 
