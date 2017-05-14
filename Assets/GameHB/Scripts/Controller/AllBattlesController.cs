@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class AllBattlesController : MonoBehaviour {
 
     GameMainHB main;
-
+   
     [SerializeField]
     string[] conteudo;
 
@@ -239,6 +239,7 @@ public class AllBattlesController : MonoBehaviour {
         {
             //definindo qual tema foi errado
             respostaErradaSND.Play();
+            
             if (temas.Count >= 1 && perguntaAtiva.GetTemaId() == temas[0].GetId())
             {
                 tema1Total++;
