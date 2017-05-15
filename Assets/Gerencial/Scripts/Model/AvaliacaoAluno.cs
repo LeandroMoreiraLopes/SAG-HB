@@ -79,4 +79,44 @@ public class AvaliacaoAluno {
     {
         tema4TotalDePerguntas = i;
     }
+
+    public int GetTema1TotalDeAcertos()
+    {
+        return tema1TotalDeAcertos;
+    }
+
+    public void SetTema1TotalDeAcertos(int i)
+    {
+        tema1TotalDeAcertos = i;
+    }
+
+    public int GetTema2TotalDeAcertos()
+    {
+        return tema2TotalDeAcertos;
+    }
+
+    public void SetTema2TotalDeAcertos(int i)
+    {
+        tema2TotalDeAcertos = i;
+    }
+
+    public int GetTema3TotalDeAcertos()
+    {
+        return tema3TotalDeAcertos;
+    }
+
+    public void SetTema3TotalDeAcertos(int i)
+    {
+        tema3TotalDeAcertos = i;
+    }
+
+    public int GetTema4TotalDeAcertos()
+    {
+        return tema4TotalDeAcertos;
+    }
+
+    public void SetTema4TotalDeAcertos(int i)
+    {
+        tema4TotalDeAcertos = i;
+    }
 }

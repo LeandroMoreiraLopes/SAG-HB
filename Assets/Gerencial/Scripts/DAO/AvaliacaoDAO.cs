@@ -106,7 +106,7 @@ public class AvaliacaoDAO {
                     umaAvaliacao.SetDataFim(rsAvaliacao.GetInt32("datafim"));
                     umaAvaliacao.SetSimulado(rsAvaliacao.GetBoolean("simulado"));
 
-                    umaMateria = new Materia();
+                   /* umaMateria = new Materia();
                     umaMateria.SetId(rsAvaliacao.GetInt32("materia_id"));
                     matDAO.Carregar(umaMateria);
                     umaAvaliacao.SetMateria(umaMateria);
@@ -120,7 +120,7 @@ public class AvaliacaoDAO {
                     umaAvaliacao.SetAlunos(alunos);
 
                     temas = temaDAO.PegarTemasPorMateria(umaMateria.GetId());
-                    umaAvaliacao.SetTemas(temas);
+                    umaAvaliacao.SetTemas(temas);*/
 
                     avaliacoes.Add(umaAvaliacao);
                 }
@@ -142,6 +142,12 @@ public class AvaliacaoDAO {
         {
             db.Close();
         }
+
+        for (int i = 0; i < avaliacoes.Count; i++)
+        {
+            Carregar(avaliacoes[i]);
+        }
+
         //retorna a lista de alunos
         return avaliacoes;
     }
@@ -318,6 +324,131 @@ public class AvaliacaoDAO {
         }
         //retorna a lista de alunos
         return avaliacoes;
+    }
+
+    public List<AvaliacaoAluno> PegarDadosDaAvaliacaoAlunoPorAvaliacao(int avaliacaoId)
+    {
+        List<AvaliacaoAluno> avaliacoesDeAlunos = new List<AvaliacaoAluno>();
+        AvaliacaoAluno umaAvaliacaoDeAluno;
+        
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_AvaliacaoDoAluno_Por_Avaliacao";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacaoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umaAvaliacaoDeAluno = new AvaliacaoAluno();
+                    umaAvaliacaoDeAluno.SetDataRealizacao(rsAvaliacao.GetInt32("data_realizacao"));
+                    umaAvaliacaoDeAluno.SetTema1TotalDePerguntas(rsAvaliacao.GetInt32("tema1_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema1TotalDeAcertos(rsAvaliacao.GetInt32("tema1_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema2TotalDePerguntas(rsAvaliacao.GetInt32("tema2_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema2TotalDeAcertos(rsAvaliacao.GetInt32("tema2_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema3TotalDePerguntas(rsAvaliacao.GetInt32("tema3_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema3TotalDeAcertos(rsAvaliacao.GetInt32("tema3_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema4TotalDePerguntas(rsAvaliacao.GetInt32("tema4_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema4TotalDeAcertos(rsAvaliacao.GetInt32("tema4_totalacertos"));
+
+                    avaliacoesDeAlunos.Add(umaAvaliacaoDeAluno);
+                }
+                db.Close();
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return avaliacoesDeAlunos;
+    }
+
+    public AvaliacaoAluno PegarDadosDaAvaliacaoAlunoDeUmAlunoEmUmaAvaliacao(int alunoId, int avaliacaoId)
+    {
+        AvaliacaoAluno umaAvaliacaoDeAluno = new AvaliacaoAluno();
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_AvaliacaoDoAluno_Por_AvaliacaoeAluno";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_ALUNO_ID", alunoId);
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacaoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umaAvaliacaoDeAluno.SetDataRealizacao(rsAvaliacao.GetInt32("data_realizacao"));
+                    umaAvaliacaoDeAluno.SetTema1TotalDePerguntas(rsAvaliacao.GetInt32("tema1_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema1TotalDeAcertos(rsAvaliacao.GetInt32("tema1_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema2TotalDePerguntas(rsAvaliacao.GetInt32("tema2_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema2TotalDeAcertos(rsAvaliacao.GetInt32("tema2_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema3TotalDePerguntas(rsAvaliacao.GetInt32("tema3_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema3TotalDeAcertos(rsAvaliacao.GetInt32("tema3_totalacertos"));
+                    umaAvaliacaoDeAluno.SetTema4TotalDePerguntas(rsAvaliacao.GetInt32("tema4_totalperguntas"));
+                    umaAvaliacaoDeAluno.SetTema4TotalDeAcertos(rsAvaliacao.GetInt32("tema4_totalacertos"));
+                }
+                db.Close();
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return umaAvaliacaoDeAluno;
     }
 
     public void Incluir(Avaliacao avaliacao)

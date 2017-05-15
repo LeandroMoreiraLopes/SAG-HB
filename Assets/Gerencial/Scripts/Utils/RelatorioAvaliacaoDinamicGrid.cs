@@ -29,13 +29,14 @@ public class RelatorioAvaliacaoDinamicGrid : MonoBehaviour
 
         for (int i = 0; i < lista.Count; i++)
         {
-            if (FormatarData.DepoisDaDataFinal(lista[i].GetDataFim()) && !lista[i].GetSimulado())
+            if (FormatarData.DepoisDaDataFinal(lista[i].GetDataFim()))
             {
                 GameObject temp = Instantiate(gridFilho, transform.position, transform.rotation) as GameObject;
                 temp.transform.SetParent(gameObject.transform);
                 temp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lista[i].GetDescricao().ToString();
-                temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lista[i].GetMateria().GetNome();
-                
+                temp.transform.GetChild(1).gameObject.GetComponent<Text>().text = FormatarData.FormatToString(lista[i].GetDataFim());
+                temp.transform.GetChild(2).gameObject.GetComponent<Text>().text = lista[i].GetMateria().GetNome();
+                temp.GetComponent<Button>().interactable = true;
                 temp.name = lista[i].GetId().ToString();
             }
         }

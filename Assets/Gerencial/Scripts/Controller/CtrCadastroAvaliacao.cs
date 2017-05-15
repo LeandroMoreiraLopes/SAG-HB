@@ -76,6 +76,36 @@ public class CtrCadastroAvaliacao {
         return lista;
     }
 
+    public List<AvaliacaoAluno> ListarDadosDaAvaliacaoAlunoPoAvaliacao(int avaliacaoId)
+    {
+        List<AvaliacaoAluno> lista = new List<AvaliacaoAluno>();
+        try
+        {
+            lista = avaliacaoDAO.PegarDadosDaAvaliacaoAlunoPorAvaliacao(avaliacaoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
+    public AvaliacaoAluno PegarDadosDaAvaliacaoAlunoDeUmAlunoEmUmaAvaliacao(int alunoId, int avaliacaoId)
+    {
+        AvaliacaoAluno avaliacaoAluno = new AvaliacaoAluno();
+        try
+        {
+            avaliacaoAluno = avaliacaoDAO.PegarDadosDaAvaliacaoAlunoDeUmAlunoEmUmaAvaliacao(alunoId, avaliacaoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return avaliacaoAluno;
+    }
+
+    
+
     private bool Validar(Avaliacao avaliacao)
     {
         if (avaliacao.GetDescricao() == null || avaliacao.GetDescricao().Trim().Equals(""))
