@@ -24,6 +24,10 @@ public class SingleBattleController : MonoBehaviour {
     List<Pergunta> perguntasNaoFeitas = new List<Pergunta>();
     List<Pergunta> perguntasFeitas = new List<Pergunta>();
 
+    [SerializeField]
+    List<GameObject> inimigos = new List<GameObject>();
+    bool comInimigos = false;
+
     int hp = 100;
     bool ativa = false;
 
@@ -39,6 +43,7 @@ public class SingleBattleController : MonoBehaviour {
 
         ativa = true;
         StartCoroutine(AtivaEPerdendoHP());
+        StartCoroutine(InstanciaInimigos());
         cam = GameObject.FindGameObjectWithTag("Player").GetComponent<CameraController>();
     }
 
@@ -46,17 +51,43 @@ public class SingleBattleController : MonoBehaviour {
     {
         while (ativa)
         {
-            yield return new WaitForSeconds(5);
-            hp -= 2;
-            hpTxt[meuIndex].text = "Tema " + (meuIndex + 1) + " HP: " + hp;
-            if (hp <= 0)
+            for (int j = 0; j < inimigos.Count; j++)
             {
-                ativa = false;
-                destruicao.Play();
-                cam.Shake();
-                Instantiate(fumaca, transform.position, Quaternion.identity);
-                battleController.RemocaoDeTema(tema.GetId());
+                if (inimigos[j].activeInHierarchy)
+                    comInimigos = true;
             }
+            
+            yield return new WaitForSeconds(5);
+            if (comInimigos)
+            {
+                hp -= 2;
+                hpTxt[meuIndex].text = "Tema " + (meuIndex + 1) + " HP: " + hp;
+                if (hp <= 0)
+                {
+                    ativa = false;
+                    destruicao.Play();
+                    cam.Shake();
+                    Instantiate(fumaca, transform.position, Quaternion.identity);
+                    battleController.RemocaoDeTema(tema.GetId());
+                }
+            }
+        }
+    }
+
+    IEnumerator InstanciaInimigos()
+    {
+        int i = 0;
+        while (ativa && i < 3)
+        {
+            yield return new WaitForSeconds(10);
+            if (!inimigos[i].activeInHierarchy)
+            {
+                inimigos[i].SetActive(true);
+                inimigos[i].GetComponent<OscilacaoDosBarcos>().ReStart();
+            }
+            comInimigos = true;
+            i++;
+            if (i >= 3) i = 0;           
         }
     }
 
