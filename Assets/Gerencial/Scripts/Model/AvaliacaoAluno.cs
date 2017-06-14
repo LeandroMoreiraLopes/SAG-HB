@@ -7,8 +7,18 @@ public class AvaliacaoAluno {
     Aluno aluno;
     Avaliacao avaliacao;
 
-    int dataRealizacao, tema1TotalDePerguntas, tema1TotalDeAcertos, tema2TotalDePerguntas, tema2TotalDeAcertos,
+    int id, dataRealizacao, tema1TotalDePerguntas, tema1TotalDeAcertos, tema2TotalDePerguntas, tema2TotalDeAcertos,
         tema3TotalDePerguntas, tema3TotalDeAcertos, tema4TotalDePerguntas, tema4TotalDeAcertos;
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int i)
+    {
+        id = i;
+    }
 
     public Aluno getAluno()
     {

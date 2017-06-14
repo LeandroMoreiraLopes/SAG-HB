@@ -355,16 +355,9 @@ public class AvaliacaoDAO {
                 {
                     //criando um aluno para cada linha
                     umaAvaliacaoDeAluno = new AvaliacaoAluno();
+                    umaAvaliacaoDeAluno.setId(rsAvaliacao.GetInt32("id"));
                     umaAvaliacaoDeAluno.SetDataRealizacao(rsAvaliacao.GetInt32("data_realizacao"));
-                    umaAvaliacaoDeAluno.SetTema1TotalDePerguntas(rsAvaliacao.GetInt32("tema1_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema1TotalDeAcertos(rsAvaliacao.GetInt32("tema1_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema2TotalDePerguntas(rsAvaliacao.GetInt32("tema2_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema2TotalDeAcertos(rsAvaliacao.GetInt32("tema2_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema3TotalDePerguntas(rsAvaliacao.GetInt32("tema3_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema3TotalDeAcertos(rsAvaliacao.GetInt32("tema3_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema4TotalDePerguntas(rsAvaliacao.GetInt32("tema4_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema4TotalDeAcertos(rsAvaliacao.GetInt32("tema4_totalacertos"));
-
+                    
                     avaliacoesDeAlunos.Add(umaAvaliacaoDeAluno);
                 }
                 db.Close();
@@ -388,6 +381,124 @@ public class AvaliacaoDAO {
         }
         //retorna a lista de alunos
         return avaliacoesDeAlunos;
+    }
+
+    public List<PerguntaDaAvaliacaoDoAluno> PegarPerguntasDeUmaAvaliacao(int avaliacaoDoAlunoId)
+    {
+        List<PerguntaDaAvaliacaoDoAluno> perguntasDaAvaliacaoDoAluno = new List<PerguntaDaAvaliacaoDoAluno>();
+        PerguntaDaAvaliacaoDoAluno umaPerguntaDaAvaliacaoDeAluno;
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_Perguntas_Da_Avaliacao_Do_Aluno";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_DO_ALUNO_ID", avaliacaoDoAlunoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umaPerguntaDaAvaliacaoDeAluno = new PerguntaDaAvaliacaoDoAluno();
+                    umaPerguntaDaAvaliacaoDeAluno.setId(rsAvaliacao.GetInt32("id"));
+                    umaPerguntaDaAvaliacaoDeAluno.setAvaliacaoId(rsAvaliacao.GetInt32("avaliacao_id"));
+                    umaPerguntaDaAvaliacaoDeAluno.setPerguntaId(rsAvaliacao.GetInt32("pergunta_id"));
+                    umaPerguntaDaAvaliacaoDeAluno.setCorreta(rsAvaliacao.GetBoolean("correta"));
+                    perguntasDaAvaliacaoDoAluno.Add(umaPerguntaDaAvaliacaoDeAluno);
+                }
+                db.Close();
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return perguntasDaAvaliacaoDoAluno;
+    }
+
+    public List<Tema> PegarTemasDaAvaliacaoAluno(int avaliacaoId)
+    {
+        List<Tema> temasDaAvaliacao = new List<Tema>();
+        Tema umTemaDaAvaliacao;
+
+        //Conexão
+        MySqlConnection db = Connection.getConnection();
+
+        try
+        {
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "Carregar_Temas_Da_Avaliacao";
+
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", avaliacaoId);
+
+            //execução sem retorno
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+
+            //se há linhas
+            if (rsAvaliacao.HasRows)
+            {
+                //enquanto lê cada linha
+                while (rsAvaliacao.Read())
+                {
+                    //criando um aluno para cada linha
+                    umTemaDaAvaliacao = new Tema();
+                    umTemaDaAvaliacao.SetId(rsAvaliacao.GetInt32("id"));
+                    umTemaDaAvaliacao.SetNome(rsAvaliacao.GetString("nome"));
+                    umTemaDaAvaliacao.SetDescricao(rsAvaliacao.GetString("descricao"));
+                    umTemaDaAvaliacao.SetSerie(rsAvaliacao.GetString("serie"));
+                    umTemaDaAvaliacao.SetMatId(rsAvaliacao.GetInt32("materia_id"));
+
+                    temasDaAvaliacao.Add(umTemaDaAvaliacao);
+                }
+                db.Close();
+            }
+            else
+            {
+                //sem resultados
+            }
+        }
+        catch (MySqlException ex)
+        {
+            throw new ExcecaoSAG("Erro ao listar os temas da avaliacao. Código " + ex.ToString());
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+        //retorna a lista de alunos
+        return temasDaAvaliacao;
     }
 
     public AvaliacaoAluno PegarDadosDaAvaliacaoAlunoDeUmAlunoEmUmaAvaliacao(int alunoId, int avaliacaoId)
@@ -998,8 +1109,7 @@ public class AvaliacaoDAO {
         }
     }
 
-    public void SalvarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao, int tema1certo, int tema2certo,
-        int tema3certo, int tema4certo, int tema1total, int tema2total, int tema3total, int tema4total)
+    public int SalvarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao)
     {
         //conexão
         MySqlConnection db = Connection.getConnection();
@@ -1007,6 +1117,8 @@ public class AvaliacaoDAO {
         //transação
         MySqlTransaction mySQLTransaction;
         mySQLTransaction = db.BeginTransaction();
+
+        int lastIndex = 0;
 
         try
         {
@@ -1020,20 +1132,17 @@ public class AvaliacaoDAO {
             mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_ID", id_avaliacao);
             mySQLcmd.Parameters.AddWithValue("LOC_ALUNO_ID", id_aluno);
             mySQLcmd.Parameters.AddWithValue("LOC_DATA_REALIZACAO", dataRealiacao);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA1_TOTALACERTOS", tema1certo);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA1_TOTALPERGUNTAS", tema1total);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA2_TOTALACERTOS", tema2certo);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA2_TOTALPERGUNTAS", tema2total);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA3_TOTALACERTOS", tema3certo);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA3_TOTALPERGUNTAS", tema3total);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA4_TOTALACERTOS", tema4certo);
-            mySQLcmd.Parameters.AddWithValue("LOC_TEMA4_TOTALPERGUNTAS", tema4total);
 
             //ligando a transação
             mySQLcmd.Transaction = mySQLTransaction;
-
-            //execução sem retorno
-            mySQLcmd.ExecuteNonQuery();
+                        
+            MySqlDataReader rsAvaliacao = mySQLcmd.ExecuteReader();
+            //lastIndex = mySQLcmd.ExecuteNonQuery();
+            while (rsAvaliacao.Read())
+            {
+                lastIndex = rsAvaliacao.GetInt32(0);
+            }
+            rsAvaliacao.Close();
 
             //commit da transação
             mySQLTransaction.Commit();
@@ -1052,5 +1161,7 @@ public class AvaliacaoDAO {
         {
             db.Close();
         }
+
+        return lastIndex;
     }
 }

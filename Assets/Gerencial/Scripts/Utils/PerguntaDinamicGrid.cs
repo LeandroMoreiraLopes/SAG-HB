@@ -18,7 +18,7 @@ public class PerguntaDinamicGrid : MonoBehaviour {
         RectTransform parent = gameObject.GetComponent<RectTransform>();
         GridLayoutGroup grid = gameObject.GetComponent<GridLayoutGroup>();
 
-        grid.cellSize = new Vector2(parent.rect.width, 20);
+        grid.cellSize = new Vector2(260, 20);
 
         for (int i = transform.GetChildCount() - 1; i > 0; i--)
         {

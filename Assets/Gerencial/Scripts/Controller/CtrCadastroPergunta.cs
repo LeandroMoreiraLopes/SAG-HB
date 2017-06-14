@@ -146,5 +146,18 @@ public class CtrCadastroPergunta {
             throw new ExcecaoSAG(ex.getMsg());
         }
     }
+
+    public void IncluirPerguntaDaAvaliacao(int avaliacaoID, int perguntaID, int correta)
+    {
+        try
+        {
+            perguntaDAO.IncluirPerguntaAvaliacao(avaliacaoID, perguntaID, correta);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+
+    }
 }
 

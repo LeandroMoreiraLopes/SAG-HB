@@ -371,4 +371,68 @@ public class PerguntaDAO {
         }
     }
 
+
+    public void IncluirPerguntaAvaliacao(int avaliacaoID, int perguntaID, int correta)
+    {
+        //conexão
+        MySqlConnection db = Connection.getConnection();
+
+        //transação
+        MySqlTransaction mySQLTransaction;
+        mySQLTransaction = db.BeginTransaction();
+
+        try
+        {
+            //comando na conexão para execução da procedure
+            MySqlCommand mySQLcmd = db.CreateCommand();
+
+            //setando a procedure do banco
+            mySQLcmd.CommandType = CommandType.StoredProcedure;
+            mySQLcmd.CommandText = "PerguntaAvaliacaoDoAluno_Inserir";
+
+            //preenchendo os parametros da procedure
+            mySQLcmd.Parameters.AddWithValue("LOC_AVALIACAO_DO_ALUNO_ID", avaliacaoID);
+            mySQLcmd.Parameters.AddWithValue("LOC_PERGUNTA_ID", perguntaID);
+            mySQLcmd.Parameters.AddWithValue("LOC_CORRETA", correta);
+
+            //ligando a transação
+            mySQLcmd.Transaction = mySQLTransaction;
+
+            //execução sem retorno
+            mySQLcmd.ExecuteNonQuery();
+
+            //commit da transação
+            mySQLTransaction.Commit();
+        }
+        catch (MySqlException ex)
+        {
+            try
+            {
+                //rollback caso haja erro no MySQL
+                mySQLTransaction.Rollback();
+            }
+            catch (MySqlException ex1)
+            {
+                throw new ExcecaoSAG("Erro na inclusão da pergunta da avaliação. Código " + ex1.ToString());
+            }
+        }
+        catch (ExcecaoSAG ex)
+        {
+            try
+            {
+                //rollback caso haja erro na aplicação
+                mySQLTransaction.Rollback();
+            }
+            catch (MySqlException ex1)
+            {
+                throw new ExcecaoSAG("Erro na inclusão da pergunta da avaliação. Código " + ex1.ToString());
+            }
+            throw ex;
+        }
+        finally
+        {
+            db.Close();
+        }
+
+    }
 }

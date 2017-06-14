@@ -50,6 +50,9 @@ public class AllBattlesController : MonoBehaviour {
 
     TimeController timeController;
 
+    List<int> respostas = new List<int>();
+    List<Pergunta> perguntasRealizadas = new List<Pergunta>();
+
     List<int> temasEmExecucao = new List<int>();
 
     void Start()
@@ -122,6 +125,8 @@ public class AllBattlesController : MonoBehaviour {
         int temaSorteado = Random.Range(0, temasAtivados.Count);
         Pergunta pergunta = temasAtivados[temaSorteado].PegaPerguntaNaoFeita();
 
+        perguntasRealizadas.Add(pergunta);
+
         painelDePerguntas.SetActive(true);
         //texto da pergunta
         painelDePerguntas.transform.GetChild(0).GetComponentInChildren<Text>().text = pergunta.GetDescricao();
@@ -155,10 +160,14 @@ public class AllBattlesController : MonoBehaviour {
         StartCoroutine(ContagemDoRelogio());
     }
 
-    void DesativarPerguntas()
+    void DesativarPerguntas(int resposta)
     {
+        int respostaCorreta = resposta;
         timeController.Respondido();
         painelDePerguntas.SetActive(false);
+
+        respostas.Add(resposta);
+        //CRIAR NA TABELA PERGUNTA DA AVALIACAO O RELACIONAMENTO
     }
 
     IEnumerator ContagemDoRelogio()
@@ -192,16 +201,18 @@ public class AllBattlesController : MonoBehaviour {
             tema4Total++;
         }
 
-        DesativarPerguntas();
+        DesativarPerguntas(0);
         acabouOTempoSND.Play();
         respondendo = false;
     }
 
     public void Respondendo(string s)
     {
+        int resposta = 0;
         respondendo = false;
         if (s == "right")
         {
+            resposta = 1;
             respostaCorretaSND.Play();
 
             for (int i = 0; i < temasAtivados.Count; i++)
@@ -259,7 +270,9 @@ public class AllBattlesController : MonoBehaviour {
         }
 
         //StopCoroutine(ContagemDoRelogio()); //nao funciona
-        DesativarPerguntas();
+        DesativarPerguntas(resposta);
+
+        // TENHO SE ELE ACERTOU OU NÃO A PERGUNTA
     }
 
     public void SetTemas(List<Tema> l)
@@ -280,7 +293,10 @@ public class AllBattlesController : MonoBehaviour {
     {
         timeController.SetGameOver(true);
         main.FinalizarJogo(tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas,
+        
             tema1Total, tema2Total, tema3Total, tema4Total);
+
+        main.GameOver(respostas, perguntasRealizadas);
     }
 
     private void Update()
@@ -289,6 +305,8 @@ public class AllBattlesController : MonoBehaviour {
         {
             main.FinalizarJogo(tema1Corretas, tema2Corretas, tema3Corretas, tema4Corretas,
                 tema1Total, tema2Total, tema3Total, tema4Total);
+
+            main.GameOver(respostas, perguntasRealizadas);
         }
     }
 }

@@ -90,6 +90,34 @@ public class CtrCadastroAvaliacao {
         return lista;
     }
 
+    public List<PerguntaDaAvaliacaoDoAluno> ListarPerguntasDeUmaAvaliacao(int avaliacaoDoAlunoId)
+    {
+        List<PerguntaDaAvaliacaoDoAluno> lista = new List<PerguntaDaAvaliacaoDoAluno>();
+        try
+        {
+            lista = avaliacaoDAO.PegarPerguntasDeUmaAvaliacao(avaliacaoDoAlunoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
+    public List<Tema> ListarTemasDeUmaAvaliacao(int avaliacaoId)
+    {
+        List<Tema> lista = new List<Tema>();
+        try
+        {
+            lista = avaliacaoDAO.PegarTemasDaAvaliacaoAluno(avaliacaoId);
+        }
+        catch (ExcecaoSAG ex)
+        {
+            throw new ExcecaoSAG(ex.getMsg());
+        }
+        return lista;
+    }
+
     public AvaliacaoAluno PegarDadosDaAvaliacaoAlunoDeUmAlunoEmUmaAvaliacao(int alunoId, int avaliacaoId)
     {
         AvaliacaoAluno avaliacaoAluno = new AvaliacaoAluno();
@@ -204,18 +232,19 @@ public class CtrCadastroAvaliacao {
         }
     }
 
-    public void GuardarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao, int tema1certo, int tema2certo, 
-        int tema3certo, int tema4certo, int tema1total, int tema2total, int tema3total, int tema4total)
+    public int GuardarResultadoAvaliacao(int id_aluno, int id_avaliacao, int dataRealiacao)
     {
+        int lastIndex = 0;
         try
         {
-            avaliacaoDAO.SalvarResultadoAvaliacao(id_aluno, id_avaliacao, dataRealiacao, tema1certo, tema2certo,
-        tema3certo, tema4certo, tema1total, tema2total, tema3total, tema4total);
+            lastIndex = avaliacaoDAO.SalvarResultadoAvaliacao(id_aluno, id_avaliacao, dataRealiacao);
         }
         catch (ExcecaoSAG ex)
         {
             throw new ExcecaoSAG(ex.getMsg());
         }
+
+        return lastIndex;
     }
     
 }

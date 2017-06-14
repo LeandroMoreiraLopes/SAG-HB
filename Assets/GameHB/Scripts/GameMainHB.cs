@@ -106,9 +106,6 @@ public class GameMainHB : MonoBehaviour {
     public void FinalizarJogo(int tema1certo, int tema2certo, int tema3certo, int tema4certo, int tema1total, int tema2total,
         int tema3total, int tema4total)
     {
-        cadastroAvaliacao.GuardarResultadoAvaliacao(id_aluno, id_avaliacao, dataRealizacao, tema1certo, tema2certo, tema3certo, 
-            tema4certo, tema1total, tema2total, tema3total, tema4total);
-
         int totalCertas = 0, totalPerguntas = 0;
 
         estatisticas.SetActive(true);
@@ -144,10 +141,20 @@ public class GameMainHB : MonoBehaviour {
 
         estatisticas.transform.GetChild(8).gameObject.GetComponent<Text>().text = "Avaliação: " + avaliacao.GetDescricao();
         float resultado = (totalCertas/totalPerguntas)*100;
-        estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().text = "Desempenho Geral: " + (int)resultado + "%";
+        estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().text = "Desempenho Geral: " + resultado + "%";
         if (resultado < 50) estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().color = Color.red;
         else if (resultado < 70) estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().color = Color.yellow;
         else if (resultado < 90) estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().color = Color.green;
         else estatisticas.transform.GetChild(9).gameObject.GetComponent<Text>().color = Color.blue;
-    }    
+    }
+
+    public void GameOver(List<int> resp, List<Pergunta> perg)
+    {
+        int avalicaoDoAlunoID = cadastroAvaliacao.GuardarResultadoAvaliacao(id_aluno, id_avaliacao, dataRealizacao);
+     
+        for (int i = 0; i < resp.Count; i++)
+        {
+            cadastroPergunta.IncluirPerguntaDaAvaliacao(avalicaoDoAlunoID, perg[i].GetId(), resp[i]);
+        }
+    }
 }
