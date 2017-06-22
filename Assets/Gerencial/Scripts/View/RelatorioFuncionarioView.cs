@@ -23,7 +23,7 @@ public class RelatorioFuncionarioView : MonoBehaviour
     RelatorioAvaliacaoDinamicGrid rADG;
 
     [SerializeField]
-    InputField relatorio;
+    Text relatorio;
 
     [SerializeField]
     Dropdown alunosDD;
@@ -68,10 +68,12 @@ public class RelatorioFuncionarioView : MonoBehaviour
         yield return temasDaAvaliacao;
 
         //carregar todos os resultados das perguntas de todas as avaliacoes do aluno
+        perguntasDaAvaliacao.Clear();
         foreach (AvaliacaoAluno aa in avaliacoesAlunos)
         perguntasDaAvaliacao.Add(cadastroAvaliacao.ListarPerguntasDeUmaAvaliacao(aa.getId()));
 
         //carregar todas as perguntas de todos os temas da avaliacao
+        perguntasDosTemasAvaliacao.Clear();
         foreach (Tema tema in temasDaAvaliacao)
             perguntasDosTemasAvaliacao.Add(cadastroPergunta.ListarTodosPorTema(tema.GetId()));
 
@@ -87,8 +89,13 @@ public class RelatorioFuncionarioView : MonoBehaviour
 
         //contagem de resultados
         List<List<int>> resultados = new List<List<int>>();
+        
         for (int t = 0; t < temasDaAvaliacao.Count; t++)
         {
+            List<int> colunas = new List<int>();
+            colunas.Add(0);
+            colunas.Add(0);
+            resultados.Add(colunas);
             List<Pergunta> perguntasPorTema = perguntasDosTemasAvaliacao[t];
             
             //varrendo cada aluno
@@ -120,9 +127,9 @@ public class RelatorioFuncionarioView : MonoBehaviour
         string relatorioPorTema = "";
         for (int i = 0; i < temasDaAvaliacao.Count; i++)
         {
-            string s = "Tema {0]: {1}\nTotal de perguntas: {2}\nTotal de acertos: {3}\nDesempenho: {4}%\n\n";
+            string s = "Tema {0}: {1}\nTotal de perguntas: {2}\nTotal de acertos: {3}\nDesempenho: {4}%\n\n";
             float div = 100 * resultados[i][1] / resultados[i][0];
-            string.Format(s, i + 1, temasDaAvaliacao[i].GetDescricao(), resultados[i][0], resultados[i][1], (int)div);
+            s = string.Format(s, i + 1, temasDaAvaliacao[i].GetNome(), resultados[i][0], resultados[i][1], ((int)div));
             relatorioPorTema += s;
         }
         
@@ -270,14 +277,26 @@ public class RelatorioFuncionarioView : MonoBehaviour
         List<PerguntaDaAvaliacaoDoAluno> perguntaDaAvaliacao = new List<PerguntaDaAvaliacaoDoAluno>();
         perguntaDaAvaliacao = cadastroAvaliacao.ListarPerguntasDeUmaAvaliacao(umaAvaliacaoAluno.getId());
 
+        yield return perguntaDaAvaliacao;
+
+        perguntasDosTemasAvaliacao.Clear();
         //carregar todas as perguntas de todos os temas da avaliacao
         foreach (Tema tema in temasDaAvaliacao)
+        {
             perguntasDosTemasAvaliacao.Add(cadastroPergunta.ListarTodosPorTema(tema.GetId()));
+
+            //yield return perguntasDosTemasAvaliacao;
+        }
 
         //contagem de resultados
         List<List<int>> resultados = new List<List<int>>();
         for (int t = 0; t < temasDaAvaliacao.Count; t++)
         {
+            List<int> colunas = new List<int>();
+            colunas.Add(0);
+            colunas.Add(0);
+            resultados.Add(colunas);
+
             List<Pergunta> perguntasPorTema = perguntasDosTemasAvaliacao[t];
 
             //varrendo todas as perguntas de um aluno
@@ -306,9 +325,9 @@ public class RelatorioFuncionarioView : MonoBehaviour
         string relatorioPorTema = "";
         for (int i = 0; i < temasDaAvaliacao.Count; i++)
         {
-            string s = "Tema {0]: {1}\nTotal de perguntas: {2}\nTotal de acertos: {3}\nDesempenho: {4}%\n\n";
+            string s = "Tema {0}: {1}\nTotal de perguntas: {2}\nTotal de acertos: {3}\nDesempenho: {4}%\n\n";
             float div = 100 * resultados[i][1] / resultados[i][0];
-            string.Format(s, i + 1, temasDaAvaliacao[i].GetDescricao(), resultados[i][0], resultados[i][1], (int)div);
+            s = string.Format(s, i + 1, temasDaAvaliacao[i].GetNome(), resultados[i][0], resultados[i][1], (int)div);
             relatorioPorTema += s;
         }
 
@@ -330,11 +349,11 @@ public class RelatorioFuncionarioView : MonoBehaviour
             {
                 for (int l = 0; l < perguntasDosTemasAvaliacao[j].Count; l++)
                 {
-                    if (perguntasDosTemasAvaliacao[j][l].GetId() == perguntaDaAvaliacao[i].getAvaliacaoId())
+                    if (perguntasDosTemasAvaliacao[j][l].GetId() == perguntaDaAvaliacao[i].getPerguntaId())
                     {
                         string s = "Pergunta: {0}\nResultado: {1}\n";
                         string resultado = (perguntaDaAvaliacao[i].getCorreta()) ? "correta" : "errada";
-                        string.Format(s, perguntasDosTemasAvaliacao[j][l].GetDescricao(), resultado);
+                        s = string.Format(s, perguntasDosTemasAvaliacao[j][l].GetDescricao(), resultado);
 
                         relatorioComPerguntas += s;
                     }

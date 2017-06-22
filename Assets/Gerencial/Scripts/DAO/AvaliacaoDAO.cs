@@ -225,7 +225,7 @@ public class AvaliacaoDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao listarAAAA as avaliacoes por aluno. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {
@@ -312,7 +312,7 @@ public class AvaliacaoDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao listarBBBB as avaliacoes por aluno. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {
@@ -369,7 +369,7 @@ public class AvaliacaoDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao listarCCC as avaliacoes por aluno. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {
@@ -413,7 +413,7 @@ public class AvaliacaoDAO {
                     //criando um aluno para cada linha
                     umaPerguntaDaAvaliacaoDeAluno = new PerguntaDaAvaliacaoDoAluno();
                     umaPerguntaDaAvaliacaoDeAluno.setId(rsAvaliacao.GetInt32("id"));
-                    umaPerguntaDaAvaliacaoDeAluno.setAvaliacaoId(rsAvaliacao.GetInt32("avaliacao_id"));
+                    umaPerguntaDaAvaliacaoDeAluno.setAvaliacaoId(rsAvaliacao.GetInt32("AVALIACAO_DO_ALUNO_ID"));
                     umaPerguntaDaAvaliacaoDeAluno.setPerguntaId(rsAvaliacao.GetInt32("pergunta_id"));
                     umaPerguntaDaAvaliacaoDeAluno.setCorreta(rsAvaliacao.GetBoolean("correta"));
                     perguntasDaAvaliacaoDoAluno.Add(umaPerguntaDaAvaliacaoDeAluno);
@@ -427,7 +427,7 @@ public class AvaliacaoDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao listarDDDD as avaliacoes por aluno. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {
@@ -529,15 +529,16 @@ public class AvaliacaoDAO {
                 while (rsAvaliacao.Read())
                 {
                     //criando um aluno para cada linha
+                    umaAvaliacaoDeAluno.setId(rsAvaliacao.GetInt32("id"));
                     umaAvaliacaoDeAluno.SetDataRealizacao(rsAvaliacao.GetInt32("data_realizacao"));
-                    umaAvaliacaoDeAluno.SetTema1TotalDePerguntas(rsAvaliacao.GetInt32("tema1_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema1TotalDeAcertos(rsAvaliacao.GetInt32("tema1_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema2TotalDePerguntas(rsAvaliacao.GetInt32("tema2_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema2TotalDeAcertos(rsAvaliacao.GetInt32("tema2_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema3TotalDePerguntas(rsAvaliacao.GetInt32("tema3_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema3TotalDeAcertos(rsAvaliacao.GetInt32("tema3_totalacertos"));
-                    umaAvaliacaoDeAluno.SetTema4TotalDePerguntas(rsAvaliacao.GetInt32("tema4_totalperguntas"));
-                    umaAvaliacaoDeAluno.SetTema4TotalDeAcertos(rsAvaliacao.GetInt32("tema4_totalacertos"));
+                    //umaAvaliacaoDeAluno.SetTema1TotalDePerguntas(rsAvaliacao.GetInt32("tema1_totalperguntas"));
+                    //umaAvaliacaoDeAluno.SetTema1TotalDeAcertos(rsAvaliacao.GetInt32("tema1_totalacertos"));
+                    //umaAvaliacaoDeAluno.SetTema2TotalDePerguntas(rsAvaliacao.GetInt32("tema2_totalperguntas"));
+                    //umaAvaliacaoDeAluno.SetTema2TotalDeAcertos(rsAvaliacao.GetInt32("tema2_totalacertos"));
+                    //umaAvaliacaoDeAluno.SetTema3TotalDePerguntas(rsAvaliacao.GetInt32("tema3_totalperguntas"));
+                    //umaAvaliacaoDeAluno.SetTema3TotalDeAcertos(rsAvaliacao.GetInt32("tema3_totalacertos"));
+                    //umaAvaliacaoDeAluno.SetTema4TotalDePerguntas(rsAvaliacao.GetInt32("tema4_totalperguntas"));
+                    //umaAvaliacaoDeAluno.SetTema4TotalDeAcertos(rsAvaliacao.GetInt32("tema4_totalacertos"));
                 }
                 db.Close();
             }
@@ -548,7 +549,7 @@ public class AvaliacaoDAO {
         }
         catch (MySqlException ex)
         {
-            throw new ExcecaoSAG("Erro ao listar as avaliacoes por aluno. Código " + ex.ToString());
+            throw new ExcecaoSAG("Erro ao listarEEEE as avaliacoes por aluno. Código " + ex.ToString());
         }
         catch (ExcecaoSAG ex)
         {

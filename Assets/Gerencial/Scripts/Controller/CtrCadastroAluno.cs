@@ -53,11 +53,13 @@ public class CtrCadastroAluno{
 		if(aluno.GetNomeCompleto() == null || aluno.GetNomeCompleto().Trim().Equals("")){
 			throw new ExcecaoSAG("Nome completo deve ser preenchido");
 		}
-		if(aluno.GetNascimento() <= 0){
-			throw new ExcecaoSAG("Data de nascimento deve ser preenchida");
+		if(aluno.GetNascimento() <= 0 || !FormatarData.DataNascimentoValida(aluno.GetNascimento()))
+        {
+			throw new ExcecaoSAG("Data de nascimento deve ser válida");
 		}
-		if(aluno.GetCpf() == null || aluno.GetCpf().Trim().Equals("")){
-			throw new ExcecaoSAG("CPF deve ser preenchido");
+		if(aluno.GetCpf() == null || aluno.GetCpf().Trim().Equals("") || !ValidaCPF.Valida(aluno.GetCpf()))
+        {
+			throw new ExcecaoSAG("CPF deve ser válido");
 		}
 		if (aluno.GetTelefone() <= 0) {
 			throw new ExcecaoSAG("O Telefone deve ser preenchido com um número válido.") ;

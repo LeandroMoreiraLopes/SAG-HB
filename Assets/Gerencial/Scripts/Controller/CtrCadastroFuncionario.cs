@@ -45,13 +45,13 @@ public class CtrCadastroFuncionario
         {
             throw new ExcecaoSAG("Nome completo deve ser preenchido");
         }
-        if (funcionario.GetNascimento() <= 0)
+        if (funcionario.GetNascimento() <= 0 || !FormatarData.DataNascimentoValida(funcionario.GetNascimento()))
         {
-            throw new ExcecaoSAG("Data de nascimento deve ser preenchida");
+            throw new ExcecaoSAG("Data de nascimento deve ser válida");
         }
-        if (funcionario.GetCpf() == null || funcionario.GetCpf().Trim().Equals(""))
+        if (funcionario.GetCpf() == null || funcionario.GetCpf().Trim().Equals("") || !ValidaCPF.Valida(funcionario.GetCpf()))
         {
-            throw new ExcecaoSAG("CPF deve ser preenchido");
+            throw new ExcecaoSAG("CPF deve ser válido");
         }
         if (funcionario.GetTelefone() <= 0)
         {
